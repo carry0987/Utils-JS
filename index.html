@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utils</title>
+    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <div class="d-flex flex-column justify-content-center align-items-center vh-100">
+        <div id="app">
+            <h1 class="mb-3"></h1>
+        </div>
+    </div>
+    <script src="dist/utils.min.js"></script>
+    <script type="text/javascript">
+    Utils.getElem('#app h1.mb-3').innerHTML = 'Utils';
+    Utils.insertAfter(Utils.getElem('#app h1.mb-3'), `<h2 class="mb-3">v${Utils.version}</h2>`);
+    Utils.addClass(Utils.getElem('#app h2.mb-3'), 'text-center');
+    let styles = {
+        h1: {
+            color: '#818181',
+            fontSize: '50px'
+        }
+    };
+    Utils.setStylesheetId('test');
+    Utils.injectStylesheet(styles, 1);
+    </script>
+</body>
+</html>
