@@ -1,4 +1,4 @@
-import terser from "@rollup/plugin-terser";
+import terser from '@rollup/plugin-terser';
 import replace from '@rollup/plugin-replace';
 import { createRequire } from 'module';
 const pkg = createRequire(import.meta.url)('./package.json');
