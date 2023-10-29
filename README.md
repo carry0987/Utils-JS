@@ -4,5 +4,5 @@ A library for using common tools and alias methods
 
 ## Installation
 ```bash
-npm install @carry0987/utils
+npm install @carry0987/utils -D
 ```
