@@ -7,13 +7,13 @@ export default {
     input: 'src/utils.js',
     output: [
         {
-            file: 'dist/utils.min.js',
+            file: pkg.main,
             format: 'umd',
             name: 'Utils',
             plugins: [terser()]
         },
         {
-            file: 'dist/utils.esm.js',
+            file: pkg.module,
             format: 'es'
         }
     ],
