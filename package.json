@@ -1,9 +1,10 @@
 {
   "name": "@carry0987/utils",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A library for using common tools and alias methods",
   "type": "module",
   "main": "dist/utils.min.js",
+  "module": "dist/utils.esm.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "rollup --config rollup.config.js",

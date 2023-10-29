@@ -11,6 +11,10 @@ export default {
             format: 'umd',
             name: 'Utils',
             plugins: [terser()]
+        },
+        {
+            file: 'dist/utils.esm.js',
+            format: 'es'
         }
     ],
     plugins: [
