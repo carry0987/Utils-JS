@@ -1,5 +1,9 @@
 /* Utils */
 class Utils {
+    constructor(extension) {
+        Object.assign(this, extension);
+    }
+
     static version = '__version__';
     static stylesheetId = 'utils-style';
     static replaceRule = {
