@@ -110,11 +110,15 @@ class Utils {
         return Utils.deepMerge(target, ...sources);
     }
 
+    // CSS Injection
     static injectStylesheet(stylesObject: { [selector: string]: { [property: string]: string } }, id: string | null = null): void {
         id = Utils.isEmpty(id) ? '' : id;
+        // Create a style element
         let style = Utils.createElem('style') as HTMLStyleElement;
+        // WebKit hack
         style.id = Utils.stylesheetId + id;
         style.textContent = '';
+        // Add the style element to the document head
         document.head.append(style);
 
         let stylesheet = style.sheet as CSSStyleSheet;
