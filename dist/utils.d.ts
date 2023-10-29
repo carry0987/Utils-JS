@@ -36,6 +36,8 @@ declare class Utils {
     static removeStylesheet(id?: string | null): void;
     static isEmpty(str: any): boolean;
     static createEvent(eventName: string, detail?: any): CustomEvent;
+    static dispatchEvent(eventName: string, detail?: any): void;
+    static generateRandom(length?: number): string;
 }
 
 export { Utils as default };

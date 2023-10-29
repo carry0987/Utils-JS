@@ -163,6 +163,10 @@ class Utils {
     static dispatchEvent(eventName: string, detail: any = null): void {
         document.dispatchEvent(Utils.createEvent(eventName, detail));
     }
+
+    static generateRandom(length: number = 8): string {
+        return Math.random().toString(36).substring(2, 2 + length);
+    }
 }
 
 // Making the version property non-writable in TypeScript

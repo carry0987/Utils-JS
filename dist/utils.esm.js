@@ -3,7 +3,7 @@ class Utils {
     constructor(extension) {
         Object.assign(this, extension);
     }
-    static version = '2.0.1';
+    static version = '2.0.2';
     static stylesheetId = 'utils-style';
     static replaceRule = {
         from: '.utils',
@@ -145,6 +145,12 @@ class Utils {
     }
     static createEvent(eventName, detail = null) {
         return new CustomEvent(eventName, { detail });
+    }
+    static dispatchEvent(eventName, detail = null) {
+        document.dispatchEvent(Utils.createEvent(eventName, detail));
+    }
+    static generateRandom(length = 8) {
+        return Math.random().toString(36).substring(2, 2 + length);
     }
 }
 // Making the version property non-writable in TypeScript
