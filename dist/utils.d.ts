@@ -35,6 +35,7 @@ declare class Utils {
     static compatInsertRule(stylesheet: CSSStyleSheet, selector: string, cssText: string, id?: string | null): void;
     static removeStylesheet(id?: string | null): void;
     static isEmpty(str: any): boolean;
+    static createEvent(eventName: string, detail?: any): CustomEvent;
 }
 
 export { Utils as default };
