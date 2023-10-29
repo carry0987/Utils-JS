@@ -159,6 +159,10 @@ class Utils {
     static createEvent(eventName: string, detail: any = null): CustomEvent {
         return new CustomEvent(eventName, { detail });
     }
+
+    static dispatchEvent(eventName: string, detail: any = null): void {
+        document.dispatchEvent(Utils.createEvent(eventName, detail));
+    }
 }
 
 // Making the version property non-writable in TypeScript
