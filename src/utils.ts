@@ -1,38 +1,39 @@
 /* Utils */
 class Utils {
-    constructor(extension) {
+    constructor(extension: any) {
         Object.assign(this, extension);
     }
 
-    static version = '__version__';
-    static stylesheetId = 'utils-style';
-    static replaceRule = {
+    static version: string = '__version__';
+    static stylesheetId: string = 'utils-style';
+    static replaceRule: { from: string, to: string } = {
         from: '.utils',
         to: '.utils-'
     };
 
-    static setStylesheetId(id) {
+    static setStylesheetId(id: string): void {
         Utils.stylesheetId = id;
     }
 
-    static setReplaceRule(from, to) {
+    static setReplaceRule(from: string, to: string): void {
         Utils.replaceRule.from = from;
         Utils.replaceRule.to = to;
     }
 
-    static getElem(ele, mode, parent) {
+    static getElem(ele: string | Element, mode?: string | Element, parent?: Element): Element | NodeList | null {
         if (typeof ele === 'object') {
             return ele;
         } else if (mode === undefined && parent === undefined) {
-            return (isNaN(ele * 1)) ? document.querySelector(ele) : document.getElementById(ele);
+            return isNaN(Number(ele)) ? document.querySelector(ele) : document.getElementById(ele);
         } else if (mode === 'all' || mode === null) {
-            return (parent === undefined) ? document.querySelectorAll(ele) : parent.querySelectorAll(ele);
+            return parent === undefined ? document.querySelectorAll(ele) : parent.querySelectorAll(ele);
         } else if (typeof mode === 'object' && parent === undefined) {
             return mode.querySelector(ele);
         }
+        return null;
     }
 
-    static createElem(tagName, attrs = {}, text = '') {
+    static createElem(tagName: string, attrs: { [key: string]: any } = {}, text: string = ''): Element {
         let elem = document.createElement(tagName);
         for (let attr in attrs) {
             if (attrs.hasOwnProperty(attr)) {
@@ -48,52 +49,52 @@ class Utils {
         return elem;
     }
 
-    static insertAfter(referenceNode, newNode) {
+    static insertAfter(referenceNode: Node, newNode: Node | string): void {
         if (typeof newNode === 'string') {
             let elem = Utils.createElem('div');
             elem.innerHTML = newNode;
-            newNode = elem.firstChild;
+            newNode = elem.firstChild!;
         }
         if (referenceNode.nextSibling) {
-            referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+            referenceNode.parentNode!.insertBefore(newNode, referenceNode.nextSibling);
         } else {
-            referenceNode.parentNode.appendChild(newNode);
+            referenceNode.parentNode!.appendChild(newNode);
         }
     }
 
-    static insertBefore(referenceNode, newNode) {
+    static insertBefore(referenceNode: Node, newNode: Node | string): void {
         if (typeof newNode === 'string') {
             let elem = Utils.createElem('div');
             elem.innerHTML = newNode;
-            newNode = elem.firstChild;
+            newNode = elem.firstChild!;
         }
-        referenceNode.parentNode.insertBefore(newNode, referenceNode);
+        referenceNode.parentNode!.insertBefore(newNode, referenceNode);
     }
 
-    static addClass(ele, className) {
+    static addClass(ele: Element, className: string): Element {
         ele.classList.add(className);
         return ele;
     }
 
-    static removeClass(ele, className) {
+    static removeClass(ele: Element, className: string): Element {
         ele.classList.remove(className);
         return ele;
     }
 
-    static toggleClass(ele, className) {
+    static toggleClass(ele: Element, className: string): Element {
         ele.classList.toggle(className);
         return ele;
     }
 
-    static hasClass(ele, className) {
+    static hasClass(ele: Element, className: string): boolean {
         return ele.classList.contains(className);
     }
 
-    static isObject(item) {
+    static isObject(item: any): item is object {
         return item && typeof item === 'object' && !Array.isArray(item);
     }
 
-    static deepMerge(target, ...sources) {
+    static deepMerge(target: { [key: string]: any }, ...sources: { [key: string]: any }[]): typeof target {
         const source = sources.shift();
         if (!source) return target;
         if (Utils.isObject(target) && Utils.isObject(source)) {
@@ -109,15 +110,14 @@ class Utils {
         return Utils.deepMerge(target, ...sources);
     }
 
-    static injectStylesheet(stylesObject, id = null) {
+    static injectStylesheet(stylesObject: { [selector: string]: { [property: string]: string } }, id: string | null = null): void {
         id = Utils.isEmpty(id) ? '' : id;
-        let style = Utils.createElem('style');
+        let style = Utils.createElem('style') as HTMLStyleElement;
         style.id = Utils.stylesheetId + id;
-        style.type = 'text/css';
         style.textContent = '';
         document.head.append(style);
 
-        let stylesheet = style.sheet;
+        let stylesheet = style.sheet as CSSStyleSheet;
 
         for (let selector in stylesObject) {
             if (stylesObject.hasOwnProperty(selector)) {
@@ -126,7 +126,7 @@ class Utils {
         }
     }
 
-    static buildRules(ruleObject) {
+    static buildRules(ruleObject: { [property: string]: string }): string {
         let ruleSet = '';
         for (let [property, value] of Object.entries(ruleObject)) {
             property = property.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`);
@@ -135,21 +135,21 @@ class Utils {
         return ruleSet;
     }
 
-    static compatInsertRule(stylesheet, selector, cssText, id = null) {
+    static compatInsertRule(stylesheet: CSSStyleSheet, selector: string, cssText: string, id: string | null = null): void {
         id = Utils.isEmpty(id) ? '' : id;
         let modifiedSelector = selector.replace(Utils.replaceRule.from, Utils.replaceRule.to + id);
         stylesheet.insertRule(modifiedSelector + '{' + cssText + '}', 0);
     }
 
-    static removeStylesheet(id = null) {
+    static removeStylesheet(id: string | null = null): void {
         id = Utils.isEmpty(id) ? '' : id;
-        let styleElement = Utils.getElem('#' + Utils.stylesheetId + id);
+        let styleElement = Utils.getElem('#' + Utils.stylesheetId + id) as Element;
         if (styleElement) {
-            styleElement.parentNode.removeChild(styleElement);
+            styleElement.parentNode!.removeChild(styleElement);
         }
     }
 
-    static isEmpty(str) {
+    static isEmpty(str: any): boolean {
         if (typeof str === 'number') {
             return false;
         }
@@ -157,6 +157,7 @@ class Utils {
     }
 }
 
-Object.defineProperty(Utils, 'version', { writable: false });
+// Making the version property non-writable in TypeScript
+Object.defineProperty(Utils, 'version', { writable: false, configurable: true });
 
 export default Utils;
