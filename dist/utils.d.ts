@@ -38,6 +38,9 @@ declare class Utils {
     static createEvent(eventName: string, detail?: any): CustomEvent;
     static dispatchEvent(eventName: string, detail?: any): void;
     static generateRandom(length?: number): string;
+    static setStorageValue(key: string, value: any, stringify?: boolean): void;
+    static getStorageValue(key: string, parseJson?: boolean): any;
+    static removeStorageValue(key: string): void;
 }
 
 export { Utils as default };

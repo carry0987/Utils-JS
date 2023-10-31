@@ -26,6 +26,9 @@
     };
     Utils.setStylesheetId('test');
     Utils.injectStylesheet(styles, 1);
+    Utils.setStorageValue('test', {1:2,2:4,3:5});
+    console.log(Utils.getStorageValue('test'));
+    Utils.removeStorageValue('test');
     </script>
 </body>
 </html>

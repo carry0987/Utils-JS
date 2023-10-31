@@ -171,6 +171,30 @@ class Utils {
     static generateRandom(length: number = 8): string {
         return Math.random().toString(36).substring(2, 2 + length);
     }
+
+    static setStorageValue(key: string, value: any, stringify = true): void {
+        if (stringify) {
+            value = JSON.stringify(value);
+        }
+        window.localStorage.setItem(key, value);
+    }
+
+    static getStorageValue(key: string, parseJson = true): any {
+        let value = window.localStorage.getItem(key);
+        if (parseJson) {
+            try {
+                value = JSON.parse(value!);
+            } catch(e) {
+                console.error('Error while parsing stored json value: ', e);
+            }
+        }
+
+        return value;
+    }
+
+    static removeStorageValue(key: string): void {
+        window.localStorage.removeItem(key);
+    }
 }
 
 // Making the version property non-writable in TypeScript

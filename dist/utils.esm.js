@@ -3,7 +3,7 @@ class Utils {
     constructor(extension) {
         Object.assign(this, extension);
     }
-    static version = '2.0.2';
+    static version = '2.0.3';
     static stylesheetId = 'utils-style';
     static replaceRule = {
         from: '.utils',
@@ -104,11 +104,15 @@ class Utils {
         }
         return Utils.deepMerge(target, ...sources);
     }
+    // CSS Injection
     static injectStylesheet(stylesObject, id = null) {
         id = Utils.isEmpty(id) ? '' : id;
+        // Create a style element
         let style = Utils.createElem('style');
+        // WebKit hack
         style.id = Utils.stylesheetId + id;
         style.textContent = '';
+        // Add the style element to the document head
         document.head.append(style);
         let stylesheet = style.sheet;
         for (let selector in stylesObject) {
@@ -151,6 +155,27 @@ class Utils {
     }
     static generateRandom(length = 8) {
         return Math.random().toString(36).substring(2, 2 + length);
+    }
+    static setStorageValue(key, value, stringify = true) {
+        if (stringify) {
+            value = JSON.stringify(value);
+        }
+        window.localStorage.setItem(key, value);
+    }
+    static getStorageValue(key, parseJson = true) {
+        let value = window.localStorage.getItem(key);
+        if (parseJson) {
+            try {
+                value = JSON.parse(value);
+            }
+            catch (e) {
+                console.error('Error while parsing stored json value: ', e);
+            }
+        }
+        return value;
+    }
+    static removeStorageValue(key) {
+        window.localStorage.removeItem(key);
     }
 }
 // Making the version property non-writable in TypeScript
