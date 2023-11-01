@@ -172,28 +172,60 @@ class Utils {
         return Math.random().toString(36).substring(2, 2 + length);
     }
 
-    static setStorageValue(key: string, value: any, stringify = true): void {
+    static setLocalValue(key: string, value: any, stringify = true): void {
         if (stringify) {
             value = JSON.stringify(value);
         }
         window.localStorage.setItem(key, value);
     }
 
-    static getStorageValue(key: string, parseJson = true): any {
+    static getLocalValue(key: string, parseJson = true): any {
         let value = window.localStorage.getItem(key);
         if (parseJson) {
             try {
                 value = JSON.parse(value!);
             } catch(e) {
-                console.error('Error while parsing stored json value: ', e);
+                Utils.reportError('Error while parsing stored json value: ', e);
             }
         }
 
         return value;
     }
 
-    static removeStorageValue(key: string): void {
+    static removeLocalValue(key: string): void {
         window.localStorage.removeItem(key);
+    }
+
+    static setSessionValue(key: string, value: any, stringify = true): void {
+        if (stringify) {
+            value = JSON.stringify(value);
+        }
+        window.sessionStorage.setItem(key, value);
+    }
+
+    static getSessionValue(key: string, parseJson = true): any {
+        let value = window.sessionStorage.getItem(key);
+        if (parseJson) {
+            try {
+                value = JSON.parse(value!);
+            } catch(e) {
+                Utils.reportError('Error while parsing stored json value: ', e);
+            }
+        }
+
+        return value;
+    }
+
+    static removeSessionValue(key: string): void {
+        window.sessionStorage.removeItem(key);
+    }
+
+    static reportError(...error: any[]): void {
+        console.error(...error);
+    }
+
+    static throwError(message: string): void {
+        throw new Error(message);
     }
 }
 

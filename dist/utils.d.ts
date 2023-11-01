@@ -38,9 +38,14 @@ declare class Utils {
     static createEvent(eventName: string, detail?: any): CustomEvent;
     static dispatchEvent(eventName: string, detail?: any): void;
     static generateRandom(length?: number): string;
-    static setStorageValue(key: string, value: any, stringify?: boolean): void;
-    static getStorageValue(key: string, parseJson?: boolean): any;
-    static removeStorageValue(key: string): void;
+    static setLocalValue(key: string, value: any, stringify?: boolean): void;
+    static getLocalValue(key: string, parseJson?: boolean): any;
+    static removeLocalValue(key: string): void;
+    static setSessionValue(key: string, value: any, stringify?: boolean): void;
+    static getSessionValue(key: string, parseJson?: boolean): any;
+    static removeSessionValue(key: string): void;
+    static reportError(...error: any[]): void;
+    static throwError(message: string): void;
 }
 
 export { Utils as default };

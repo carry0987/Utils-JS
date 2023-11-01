@@ -3,7 +3,7 @@ class Utils {
     constructor(extension) {
         Object.assign(this, extension);
     }
-    static version = '2.0.3';
+    static version = '2.1.0';
     static stylesheetId = 'utils-style';
     static replaceRule = {
         from: '.utils',
@@ -156,26 +156,53 @@ class Utils {
     static generateRandom(length = 8) {
         return Math.random().toString(36).substring(2, 2 + length);
     }
-    static setStorageValue(key, value, stringify = true) {
+    static setLocalValue(key, value, stringify = true) {
         if (stringify) {
             value = JSON.stringify(value);
         }
         window.localStorage.setItem(key, value);
     }
-    static getStorageValue(key, parseJson = true) {
+    static getLocalValue(key, parseJson = true) {
         let value = window.localStorage.getItem(key);
         if (parseJson) {
             try {
                 value = JSON.parse(value);
             }
             catch (e) {
-                console.error('Error while parsing stored json value: ', e);
+                Utils.reportError('Error while parsing stored json value: ', e);
             }
         }
         return value;
     }
-    static removeStorageValue(key) {
+    static removeLocalValue(key) {
         window.localStorage.removeItem(key);
+    }
+    static setSessionValue(key, value, stringify = true) {
+        if (stringify) {
+            value = JSON.stringify(value);
+        }
+        window.sessionStorage.setItem(key, value);
+    }
+    static getSessionValue(key, parseJson = true) {
+        let value = window.sessionStorage.getItem(key);
+        if (parseJson) {
+            try {
+                value = JSON.parse(value);
+            }
+            catch (e) {
+                Utils.reportError('Error while parsing stored json value: ', e);
+            }
+        }
+        return value;
+    }
+    static removeSessionValue(key) {
+        window.sessionStorage.removeItem(key);
+    }
+    static reportError(...error) {
+        console.error(...error);
+    }
+    static throwError(message) {
+        throw new Error(message);
     }
 }
 // Making the version property non-writable in TypeScript
