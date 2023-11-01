@@ -29,10 +29,10 @@
   },
   "homepage": "https://github.com/carry0987/Utils-JS#readme",
   "devDependencies": {
-    "@rollup/plugin-replace": "^5.0.3",
+    "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.5",
-    "rollup": "^4.0.2",
+    "rollup": "^4.2.0",
     "rollup-plugin-dts": "^6.1.0",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2"
