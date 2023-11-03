@@ -32,6 +32,32 @@
     Utils.removeLocalValue('test');
     Utils.setSessionValue('test', {1:2,2:4,3:5});
     console.log(Utils.getSessionValue('test'));
+    // Test deepMerge
+    const target = {
+        a: 1,
+        b: {
+            c: 2,
+            d: 3,
+        },
+    };
+    const source1 = {
+        b: {
+            c: 3,
+            e: 4,
+            haha: {
+                a: 1,
+                b: 2,
+            }
+        },
+        f: 5,
+    };
+    const source2 = {
+        g: {
+            h: 6,
+        },
+    };
+    const merged = Utils.deepMerge(target, source1, source2);
+    console.log(JSON.stringify(merged, null, 2));
     </script>
 </body>
 </html>
