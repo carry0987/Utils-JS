@@ -1,5 +1,5 @@
 import { Extension, ReplaceRule, ElementAttributes, StylesObject } from './types';
-import { FetchOptions, FormDataOptions, SendFormDataOptions } from './interfaces';
+import { FetchOptions, FormDataMap, FormDataOptions, SendFormDataOptions } from './interfaces';
 
 /* Utils */
 class Utils {
@@ -230,6 +230,33 @@ class Utils {
         let params = new URLSearchParams(url);
         let param = params.get(sParam);
         return param === null ? null : decodeURIComponent(param);
+    }
+
+    // Append form data with TypeScript
+    static appendFormData(data: FormDataMap, formData: FormData, parentKey: any = null): FormData {
+        if (data !== null && typeof data === 'object' && !(data instanceof Blob)) {
+            Object.keys(data).forEach((key) => {
+                const value = data[key];
+                let _key = parentKey ? `${parentKey}[${key}]` : key;
+                if (value !== null && typeof value === 'object' && !(value instanceof Blob)) {
+                    Utils.appendFormData(value, formData, _key);
+                } else {
+                    // If the value is a non-null object, convert it to JSON string, else convert to string
+                    const formValue = typeof value === 'object' ? JSON.stringify(value) : String(value);
+                    formData.append(_key, formValue);
+                }
+            });
+        } else {
+            const formValue = typeof data === 'object' ? JSON.stringify(data) : String(data);
+            formData.append(parentKey, formValue);
+        }
+        return formData;
+    }
+
+    // Encode form data before send with TypeScript
+    static encodeFormData(data: FormDataMap, parentKey: any = null): FormData {
+        let formData = new FormData();
+        return Utils.appendFormData(data, formData, parentKey);
     }
 
     static reportError(...error: any[]): void {

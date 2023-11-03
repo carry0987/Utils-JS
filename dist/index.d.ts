@@ -12,6 +12,10 @@ type StylesObject = {
     };
 };
 
+interface FormDataMap {
+    [key: string]: FormDataMap | string | Blob;
+}
+
 declare class Utils {
     constructor(extension: Extension);
     static version: string;
@@ -50,6 +54,8 @@ declare class Utils {
     static getSessionValue(key: string, parseJson?: boolean): any;
     static removeSessionValue(key: string): void;
     static getUrlParameter(sParam: string, url?: string): string | null;
+    static appendFormData(data: FormDataMap, formData: FormData, parentKey?: any): FormData;
+    static encodeFormData(data: FormDataMap, parentKey?: any): FormData;
     static reportError(...error: any[]): void;
     static throwError(message: string): void;
 }
