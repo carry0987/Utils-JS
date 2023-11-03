@@ -12,9 +12,25 @@ type StylesObject = {
     };
 };
 
+interface FetchOptions {
+    url: string;
+    method?: string;
+    headers?: HeadersInit;
+    body?: BodyInit | Record<string, unknown>;
+    beforeSend?: () => void;
+    success?: (data: any) => void;
+    error?: (error: any) => void;
+}
 interface FormDataOptions {
     data: Record<string, any>;
     parentKey?: string;
+}
+interface SendFormDataOptions {
+    url: string;
+    data: Record<string, any>;
+    method?: string;
+    success?: (result: any) => void;
+    errorCallback?: (error: any) => void;
 }
 
 declare class Utils {
@@ -55,8 +71,10 @@ declare class Utils {
     static getSessionValue(key: string, parseJson?: boolean): any;
     static removeSessionValue(key: string): void;
     static getUrlParameter(sParam: string, url?: string): string | null;
+    static doFetch(options: FetchOptions): Promise<any>;
     static appendFormData(options: FormDataOptions, formData?: FormData): FormData;
     static encodeFormData(options: FormDataOptions): FormData;
+    static sendFormData(options: SendFormDataOptions): Promise<boolean>;
     static reportError(...error: any[]): void;
     static throwError(message: string): void;
 }

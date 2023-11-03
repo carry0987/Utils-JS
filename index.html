@@ -62,6 +62,20 @@
     };
     const merged = Utils.deepMerge(target, source1, source2);
     console.log(JSON.stringify(merged, null, 2));
+    // Test sendFormData
+    Utils.sendFormData({
+        url: 'https://httpbin.org/post',
+        data: {
+            name: 'test',
+            age: 18
+        },
+        success: (res) => {
+            console.log(res);
+        },
+        error: (err) => {
+            console.log(err);
+        }
+    });
     </script>
 </body>
 </html>
