@@ -301,7 +301,14 @@ class Utils {
     }
 
     // Encode form data before send
-    static encodeFormData(options: FormDataOptions): FormData {
+    static encodeFormData(data: any, parentKey: string = ''): FormData {
+        if (data instanceof FormData) {
+            return data;
+        }
+        const options: FormDataOptions = {
+            data: data,
+            parentKey: parentKey
+        };
         return Utils.appendFormData(options);
     }
 
@@ -312,7 +319,7 @@ class Utils {
         const fetchOptions: FetchOptions = {
             url: url,
             method: method,
-            body: Utils.encodeFormData({ data }),
+            body: Utils.encodeFormData(data),
             success: (responseData) => {
                 if (success) {
                     success(responseData);
@@ -325,7 +332,7 @@ class Utils {
             }
         };
 
-        return this.doFetch(fetchOptions)
+        return Utils.doFetch(fetchOptions)
             .then(() => true)
             .catch(() => false);
     }
