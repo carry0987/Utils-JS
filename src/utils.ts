@@ -178,16 +178,14 @@ class Utils {
     }
 
     static setLocalValue(key: string, value: any, stringify = true): void {
-        const pathPrefix = window.location.pathname.split('/')[1];
         if (stringify) {
             value = JSON.stringify(value);
         }
-        window.localStorage.setItem(`${pathPrefix}-${key}`, value);
+        window.localStorage.setItem(key, value);
     }
 
     static getLocalValue(key: string, parseJson: boolean = true): any {
-        const pathPrefix = window.location.pathname.split('/')[1];
-        let value = window.localStorage.getItem(`${pathPrefix}-${key}`);
+        let value = window.localStorage.getItem(key);
         if (parseJson) {
             try {
                 value = JSON.parse(value!);
@@ -200,8 +198,7 @@ class Utils {
     }
 
     static removeLocalValue(key: string): void {
-        const pathPrefix = window.location.pathname.split('/')[1];
-        window.localStorage.removeItem(`${pathPrefix}-${key}`);
+        window.localStorage.removeItem(key);
     }
 
     static setSessionValue(key: string, value: any, stringify: boolean = true): void {

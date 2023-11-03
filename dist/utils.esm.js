@@ -3,7 +3,7 @@ class Utils {
     constructor(extension) {
         Object.assign(this, extension);
     }
-    static version = '2.1.8';
+    static version = '2.1.9';
     static stylesheetId = 'utils-style';
     static replaceRule = {
         from: '.utils',
@@ -160,15 +160,13 @@ class Utils {
         return Math.random().toString(36).substring(2, 2 + length);
     }
     static setLocalValue(key, value, stringify = true) {
-        const pathPrefix = window.location.pathname.split('/')[1];
         if (stringify) {
             value = JSON.stringify(value);
         }
-        window.localStorage.setItem(`${pathPrefix}-${key}`, value);
+        window.localStorage.setItem(key, value);
     }
     static getLocalValue(key, parseJson = true) {
-        const pathPrefix = window.location.pathname.split('/')[1];
-        let value = window.localStorage.getItem(`${pathPrefix}-${key}`);
+        let value = window.localStorage.getItem(key);
         if (parseJson) {
             try {
                 value = JSON.parse(value);
@@ -180,8 +178,7 @@ class Utils {
         return value;
     }
     static removeLocalValue(key) {
-        const pathPrefix = window.location.pathname.split('/')[1];
-        window.localStorage.removeItem(`${pathPrefix}-${key}`);
+        window.localStorage.removeItem(key);
     }
     static setSessionValue(key, value, stringify = true) {
         if (stringify) {
