@@ -28,9 +28,11 @@ class Utils {
             return ele;
         } else if (mode === undefined && parent === undefined) {
             return isNaN(Number(ele)) ? document.querySelector(ele) : document.getElementById(ele);
-        } else if (mode === 'all' || mode === null) {
+        } else if (mode === null) {
+            return parent === undefined ? document.querySelector(ele) : parent.querySelector(ele);
+        } else if (mode === 'all') {
             return parent === undefined ? document.querySelectorAll(ele) : parent.querySelectorAll(ele);
-        } else if (typeof mode === 'object' && parent === undefined) {
+        } else if (typeof mode === 'object') {
             return mode.querySelector(ele);
         }
         return null;
