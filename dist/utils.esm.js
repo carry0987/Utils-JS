@@ -1,9 +1,8 @@
-/* Utils */
 class Utils {
     constructor(extension) {
         Object.assign(this, extension);
     }
-    static version = '2.1.1';
+    static version = '2.1.2';
     static stylesheetId = 'utils-style';
     static replaceRule = {
         from: '.utils',
@@ -34,7 +33,7 @@ class Utils {
     static createElem(tagName, attrs = {}, text = '') {
         let elem = document.createElement(tagName);
         for (let attr in attrs) {
-            if (attrs.hasOwnProperty(attr)) {
+            if (Object.prototype.hasOwnProperty.call(attrs, attr)) {
                 if (attr === 'innerText') {
                     elem.textContent = attrs[attr];
                 }
@@ -87,18 +86,18 @@ class Utils {
         return item && typeof item === 'object' && !Array.isArray(item);
     }
     static deepMerge(target, ...sources) {
-        const source = sources.shift();
-        if (!source)
+        if (!sources.length)
             return target;
-        if (Utils.isObject(target) && Utils.isObject(source)) {
+        const source = sources.shift();
+        if (source) {
             for (const key in source) {
                 if (Utils.isObject(source[key])) {
                     if (!target[key])
-                        Object.assign(target, { [key]: {} });
+                        target[key] = {};
                     Utils.deepMerge(target[key], source[key]);
                 }
                 else {
-                    Object.assign(target, { [key]: source[key] });
+                    target[key] = source[key];
                 }
             }
         }
@@ -145,7 +144,7 @@ class Utils {
         if (typeof str === 'number') {
             return false;
         }
-        return (!str?.length);
+        return !str || (typeof str === 'string' && str.length === 0);
     }
     static createEvent(eventName, detail = null) {
         return new CustomEvent(eventName, { detail });

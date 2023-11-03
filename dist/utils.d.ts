@@ -1,5 +1,6 @@
+type Extension = Record<string, unknown>;
 declare class Utils {
-    constructor(extension: any);
+    constructor(extension: Extension);
     static version: string;
     static stylesheetId: string;
     static replaceRule: {
@@ -10,7 +11,7 @@ declare class Utils {
     static setReplaceRule(from: string, to: string): void;
     static getElem(ele: string | Element, mode?: string | Element, parent?: Element): Element | NodeList | null;
     static createElem(tagName: string, attrs?: {
-        [key: string]: any;
+        [key: string]: unknown;
     }, text?: string): Element;
     static insertAfter(referenceNode: Node, newNode: Node | string): void;
     static insertBefore(referenceNode: Node, newNode: Node | string): void;
@@ -34,7 +35,7 @@ declare class Utils {
     }): string;
     static compatInsertRule(stylesheet: CSSStyleSheet, selector: string, cssText: string, id?: string | null): void;
     static removeStylesheet(id?: string | null): void;
-    static isEmpty(str: any): boolean;
+    static isEmpty(str: unknown): boolean;
     static createEvent(eventName: string, detail?: any): CustomEvent;
     static dispatchEvent(eventName: string, detail?: any): void;
     static generateRandom(length?: number): string;

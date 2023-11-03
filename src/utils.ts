@@ -1,6 +1,8 @@
 /* Utils */
+type Extension = Record<string, unknown>;
+
 class Utils {
-    constructor(extension: any) {
+    constructor(extension: Extension) {
         Object.assign(this, extension);
     }
 
@@ -33,14 +35,14 @@ class Utils {
         return null;
     }
 
-    static createElem(tagName: string, attrs: { [key: string]: any } = {}, text: string = ''): Element {
+    static createElem(tagName: string, attrs: { [key: string]: unknown } = {}, text: string = ''): Element {
         let elem = document.createElement(tagName);
         for (let attr in attrs) {
-            if (attrs.hasOwnProperty(attr)) {
+            if (Object.prototype.hasOwnProperty.call(attrs, attr)) {
                 if (attr === 'innerText') {
-                    elem.textContent = attrs[attr];
+                    elem.textContent = attrs[attr] as string;
                 } else {
-                    elem.setAttribute(attr, attrs[attr]);
+                    elem.setAttribute(attr, attrs[attr] as string);
                 }
             }
         }
@@ -95,15 +97,15 @@ class Utils {
     }
 
     static deepMerge(target: { [key: string]: any }, ...sources: { [key: string]: any }[]): typeof target {
+        if (!sources.length) return target;
         const source = sources.shift();
-        if (!source) return target;
-        if (Utils.isObject(target) && Utils.isObject(source)) {
+        if (source) {
             for (const key in source) {
                 if (Utils.isObject(source[key])) {
-                    if (!target[key]) Object.assign(target, { [key]: {} });
+                    if (!target[key]) target[key] = {};
                     Utils.deepMerge(target[key], source[key]);
                 } else {
-                    Object.assign(target, { [key]: source[key] });
+                    target[key] = source[key];
                 }
             }
         }
@@ -153,11 +155,11 @@ class Utils {
         }
     }
 
-    static isEmpty(str: any): boolean {
+    static isEmpty(str: unknown): boolean {
         if (typeof str === 'number') {
             return false;
         }
-        return (!str?.length);
+        return !str || (typeof str === 'string' && str.length === 0);
     }
 
     static createEvent(eventName: string, detail: any = null): CustomEvent {
