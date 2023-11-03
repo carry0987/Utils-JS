@@ -1,11 +1,13 @@
 import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
 import replace from '@rollup/plugin-replace';
+import resolve from '@rollup/plugin-node-resolve';
 import { dts } from 'rollup-plugin-dts';
+import del from 'rollup-plugin-delete';
 import { createRequire } from 'module';
 const pkg = createRequire(import.meta.url)('./package.json');
 
-const isProduction = process.env.BUILD === 'production';
+const isDts = process.env.BUILD === 'dts';
 
 const jsConfig = {
     input: 'src/utils.ts',
@@ -14,7 +16,7 @@ const jsConfig = {
             file: pkg.main,
             format: 'umd',
             name: 'Utils',
-            plugins: isProduction ? [terser()] : []
+            plugins: !isDts ? [terser()] : []
         },
         {
             file: pkg.module,
@@ -22,6 +24,7 @@ const jsConfig = {
         }
     ],
     plugins: [
+        resolve(),
         typescript(),
         replace({
             preventAssignment: true,
@@ -32,14 +35,15 @@ const jsConfig = {
 
 // Configuration for generating the type definitions
 const dtsConfig = {
-    input: 'dist/utils.d.ts', // Use the TypeScript-generated declaration as input
+    input: 'dist/dts/utils.d.ts', // Use the TypeScript-generated declaration as input
     output: {
         file: pkg.types,
         format: 'es'
     },
     plugins: [
-        dts()
+        dts(),
+        del({ hook: 'buildEnd', targets: 'dist/dts' }) // Clean up the d.ts file afterwards
     ]
 };
 
-export default [jsConfig, dtsConfig];
+export default isDts ? dtsConfig : jsConfig;

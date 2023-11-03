@@ -16,6 +16,10 @@
     </div>
     <script src="dist/utils.min.js"></script>
     <script type="text/javascript">
+    let util = new Utils({
+        ll: (msg) => console.log(msg)
+    });
+    util.ll('Utils');
     Utils.getElem('#app h1.mb-3').innerHTML = 'Utils';
     Utils.insertAfter(Utils.getElem('#app h1.mb-3'), `<h2 class="mb-3">v${Utils.version}</h2>`);
     Utils.addClass(Utils.getElem('#app h2.mb-3'), 'text-center');

@@ -1,8 +1,9 @@
+/* Utils */
 class Utils {
     constructor(extension) {
         Object.assign(this, extension);
     }
-    static version = '2.1.2';
+    static version = '2.1.3';
     static stylesheetId = 'utils-style';
     static replaceRule = {
         from: '.utils',
@@ -199,6 +200,11 @@ class Utils {
     }
     static removeSessionValue(key) {
         window.sessionStorage.removeItem(key);
+    }
+    static getUrlParameter(sParam, url = window.location.search) {
+        let params = new URLSearchParams(url);
+        let param = params.get(sParam);
+        return param === null ? null : decodeURIComponent(param);
     }
     static reportError(...error) {
         console.error(...error);

@@ -6,9 +6,10 @@
     "strict": true,
     "esModuleInterop": true,
     "declaration": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "declarationDir": "dist/dts/"
   },
   "importHelpers": true,
-  "include": ["src/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
 }

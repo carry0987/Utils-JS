@@ -1,6 +1,7 @@
-/* Utils */
-type Extension = Record<string, unknown>;
+import { Extension, ReplaceRule, ElementAttributes, StylesObject } from './types';
+import { FetchOptions, FormDataOptions, SendFormDataOptions } from './interfaces';
 
+/* Utils */
 class Utils {
     constructor(extension: Extension) {
         Object.assign(this, extension);
@@ -8,7 +9,7 @@ class Utils {
 
     static version: string = '__version__';
     static stylesheetId: string = 'utils-style';
-    static replaceRule: { from: string, to: string } = {
+    static replaceRule: ReplaceRule = {
         from: '.utils',
         to: '.utils-'
     };
@@ -35,7 +36,7 @@ class Utils {
         return null;
     }
 
-    static createElem(tagName: string, attrs: { [key: string]: unknown } = {}, text: string = ''): Element {
+    static createElem(tagName: string, attrs: ElementAttributes = {}, text: string = ''): Element {
         let elem = document.createElement(tagName);
         for (let attr in attrs) {
             if (Object.prototype.hasOwnProperty.call(attrs, attr)) {
@@ -113,7 +114,7 @@ class Utils {
     }
 
     // CSS Injection
-    static injectStylesheet(stylesObject: { [selector: string]: { [property: string]: string } }, id: string | null = null): void {
+    static injectStylesheet(stylesObject: StylesObject, id: string | null = null): void {
         id = Utils.isEmpty(id) ? '' : id;
         // Create a style element
         let style = Utils.createElem('style') as HTMLStyleElement;
@@ -223,6 +224,12 @@ class Utils {
 
     static removeSessionValue(key: string): void {
         window.sessionStorage.removeItem(key);
+    }
+
+    static getUrlParameter(sParam: string, url: string = window.location.search): string | null {
+        let params = new URLSearchParams(url);
+        let param = params.get(sParam);
+        return param === null ? null : decodeURIComponent(param);
     }
 
     static reportError(...error: any[]): void {

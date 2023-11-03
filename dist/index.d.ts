@@ -1,18 +1,26 @@
 type Extension = Record<string, unknown>;
+type ReplaceRule = {
+    from: string;
+    to: string;
+};
+type ElementAttributes = {
+    [key: string]: unknown;
+};
+type StylesObject = {
+    [selector: string]: {
+        [property: string]: string;
+    };
+};
+
 declare class Utils {
     constructor(extension: Extension);
     static version: string;
     static stylesheetId: string;
-    static replaceRule: {
-        from: string;
-        to: string;
-    };
+    static replaceRule: ReplaceRule;
     static setStylesheetId(id: string): void;
     static setReplaceRule(from: string, to: string): void;
     static getElem(ele: string | Element, mode?: string | Element, parent?: Element): Element | NodeList | null;
-    static createElem(tagName: string, attrs?: {
-        [key: string]: unknown;
-    }, text?: string): Element;
+    static createElem(tagName: string, attrs?: ElementAttributes, text?: string): Element;
     static insertAfter(referenceNode: Node, newNode: Node | string): void;
     static insertBefore(referenceNode: Node, newNode: Node | string): void;
     static addClass(ele: Element, className: string): Element;
@@ -25,11 +33,7 @@ declare class Utils {
     }, ...sources: {
         [key: string]: any;
     }[]): typeof target;
-    static injectStylesheet(stylesObject: {
-        [selector: string]: {
-            [property: string]: string;
-        };
-    }, id?: string | null): void;
+    static injectStylesheet(stylesObject: StylesObject, id?: string | null): void;
     static buildRules(ruleObject: {
         [property: string]: string;
     }): string;
@@ -45,6 +49,7 @@ declare class Utils {
     static setSessionValue(key: string, value: any, stringify?: boolean): void;
     static getSessionValue(key: string, parseJson?: boolean): any;
     static removeSessionValue(key: string): void;
+    static getUrlParameter(sParam: string, url?: string): string | null;
     static reportError(...error: any[]): void;
     static throwError(message: string): void;
 }
