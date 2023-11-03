@@ -8,11 +8,6 @@ export interface FetchOptions {
     error?: (error: any) => void;
 }
 
-// Define an interface for the data object
-export interface FormDataMap {
-    [key: string]: FormDataMap | string | Blob;
-}
-
 export interface FormDataOptions {
     data: Record<string, any>;
     parentKey?: string;

@@ -3,7 +3,7 @@ class Utils {
     constructor(extension) {
         Object.assign(this, extension);
     }
-    static version = '2.1.4';
+    static version = '2.1.5';
     static stylesheetId = 'utils-style';
     static replaceRule = {
         from: '.utils',
@@ -207,18 +207,19 @@ class Utils {
         return param === null ? null : decodeURIComponent(param);
     }
     // Append form data
-    static appendFormData(data, formData, parentKey = '') {
+    static appendFormData(options, formData = new FormData()) {
+        const { data, parentKey = '' } = options;
         if (data !== null && typeof data === 'object' && !(data instanceof Blob)) {
-            Object.keys(data).forEach((key) => {
+            Object.keys(data).forEach(key => {
                 const value = data[key];
-                let _key = parentKey ? `${parentKey}[${key}]` : key;
-                if (value !== null && typeof value === 'object' && !(value instanceof Blob)) {
-                    Utils.appendFormData(value, formData, _key);
+                const formKey = parentKey ? `${parentKey}[${key}]` : key;
+                if (value !== null && typeof value === 'object' && !(value instanceof Blob) && !(value instanceof File)) {
+                    Utils.appendFormData({ data: value, parentKey: formKey }, formData);
                 }
                 else {
-                    // If the value is a non-null object, convert it to JSON string, else convert to string
+                    // If the value is a non-null object, it should be stringified, otherwise convert value to string
                     const formValue = typeof value === 'object' ? JSON.stringify(value) : String(value);
-                    formData.append(_key, formValue);
+                    formData.append(formKey, formValue);
                 }
             });
         }
@@ -229,9 +230,8 @@ class Utils {
         return formData;
     }
     // Encode form data before send
-    static encodeFormData(data, parentKey = '') {
-        let formData = new FormData();
-        return Utils.appendFormData(data, formData, parentKey);
+    static encodeFormData(options) {
+        return Utils.appendFormData(options);
     }
     static reportError(...error) {
         console.error(...error);

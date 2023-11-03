@@ -12,8 +12,9 @@ type StylesObject = {
     };
 };
 
-interface FormDataMap {
-    [key: string]: FormDataMap | string | Blob;
+interface FormDataOptions {
+    data: Record<string, any>;
+    parentKey?: string;
 }
 
 declare class Utils {
@@ -54,8 +55,8 @@ declare class Utils {
     static getSessionValue(key: string, parseJson?: boolean): any;
     static removeSessionValue(key: string): void;
     static getUrlParameter(sParam: string, url?: string): string | null;
-    static appendFormData(data: FormDataMap, formData: FormData, parentKey?: string): FormData;
-    static encodeFormData(data: FormDataMap, parentKey?: string): FormData;
+    static appendFormData(options: FormDataOptions, formData?: FormData): FormData;
+    static encodeFormData(options: FormDataOptions): FormData;
     static reportError(...error: any[]): void;
     static throwError(message: string): void;
 }
