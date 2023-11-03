@@ -206,8 +206,8 @@ class Utils {
         let param = params.get(sParam);
         return param === null ? null : decodeURIComponent(param);
     }
-    // Append form data with TypeScript
-    static appendFormData(data, formData, parentKey = null) {
+    // Append form data
+    static appendFormData(data, formData, parentKey = '') {
         if (data !== null && typeof data === 'object' && !(data instanceof Blob)) {
             Object.keys(data).forEach((key) => {
                 const value = data[key];
@@ -228,8 +228,8 @@ class Utils {
         }
         return formData;
     }
-    // Encode form data before send with TypeScript
-    static encodeFormData(data, parentKey = null) {
+    // Encode form data before send
+    static encodeFormData(data, parentKey = '') {
         let formData = new FormData();
         return Utils.appendFormData(data, formData, parentKey);
     }

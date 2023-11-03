@@ -183,7 +183,7 @@ class Utils {
         window.localStorage.setItem(`${pathPrefix}-${key}`, value);
     }
 
-    static getLocalValue(key: string, parseJson = true): any {
+    static getLocalValue(key: string, parseJson: boolean = true): any {
         const pathPrefix = window.location.pathname.split('/')[1];
         let value = window.localStorage.getItem(`${pathPrefix}-${key}`);
         if (parseJson) {
@@ -202,14 +202,14 @@ class Utils {
         window.localStorage.removeItem(`${pathPrefix}-${key}`);
     }
 
-    static setSessionValue(key: string, value: any, stringify = true): void {
+    static setSessionValue(key: string, value: any, stringify: boolean = true): void {
         if (stringify) {
             value = JSON.stringify(value);
         }
         window.sessionStorage.setItem(key, value);
     }
 
-    static getSessionValue(key: string, parseJson = true): any {
+    static getSessionValue(key: string, parseJson: boolean = true): any {
         let value = window.sessionStorage.getItem(key);
         if (parseJson) {
             try {
@@ -232,8 +232,8 @@ class Utils {
         return param === null ? null : decodeURIComponent(param);
     }
 
-    // Append form data with TypeScript
-    static appendFormData(data: FormDataMap, formData: FormData, parentKey: any = null): FormData {
+    // Append form data
+    static appendFormData(data: FormDataMap, formData: FormData, parentKey: string = ''): FormData {
         if (data !== null && typeof data === 'object' && !(data instanceof Blob)) {
             Object.keys(data).forEach((key) => {
                 const value = data[key];
@@ -253,8 +253,8 @@ class Utils {
         return formData;
     }
 
-    // Encode form data before send with TypeScript
-    static encodeFormData(data: FormDataMap, parentKey: any = null): FormData {
+    // Encode form data before send
+    static encodeFormData(data: FormDataMap, parentKey: string = ''): FormData {
         let formData = new FormData();
         return Utils.appendFormData(data, formData, parentKey);
     }
