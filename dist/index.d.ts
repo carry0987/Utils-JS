@@ -73,7 +73,7 @@ declare class Utils {
     static getUrlParameter(sParam: string, url?: string): string | null;
     static doFetch(options: FetchOptions): Promise<any>;
     static appendFormData(options: FormDataOptions, formData?: FormData): FormData;
-    static encodeFormData(options: FormDataOptions): FormData;
+    static encodeFormData(data: any, parentKey?: string): FormData;
     static sendFormData(options: SendFormDataOptions): Promise<boolean>;
     static reportError(...error: any[]): void;
     static throwError(message: string): void;
