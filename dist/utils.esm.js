@@ -3,7 +3,7 @@ class Utils {
     constructor(extension) {
         Object.assign(this, extension);
     }
-    static version = '2.1.9';
+    static version = '2.1.10';
     static stylesheetId = 'utils-style';
     static replaceRule = {
         from: '.utils',
@@ -200,6 +200,64 @@ class Utils {
     }
     static removeSessionValue(key) {
         window.sessionStorage.removeItem(key);
+    }
+    static setCookie(name, value, options) {
+        let cookieString = encodeURIComponent(name) + '=' + encodeURIComponent(value) + ';';
+        const defaultOptions = {
+            expires: new Date(Date.now() + 86400000),
+            path: '/',
+            secure: false,
+            sameSite: 'Lax'
+        };
+        if (options) {
+            options = Utils.deepMerge({}, defaultOptions, options);
+        }
+        else {
+            options = defaultOptions;
+        }
+        if (options.expires) {
+            let expiresValue = null;
+            if (options.expires instanceof Date) {
+                expiresValue = options.expires.toUTCString();
+            }
+            else {
+                try {
+                    expiresValue = new Date(options.expires).toUTCString();
+                }
+                catch (e) {
+                    Utils.reportError('Invalid date string for cookie expiration:', e);
+                }
+            }
+            cookieString += 'expires=' + expiresValue + ';';
+        }
+        if (options.path) {
+            cookieString += 'path=' + options.path + ';';
+        }
+        if (options.domain) {
+            cookieString += 'domain=' + options.domain + ';';
+        }
+        if (options.secure) {
+            cookieString += 'secure;';
+        }
+        if (options.sameSite) {
+            cookieString += 'SameSite=' + options.sameSite + ';';
+        }
+        document.cookie = cookieString;
+    }
+    static getCookie(name) {
+        const nameEQ = encodeURIComponent(name) + '=';
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ')
+                c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0)
+                return decodeURIComponent(c.substring(nameEQ.length, c.length));
+        }
+        return null;
+    }
+    static deleteCookie(name) {
+        this.setCookie(name, '', { expires: new Date(0) });
     }
     static getUrlParameter(sParam, url = window.location.search) {
         let params = new URLSearchParams(url);

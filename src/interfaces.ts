@@ -20,3 +20,11 @@ export interface SendFormDataOptions {
     success?: (result: any) => void;
     errorCallback?: (error: any) => void;
 }
+
+export interface CookieOptions {
+    expires?: Date;
+    path?: string;
+    domain?: string;
+    secure?: boolean;
+    sameSite?: 'Strict' | 'Lax' | 'None';
+}

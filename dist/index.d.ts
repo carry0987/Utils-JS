@@ -32,6 +32,13 @@ interface SendFormDataOptions {
     success?: (result: any) => void;
     errorCallback?: (error: any) => void;
 }
+interface CookieOptions {
+    expires?: Date;
+    path?: string;
+    domain?: string;
+    secure?: boolean;
+    sameSite?: 'Strict' | 'Lax' | 'None';
+}
 
 declare class Utils {
     constructor(extension: Extension);
@@ -70,6 +77,9 @@ declare class Utils {
     static setSessionValue(key: string, value: any, stringify?: boolean): void;
     static getSessionValue(key: string, parseJson?: boolean): any;
     static removeSessionValue(key: string): void;
+    static setCookie(name: string, value: string, options?: CookieOptions): void;
+    static getCookie(name: string): string | null;
+    static deleteCookie(name: string): void;
     static getUrlParameter(sParam: string, url?: string): string | null;
     static doFetch(options: FetchOptions): Promise<any>;
     static appendFormData(options: FormDataOptions, formData?: FormData): FormData;
