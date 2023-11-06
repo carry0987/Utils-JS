@@ -76,7 +76,28 @@
             console.log(err);
         }
     });
+    // Test Cookie operations
     Utils.setCookie('testCookie', 'TEST-Value', {expires: '2024-02-16T10:01:15.000Z'});
+    console.log(Utils.getCookie('testCookie'));
+    // Test Event operations
+    function customEventHandler(event) {
+        console.log('Event detail:', event.detail);
+        console.log('Clicked!');
+    }
+
+    const h1Element = Utils.getElem('#app h1.mb-3');
+    if (h1Element && h1Element instanceof Element) {
+        Utils.addEventListener(h1Element, 'click', () => {
+            const myCustomEvent = Utils.createEvent('testEvent', {
+                detail: {
+                    name: 'test',
+                    age: 18
+                }
+            });
+            Utils.dispatchEvent(myCustomEvent, h1Element);
+        });
+        Utils.addEventListener(h1Element, 'testEvent', customEventHandler);
+    }
     </script>
 </body>
 </html>

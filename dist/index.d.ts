@@ -11,6 +11,20 @@ type StylesObject = {
         [property: string]: string;
     };
 };
+type ElementEventTarget = Document | Element;
+type EventOptions = boolean | AddEventListenerOptions;
+type AddEventListenerParams = [
+    element: ElementEventTarget,
+    eventName: string,
+    handler: EventListenerOrEventListenerObject,
+    options?: EventOptions
+];
+type RemoveEventListenerParams = [
+    element: ElementEventTarget,
+    eventName: string,
+    handler: EventListenerOrEventListenerObject,
+    options?: boolean | EventListenerOptions
+];
 
 interface FetchOptions {
     url: string;
@@ -68,8 +82,10 @@ declare class Utils {
     static compatInsertRule(stylesheet: CSSStyleSheet, selector: string, cssText: string, id?: string | null): void;
     static removeStylesheet(id?: string | null): void;
     static isEmpty(str: unknown): boolean;
-    static createEvent(eventName: string, detail?: any): CustomEvent;
-    static dispatchEvent(eventName: string, detail?: any): void;
+    static createEvent(eventName: string, detail?: any, options?: EventInit): CustomEvent;
+    static dispatchEvent(eventOrName: string | Event, element?: Document | Element, detail?: any, options?: EventInit): boolean;
+    static addEventListener(...params: AddEventListenerParams): void;
+    static removeEventListener(...params: RemoveEventListenerParams): void;
     static generateRandom(length?: number): string;
     static setLocalValue(key: string, value: any, stringify?: boolean): void;
     static getLocalValue(key: string, parseJson?: boolean): any;

@@ -1,15 +1,15 @@
-import { Extension, ReplaceRule, ElementAttributes, StylesObject } from './types';
+import * as Types from './types';
 import { FetchOptions, FormDataOptions, SendFormDataOptions, CookieOptions } from './interfaces';
 
 /* Utils */
 class Utils {
-    constructor(extension: Extension) {
+    constructor(extension: Types.Extension) {
         Object.assign(this, extension);
     }
 
     static version: string = '__version__';
     static stylesheetId: string = 'utils-style';
-    static replaceRule: ReplaceRule = {
+    static replaceRule: Types.ReplaceRule = {
         from: '.utils',
         to: '.utils-'
     };
@@ -38,7 +38,7 @@ class Utils {
         return null;
     }
 
-    static createElem(tagName: string, attrs: ElementAttributes = {}, text: string = ''): Element {
+    static createElem(tagName: string, attrs: Types.ElementAttributes = {}, text: string = ''): Element {
         let elem = document.createElement(tagName);
         for (let attr in attrs) {
             if (Object.prototype.hasOwnProperty.call(attrs, attr)) {
@@ -116,7 +116,7 @@ class Utils {
     }
 
     // CSS Injection
-    static injectStylesheet(stylesObject: StylesObject, id: string | null = null): void {
+    static injectStylesheet(stylesObject: Types.StylesObject, id: string | null = null): void {
         id = Utils.isEmpty(id) ? '' : id;
         // Create a style element
         let style = Utils.createElem('style') as HTMLStyleElement;
@@ -165,12 +165,29 @@ class Utils {
         return !str || (typeof str === 'string' && str.length === 0);
     }
 
-    static createEvent(eventName: string, detail: any = null): CustomEvent {
-        return new CustomEvent(eventName, { detail });
+    static createEvent(eventName: string, detail?: any, options?: EventInit): CustomEvent {
+        return new CustomEvent(eventName, { detail, ...options });
     }
 
-    static dispatchEvent(eventName: string, detail: any = null): void {
-        document.dispatchEvent(Utils.createEvent(eventName, detail));
+    static dispatchEvent(eventOrName: string | Event, element: Document | Element = document, detail?: any, options?: EventInit): boolean {
+        if (typeof eventOrName === 'string') {
+            const event = Utils.createEvent(eventOrName, detail, options);
+            return element.dispatchEvent(event);
+        } else if (eventOrName instanceof Event) {
+            return element.dispatchEvent(eventOrName);
+        }
+        Utils.throwError('Invalid event type');
+        return false;
+    }
+
+    static addEventListener(...params: Types.AddEventListenerParams): void {
+        const [element, eventName, handler, options] = params;
+        element.addEventListener(eventName, handler, options);
+    }
+
+    static removeEventListener(...params: Types.RemoveEventListenerParams): void {
+        const [element, eventName, handler, options] = params;
+        element.removeEventListener(eventName, handler, options);
     }
 
     static generateRandom(length: number = 8): string {

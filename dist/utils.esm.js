@@ -3,7 +3,7 @@ class Utils {
     constructor(extension) {
         Object.assign(this, extension);
     }
-    static version = '2.1.10';
+    static version = '2.2.0';
     static stylesheetId = 'utils-style';
     static replaceRule = {
         from: '.utils',
@@ -150,11 +150,27 @@ class Utils {
         }
         return !str || (typeof str === 'string' && str.length === 0);
     }
-    static createEvent(eventName, detail = null) {
-        return new CustomEvent(eventName, { detail });
+    static createEvent(eventName, detail, options) {
+        return new CustomEvent(eventName, { detail, ...options });
     }
-    static dispatchEvent(eventName, detail = null) {
-        document.dispatchEvent(Utils.createEvent(eventName, detail));
+    static dispatchEvent(eventOrName, element = document, detail, options) {
+        if (typeof eventOrName === 'string') {
+            const event = Utils.createEvent(eventOrName, detail, options);
+            return element.dispatchEvent(event);
+        }
+        else if (eventOrName instanceof Event) {
+            return element.dispatchEvent(eventOrName);
+        }
+        Utils.throwError('Invalid event type');
+        return false;
+    }
+    static addEventListener(...params) {
+        const [element, eventName, handler, options] = params;
+        element.addEventListener(eventName, handler, options);
+    }
+    static removeEventListener(...params) {
+        const [element, eventName, handler, options] = params;
+        element.removeEventListener(eventName, handler, options);
     }
     static generateRandom(length = 8) {
         return Math.random().toString(36).substring(2, 2 + length);
