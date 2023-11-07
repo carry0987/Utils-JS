@@ -58,20 +58,22 @@ class Utils {
         if (typeof newNode === 'string') {
             let elem = Utils.createElem('div');
             elem.innerHTML = newNode;
-            newNode = elem.firstChild!;
+            newNode = elem.firstChild as Node;
+            if (!newNode) {
+                Utils.throwError('The new node (string) provided did not produce a valid DOM element.');
+            }
         }
-        if (referenceNode.nextSibling) {
-            referenceNode.parentNode!.insertBefore(newNode, referenceNode.nextSibling);
-        } else {
-            referenceNode.parentNode!.appendChild(newNode);
-        }
+        referenceNode.parentNode!.insertBefore(newNode, referenceNode.nextSibling);
     }
 
     static insertBefore(referenceNode: Node, newNode: Node | string): void {
         if (typeof newNode === 'string') {
             let elem = Utils.createElem('div');
             elem.innerHTML = newNode;
-            newNode = elem.firstChild!;
+            newNode = elem.firstChild as Node;
+            if (!newNode) {
+                Utils.throwError('The new node (string) provided did not produce a valid DOM element.');
+            }
         }
         referenceNode.parentNode!.insertBefore(newNode, referenceNode);
     }
@@ -95,20 +97,27 @@ class Utils {
         return ele.classList.contains(className);
     }
 
-    static isObject(item: any): item is object {
-        return item && typeof item === 'object' && !Array.isArray(item);
+    static isObject(item: unknown): item is Record<string, unknown> {
+        return typeof item === 'object' && item !== null && !Array.isArray(item);
     }
 
-    static deepMerge(target: { [key: string]: any }, ...sources: { [key: string]: any }[]): typeof target {
+    static deepMerge<T>(target: T, ...sources: Partial<T>[]): T {
         if (!sources.length) return target;
-        const source = sources.shift();
+        const source = sources.shift() as Partial<T>;
         if (source) {
             for (const key in source) {
-                if (Utils.isObject(source[key])) {
-                    if (!target[key]) target[key] = {};
-                    Utils.deepMerge(target[key], source[key]);
-                } else {
-                    target[key] = source[key];
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                    const sourceKey = key as keyof Partial<T>;
+                    const value = source[sourceKey];
+                    const targetKey = key as keyof T;
+                    if (Utils.isObject(value)) {
+                        if (!target[targetKey] || typeof target[targetKey] !== 'object') {
+                            target[targetKey] = {} as any;
+                        }
+                        Utils.deepMerge(target[targetKey] as any, value as any);
+                    } else {
+                        target[targetKey] = value as any;
+                    }
                 }
             }
         }
