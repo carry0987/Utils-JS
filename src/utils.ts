@@ -261,39 +261,24 @@ class Utils {
             secure: false,
             sameSite: 'Lax'
         };
-
-        if (options) {
-            options = Utils.deepMerge({}, defaultOptions, options);
-        } else {
-            options = defaultOptions;
-        }
-
+        options = Utils.deepMerge({}, defaultOptions, options || {});
         if (options.expires) {
-            let expiresValue: string | null = null;
+            let expiresValue: string = '';
             if (options.expires instanceof Date) {
                 expiresValue = options.expires.toUTCString();
             } else {
-                try {
-                    expiresValue = new Date(options.expires).toUTCString();
-                } catch (e) {
-                    Utils.reportError('Invalid date string for cookie expiration:', e);
-                }
+                expiresValue = new Date(String(options.expires)).toUTCString();
             }
             cookieString += 'expires=' + expiresValue + ';';
         }
-        if (options.path) {
-            cookieString += 'path=' + options.path + ';';
-        }
+        cookieString += 'path=' + options.path + ';';
         if (options.domain) {
             cookieString += 'domain=' + options.domain + ';';
         }
         if (options.secure) {
             cookieString += 'secure;';
         }
-        if (options.sameSite) {
-            cookieString += 'SameSite=' + options.sameSite + ';';
-        }
-
+        cookieString += 'SameSite=' + options.sameSite + ';';
         document.cookie = cookieString;
     }
 
