@@ -3,7 +3,7 @@ class Utils {
     constructor(extension) {
         Object.assign(this, extension);
     }
-    static version = '2.2.2';
+    static version = '2.2.3';
     static stylesheetId = 'utils-style';
     static replaceRule = {
         from: '.utils',
@@ -38,7 +38,7 @@ class Utils {
         let elem = document.createElement(tagName);
         for (let attr in attrs) {
             if (Object.prototype.hasOwnProperty.call(attrs, attr)) {
-                if (attr === 'innerText') {
+                if (attr === 'textContent' || attr === 'innerText') {
                     elem.textContent = attrs[attr];
                 }
                 else {
@@ -47,7 +47,7 @@ class Utils {
             }
         }
         if (text)
-            elem.append(document.createTextNode(text));
+            elem.textContent = text;
         return elem;
     }
     static insertAfter(referenceNode, newNode) {
@@ -161,15 +161,22 @@ class Utils {
         return new CustomEvent(eventName, { detail, ...options });
     }
     static dispatchEvent(eventOrName, element = document, detail, options) {
-        if (typeof eventOrName === 'string') {
-            const event = Utils.createEvent(eventOrName, detail, options);
-            return element.dispatchEvent(event);
+        try {
+            if (typeof eventOrName === 'string') {
+                let event = Utils.createEvent(eventOrName, detail, options);
+                return element.dispatchEvent(event);
+            }
+            else if (eventOrName instanceof Event) {
+                return element.dispatchEvent(eventOrName);
+            }
+            else {
+                Utils.throwError('Invalid event type');
+            }
         }
-        else if (eventOrName instanceof Event) {
-            return element.dispatchEvent(eventOrName);
+        catch (e) {
+            Utils.reportError('Dispatch Event Error:', e);
+            return false;
         }
-        Utils.throwError('Invalid event type');
-        return false;
     }
     static addEventListener(...params) {
         const [element, eventName, handler, options] = params;
@@ -232,39 +239,25 @@ class Utils {
             secure: false,
             sameSite: 'Lax'
         };
-        if (options) {
-            options = Utils.deepMerge({}, defaultOptions, options);
-        }
-        else {
-            options = defaultOptions;
-        }
+        options = Utils.deepMerge({}, defaultOptions, options || {});
         if (options.expires) {
-            let expiresValue = null;
+            let expiresValue = '';
             if (options.expires instanceof Date) {
                 expiresValue = options.expires.toUTCString();
             }
             else {
-                try {
-                    expiresValue = new Date(options.expires).toUTCString();
-                }
-                catch (e) {
-                    Utils.reportError('Invalid date string for cookie expiration:', e);
-                }
+                expiresValue = new Date(String(options.expires)).toUTCString();
             }
             cookieString += 'expires=' + expiresValue + ';';
         }
-        if (options.path) {
-            cookieString += 'path=' + options.path + ';';
-        }
+        cookieString += 'path=' + options.path + ';';
         if (options.domain) {
             cookieString += 'domain=' + options.domain + ';';
         }
         if (options.secure) {
             cookieString += 'secure;';
         }
-        if (options.sameSite) {
-            cookieString += 'SameSite=' + options.sameSite + ';';
-        }
+        cookieString += 'SameSite=' + options.sameSite + ';';
         document.cookie = cookieString;
     }
     static getCookie(name) {

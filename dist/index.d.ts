@@ -98,7 +98,7 @@ declare class Utils {
     static encodeFormData(data: any, parentKey?: string): FormData;
     static sendFormData(options: SendFormDataOptions): Promise<boolean>;
     static reportError(...error: any[]): void;
-    static throwError(message: string): void;
+    static throwError(message: string): never;
 }
 
 export { Utils as default };
