@@ -61,7 +61,7 @@ declare class Utils {
     static replaceRule: ReplaceRule;
     static setStylesheetId(id: string): void;
     static setReplaceRule(from: string, to: string): void;
-    static getElem(ele: string | Element, mode?: string | Element, parent?: Element): Element | NodeList | null;
+    static getElem(ele: string | Element, mode?: string | Element | null, parent?: Element): Element | NodeList | null;
     static createElem(tagName: string, attrs?: ElementAttributes, text?: string): Element;
     static insertAfter(referenceNode: Node, newNode: Node | string): void;
     static insertBefore(referenceNode: Node, newNode: Node | string): void;
@@ -69,12 +69,8 @@ declare class Utils {
     static removeClass(ele: Element, className: string): Element;
     static toggleClass(ele: Element, className: string): Element;
     static hasClass(ele: Element, className: string): boolean;
-    static isObject(item: any): item is object;
-    static deepMerge(target: {
-        [key: string]: any;
-    }, ...sources: {
-        [key: string]: any;
-    }[]): typeof target;
+    static isObject(item: unknown): item is Record<string, unknown>;
+    static deepMerge<T>(target: T, ...sources: Partial<T>[]): T;
     static injectStylesheet(stylesObject: StylesObject, id?: string | null): void;
     static buildRules(ruleObject: {
         [property: string]: string;

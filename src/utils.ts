@@ -23,19 +23,21 @@ class Utils {
         Utils.replaceRule.to = to;
     }
 
-    static getElem(ele: string | Element, mode?: string | Element, parent?: Element): Element | NodeList | null {
-        if (typeof ele === 'object') {
-            return ele;
-        } else if (mode === undefined && parent === undefined) {
-            return isNaN(Number(ele)) ? document.querySelector(ele) : document.getElementById(ele);
-        } else if (mode === null) {
-            return parent === undefined ? document.querySelector(ele) : parent.querySelector(ele);
-        } else if (mode === 'all') {
-            return parent === undefined ? document.querySelectorAll(ele) : parent.querySelectorAll(ele);
-        } else if (typeof mode === 'object') {
-            return mode.querySelector(ele);
+    static getElem(ele: string | Element, mode?: string | Element | null, parent?: Element): Element | NodeList | null {
+        if (ele instanceof Element) return ele;
+        let searchContext: Document | Element = document;
+    
+        if (mode === null && parent instanceof Element) {
+            // Explicit mode handling when mode is null and parent is an Element
+            searchContext = parent;
+        } else if (parent instanceof Element) {
+            searchContext = parent;
+        } else if (mode instanceof Element) {
+            searchContext = mode;
+            mode = undefined;
         }
-        return null;
+        // If mode is 'all', search for all elements that match, otherwise, search for the first match
+        return mode === 'all' ? searchContext.querySelectorAll(ele) : searchContext.querySelector(ele);
     }
 
     static createElem(tagName: string, attrs: Types.ElementAttributes = {}, text: string = ''): Element {
