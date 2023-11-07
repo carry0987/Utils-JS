@@ -44,14 +44,14 @@ class Utils {
         let elem = document.createElement(tagName);
         for (let attr in attrs) {
             if (Object.prototype.hasOwnProperty.call(attrs, attr)) {
-                if (attr === 'innerText') {
+                if (attr === 'textContent' || attr === 'innerText') {
                     elem.textContent = attrs[attr] as string;
                 } else {
                     elem.setAttribute(attr, attrs[attr] as string);
                 }
             }
         }
-        if (text) elem.append(document.createTextNode(text));
+        if (text) elem.textContent = text;
 
         return elem;
     }
