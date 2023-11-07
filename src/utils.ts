@@ -181,14 +181,19 @@ class Utils {
     }
 
     static dispatchEvent(eventOrName: string | Event, element: Document | Element = document, detail?: any, options?: EventInit): boolean {
-        if (typeof eventOrName === 'string') {
-            const event = Utils.createEvent(eventOrName, detail, options);
-            return element.dispatchEvent(event);
-        } else if (eventOrName instanceof Event) {
-            return element.dispatchEvent(eventOrName);
+        try {
+            if (typeof eventOrName === 'string') {
+                let event = Utils.createEvent(eventOrName, detail, options);
+                return element.dispatchEvent(event);
+            } else if (eventOrName instanceof Event) {
+                return element.dispatchEvent(eventOrName);
+            } else {
+                Utils.throwError('Invalid event type');
+            }
+        } catch (e) {
+            Utils.reportError('Dispatch Event Error:', e);
+            return false;
         }
-        Utils.throwError('Invalid event type');
-        return false;
     }
 
     static addEventListener(...params: Types.AddEventListenerParams): void {
@@ -421,7 +426,7 @@ class Utils {
         console.error(...error);
     }
 
-    static throwError(message: string): void {
+    static throwError(message: string): never {
         throw new Error(message);
     }
 }
