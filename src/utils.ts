@@ -1,5 +1,5 @@
 import * as Types from './types';
-import { FetchOptions, FormDataOptions, SendFormDataOptions, CookieOptions } from './interfaces';
+import * as Interfaces from './interfaces';
 
 /* Utils */
 class Utils {
@@ -242,9 +242,9 @@ class Utils {
         window.sessionStorage.removeItem(key);
     }
 
-    static setCookie(name: string, value: string, options?: CookieOptions): void {
+    static setCookie(name: string, value: string, options?: Interfaces.CookieOptions): void {
         let cookieString = encodeURIComponent(name) + '=' + encodeURIComponent(value) + ';';
-        const defaultOptions: CookieOptions = {
+        const defaultOptions: Interfaces.CookieOptions = {
             expires: new Date(Date.now() + 86400000), // 1 day
             path: '/',
             secure: false,
@@ -308,7 +308,7 @@ class Utils {
     }
 
     // Fetch API
-    static async doFetch(options: FetchOptions): Promise<any> {
+    static async doFetch(options: Interfaces.FetchOptions): Promise<any> {
         const {
             url,
             method = 'GET',
@@ -354,7 +354,7 @@ class Utils {
     }
 
     // Append form data
-    static appendFormData(options: FormDataOptions, formData: FormData = new FormData()): FormData {
+    static appendFormData(options: Interfaces.FormDataOptions, formData: FormData = new FormData()): FormData {
         const { data, parentKey = '' } = options;
         if (data !== null && typeof data === 'object') {
             // Check if it is Blob or File, if so, add directly
@@ -389,7 +389,7 @@ class Utils {
         if (data instanceof FormData) {
             return data;
         }
-        const options: FormDataOptions = {
+        const options: Interfaces.FormDataOptions = {
             data: data,
             parentKey: parentKey
         };
@@ -397,10 +397,10 @@ class Utils {
     }
 
     // Send form data
-    static async sendFormData(options: SendFormDataOptions): Promise<boolean> {
+    static async sendFormData(options: Interfaces.SendFormDataOptions): Promise<boolean> {
         const { url, data, method = 'POST', success, errorCallback } = options;
 
-        const fetchOptions: FetchOptions = {
+        const fetchOptions: Interfaces.FetchOptions = {
             url: url,
             method: method,
             body: Utils.encodeFormData(data),

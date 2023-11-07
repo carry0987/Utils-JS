@@ -3,7 +3,7 @@ class Utils {
     constructor(extension) {
         Object.assign(this, extension);
     }
-    static version = '2.2.0';
+    static version = '2.2.1';
     static stylesheetId = 'utils-style';
     static replaceRule = {
         from: '.utils',
