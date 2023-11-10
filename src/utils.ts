@@ -23,18 +23,16 @@ class Utils {
         Utils.replaceRule.to = to;
     }
 
-    static getElem(ele: string | Element, mode?: string | Element | null, parent?: Element): Element | NodeList | null {
-        if (ele instanceof Element) return ele;
-        let searchContext: Document | Element = document;
-    
-        if (mode === null && parent instanceof Element) {
-            // Explicit mode handling when mode is null and parent is an Element
+    static getElem(ele: string | Types.QuerySelector, mode?: string | Types.QuerySelector | null, parent?: Types.QuerySelector): Element | NodeList | null {
+        if (typeof ele !== 'string') return ele as Element;
+        let searchContext: Types.QuerySelector = document;
+
+        if (mode === null && parent) {
             searchContext = parent;
-        } else if (parent instanceof Element) {
-            searchContext = parent;
-        } else if (mode instanceof Element) {
+        } else if (mode && mode instanceof Node && 'querySelector' in mode) {
             searchContext = mode;
-            mode = undefined;
+        } else if (parent && parent instanceof Node && 'querySelector' in parent) {
+            searchContext = parent;
         }
         // If mode is 'all', search for all elements that match, otherwise, search for the first match
         return mode === 'all' ? searchContext.querySelectorAll(ele) : searchContext.querySelector(ele);

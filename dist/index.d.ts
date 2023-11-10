@@ -11,6 +11,7 @@ type StylesObject = {
         [property: string]: string;
     };
 };
+type QuerySelector = Element | Document | DocumentFragment;
 type ElementEventTarget = Document | Element;
 type EventOptions = boolean | AddEventListenerOptions;
 type AddEventListenerParams = [
@@ -61,7 +62,7 @@ declare class Utils {
     static replaceRule: ReplaceRule;
     static setStylesheetId(id: string): void;
     static setReplaceRule(from: string, to: string): void;
-    static getElem(ele: string | Element, mode?: string | Element | null, parent?: Element): Element | NodeList | null;
+    static getElem(ele: string | QuerySelector, mode?: string | QuerySelector | null, parent?: QuerySelector): Element | NodeList | null;
     static createElem(tagName: string, attrs?: ElementAttributes, text?: string): Element;
     static insertAfter(referenceNode: Node, newNode: Node | string): void;
     static insertBefore(referenceNode: Node, newNode: Node | string): void;

@@ -3,7 +3,7 @@ class Utils {
     constructor(extension) {
         Object.assign(this, extension);
     }
-    static version = '2.2.3';
+    static version = '2.2.4';
     static stylesheetId = 'utils-style';
     static replaceRule = {
         from: '.utils',
@@ -17,19 +17,17 @@ class Utils {
         Utils.replaceRule.to = to;
     }
     static getElem(ele, mode, parent) {
-        if (ele instanceof Element)
+        if (typeof ele !== 'string')
             return ele;
         let searchContext = document;
-        if (mode === null && parent instanceof Element) {
-            // Explicit mode handling when mode is null and parent is an Element
+        if (mode === null && parent) {
             searchContext = parent;
         }
-        else if (parent instanceof Element) {
-            searchContext = parent;
-        }
-        else if (mode instanceof Element) {
+        else if (mode && mode instanceof Node && 'querySelector' in mode) {
             searchContext = mode;
-            mode = undefined;
+        }
+        else if (parent && parent instanceof Node && 'querySelector' in parent) {
+            searchContext = parent;
         }
         // If mode is 'all', search for all elements that match, otherwise, search for the first match
         return mode === 'all' ? searchContext.querySelectorAll(ele) : searchContext.querySelector(ele);
