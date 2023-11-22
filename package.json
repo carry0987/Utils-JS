@@ -1,10 +1,9 @@
 {
   "name": "@carry0987/utils",
-  "version": "2.2.4",
-  "description": "A library for using common tools and alias methods",
+  "version": "3.0.0rc1",
+  "description": "A TypeScript library for using common tools and alias methods",
   "type": "module",
-  "main": "dist/utils.min.js",
-  "module": "dist/utils.esm.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -32,7 +31,6 @@
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.5",
-    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.5",
     "rollup": "^4.2.0",
     "rollup-plugin-delete": "^2.0.0",
