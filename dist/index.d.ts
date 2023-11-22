@@ -43,6 +43,24 @@ declare function isEmpty(str: unknown): boolean;
 declare function generateRandom(length?: number): string;
 declare function getUrlParameter(sParam: string, url?: string): string | null;
 
+declare const common_buildRules: typeof buildRules;
+declare const common_compatInsertRule: typeof compatInsertRule;
+declare const common_deepMerge: typeof deepMerge;
+declare const common_generateRandom: typeof generateRandom;
+declare const common_getUrlParameter: typeof getUrlParameter;
+declare const common_getVersion: typeof getVersion;
+declare const common_injectStylesheet: typeof injectStylesheet;
+declare const common_isEmpty: typeof isEmpty;
+declare const common_isObject: typeof isObject;
+declare const common_removeStylesheet: typeof removeStylesheet;
+declare const common_replaceRule: typeof replaceRule;
+declare const common_setReplaceRule: typeof setReplaceRule;
+declare const common_setStylesheetId: typeof setStylesheetId;
+declare const common_stylesheetId: typeof stylesheetId;
+declare namespace common {
+  export { common_buildRules as buildRules, common_compatInsertRule as compatInsertRule, common_deepMerge as deepMerge, common_generateRandom as generateRandom, common_getUrlParameter as getUrlParameter, common_getVersion as getVersion, common_injectStylesheet as injectStylesheet, common_isEmpty as isEmpty, common_isObject as isObject, common_removeStylesheet as removeStylesheet, common_replaceRule as replaceRule, common_setReplaceRule as setReplaceRule, common_setStylesheetId as setStylesheetId, common_stylesheetId as stylesheetId };
+}
+
 declare function reportError(...error: any[]): void;
 declare function throwError(message: string): never;
 
@@ -155,4 +173,4 @@ declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_encodeFormData as encodeFormData };
 }
 
-export { buildRules, compatInsertRule, deepMerge, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, getVersion, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId };
+export { common as commonUtils, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, storageUtils };

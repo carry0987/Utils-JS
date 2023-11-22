@@ -1,4 +1,4 @@
-import { deepMerge } from '../general';
+import { deepMerge } from '../common';
 import { reportError } from './errorUtils';
 import { CookieOptions } from '../interface/interfaces';
 

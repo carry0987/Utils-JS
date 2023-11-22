@@ -1,4 +1,4 @@
-const version = '3.0.0rc2';
+const version = '3.0.0rc3';
 // Prevent version from being modified after being set
 Object.defineProperty(exports, 'version', { writable: false, configurable: true });
 
@@ -190,6 +190,24 @@ function getUrlParameter(sParam, url = window.location.search) {
     let param = params.get(sParam);
     return param === null ? null : decodeURIComponent(param);
 }
+
+var common = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    buildRules: buildRules,
+    compatInsertRule: compatInsertRule,
+    deepMerge: deepMerge,
+    generateRandom: generateRandom,
+    getUrlParameter: getUrlParameter,
+    getVersion: getVersion,
+    injectStylesheet: injectStylesheet,
+    isEmpty: isEmpty,
+    isObject: isObject,
+    removeStylesheet: removeStylesheet,
+    replaceRule: replaceRule,
+    setReplaceRule: setReplaceRule,
+    setStylesheetId: setStylesheetId,
+    get stylesheetId () { return stylesheetId; }
+});
 
 function setLocalValue(key, value, stringify = true) {
     if (stringify) {
@@ -445,4 +463,4 @@ var fetchUtils = /*#__PURE__*/Object.freeze({
     sendFormData: sendFormData
 });
 
-export { buildRules, compatInsertRule, deepMerge, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, getVersion, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId };
+export { common as commonUtils, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, storageUtils };
