@@ -1,0 +1,10 @@
+import { CookieOptions } from '../interface/interfaces';
+export declare function setLocalValue(key: string, value: any, stringify?: boolean): void;
+export declare function getLocalValue(key: string, parseJson?: boolean): any;
+export declare function removeLocalValue(key: string): void;
+export declare function setSessionValue(key: string, value: any, stringify?: boolean): void;
+export declare function getSessionValue(key: string, parseJson?: boolean): any;
+export declare function removeSessionValue(key: string): void;
+export declare function setCookie(name: string, value: string, options?: CookieOptions): void;
+export declare function getCookie(name: string): string | null;
+export declare function removeCookie(name: string): void;

@@ -1,5 +1,4 @@
 import typescript from '@rollup/plugin-typescript';
-import terser from '@rollup/plugin-terser';
 import replace from '@rollup/plugin-replace';
 import resolve from '@rollup/plugin-node-resolve';
 import { dts } from 'rollup-plugin-dts';
@@ -9,18 +8,14 @@ const pkg = createRequire(import.meta.url)('./package.json');
 
 const isDts = process.env.BUILD === 'dts';
 
-const jsConfig = {
-    input: 'src/utils.ts',
+// ESM build configuration
+const esmConfig = {
+    input: 'src/index.ts',
     output: [
         {
-            file: pkg.main,
-            format: 'umd',
-            name: 'Utils',
-            plugins: !isDts ? [terser()] : []
-        },
-        {
-            file: pkg.module,
-            format: 'es'
+            file: 'dist/index.js',
+            format: 'es',
+            sourcemap: false
         }
     ],
     plugins: [
@@ -33,17 +28,17 @@ const jsConfig = {
     ]
 };
 
-// Configuration for generating the type definitions
+// TypeScript type definition configuration
 const dtsConfig = {
-    input: 'dist/dts/utils.d.ts', // Use the TypeScript-generated declaration as input
+    input: 'src/index.ts',
     output: {
-        file: pkg.types,
+        file: 'dist/index.d.ts',
         format: 'es'
     },
     plugins: [
         dts(),
-        del({ hook: 'buildEnd', targets: 'dist/dts' }) // Clean up the d.ts file afterwards
+        del({ hook: 'buildEnd', targets: ['dist/*.js', '!dist/index.js'] })
     ]
 };
 
-export default isDts ? dtsConfig : jsConfig;
+export default isDts ? dtsConfig : esmConfig;
