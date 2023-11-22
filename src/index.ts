@@ -10,6 +10,6 @@ export * as eventUtils from './module/eventUtils';
 export * as fetchUtils from './module/fetchUtils';
 export * as formUtils from './module/formUtils';
 // Export types
-export * as UtilsTypes from './type/types';
+export * as Types from './type/types';
 // Export interfaces
-export * as UtilsInterfaces from './interface/interfaces';
+export * as Interfaces from './interface/interfaces';
