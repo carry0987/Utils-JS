@@ -1,4 +1,3 @@
-import { version } from './version';
 import { getElem, createElem } from './module/domUtils';
 import { ReplaceRule, StylesObject } from './type/types';
 
@@ -7,10 +6,6 @@ export const replaceRule: ReplaceRule = {
     from: '.utils',
     to: '.utils-'
 };
-
-export function getVersion(): string {
-    return version;
-}
 
 export function isObject(item: unknown): item is Record<string, unknown> {
     return typeof item === 'object' && item !== null && !Array.isArray(item);

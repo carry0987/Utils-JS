@@ -1,7 +1,3 @@
-const version = '3.0.0rc3';
-// Prevent version from being modified after being set
-Object.defineProperty(exports, 'version', { writable: false, configurable: true });
-
 function reportError(...error) {
     console.error(...error);
 }
@@ -102,9 +98,6 @@ const replaceRule = {
     from: '.utils',
     to: '.utils-'
 };
-function getVersion() {
-    return version;
-}
 function isObject(item) {
     return typeof item === 'object' && item !== null && !Array.isArray(item);
 }
@@ -198,7 +191,6 @@ var common = /*#__PURE__*/Object.freeze({
     deepMerge: deepMerge,
     generateRandom: generateRandom,
     getUrlParameter: getUrlParameter,
-    getVersion: getVersion,
     injectStylesheet: injectStylesheet,
     isEmpty: isEmpty,
     isObject: isObject,
@@ -463,4 +455,4 @@ var fetchUtils = /*#__PURE__*/Object.freeze({
     sendFormData: sendFormData
 });
 
-export { common as commonUtils, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, storageUtils };
+export { buildRules, common as commonUtils, compatInsertRule, deepMerge, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId };

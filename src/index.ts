@@ -1,3 +1,4 @@
+export * from './common';
 export * as commonUtils from './common';
 export * as errorUtils from './module/errorUtils';
 export * as domUtils from './module/domUtils';

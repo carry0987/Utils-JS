@@ -1,5 +1,4 @@
 import typescript from '@rollup/plugin-typescript';
-import replace from '@rollup/plugin-replace';
 import resolve from '@rollup/plugin-node-resolve';
 import { dts } from 'rollup-plugin-dts';
 import del from 'rollup-plugin-delete';
@@ -13,18 +12,14 @@ const esmConfig = {
     input: 'src/index.ts',
     output: [
         {
-            file: 'dist/index.js',
+            file: pkg.module,
             format: 'es',
             sourcemap: false
         }
     ],
     plugins: [
         resolve(),
-        typescript(),
-        replace({
-            preventAssignment: true,
-            __version__: pkg.version
-        })
+        typescript()
     ]
 };
 
@@ -32,7 +27,7 @@ const esmConfig = {
 const dtsConfig = {
     input: 'src/index.ts',
     output: {
-        file: 'dist/index.d.ts',
+        file: pkg.types,
         format: 'es'
     },
     plugins: [

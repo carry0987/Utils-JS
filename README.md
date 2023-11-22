@@ -1,6 +1,6 @@
 # Utils-JS
 [![version](https://img.shields.io/npm/v/@carry0987/utils.svg)](https://www.npmjs.com/package/@carry0987/utils)  
-A TypeScript library for using common tools and alias methods
+A library for using common tools and alias methods
 
 ## Installation
 ```bash
