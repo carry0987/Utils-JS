@@ -1,5 +1,6 @@
 declare const version: string;
 
+type Extension = Record<string, unknown>;
 type ReplaceRule = {
     from: string;
     to: string;
@@ -27,6 +28,19 @@ type RemoveEventListenerParams = [
     handler: EventListenerOrEventListenerObject,
     options?: boolean | EventListenerOptions
 ];
+
+type types_AddEventListenerParams = AddEventListenerParams;
+type types_ElementAttributes = ElementAttributes;
+type types_ElementEventTarget = ElementEventTarget;
+type types_EventOptions = EventOptions;
+type types_Extension = Extension;
+type types_QuerySelector = QuerySelector;
+type types_RemoveEventListenerParams = RemoveEventListenerParams;
+type types_ReplaceRule = ReplaceRule;
+type types_StylesObject = StylesObject;
+declare namespace types {
+  export type { types_AddEventListenerParams as AddEventListenerParams, types_ElementAttributes as ElementAttributes, types_ElementEventTarget as ElementEventTarget, types_EventOptions as EventOptions, types_Extension as Extension, types_QuerySelector as QuerySelector, types_RemoveEventListenerParams as RemoveEventListenerParams, types_ReplaceRule as ReplaceRule, types_StylesObject as StylesObject };
+}
 
 declare let stylesheetId: string;
 declare const replaceRule: ReplaceRule;
@@ -119,6 +133,14 @@ interface CookieOptions {
     sameSite?: 'Strict' | 'Lax' | 'None';
 }
 
+type interfaces_CookieOptions = CookieOptions;
+type interfaces_FetchOptions = FetchOptions;
+type interfaces_FormDataOptions = FormDataOptions;
+type interfaces_SendFormDataOptions = SendFormDataOptions;
+declare namespace interfaces {
+  export type { interfaces_CookieOptions as CookieOptions, interfaces_FetchOptions as FetchOptions, interfaces_FormDataOptions as FormDataOptions, interfaces_SendFormDataOptions as SendFormDataOptions };
+}
+
 declare function setLocalValue(key: string, value: any, stringify?: boolean): void;
 declare function getLocalValue(key: string, parseJson?: boolean): any;
 declare function removeLocalValue(key: string): void;
@@ -173,4 +195,4 @@ declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_encodeFormData as encodeFormData };
 }
 
-export { buildRules, common as commonUtils, compatInsertRule, deepMerge, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId, version };
+export { interfaces as UtilsInterfaces, types as UtilsTypes, buildRules, common as commonUtils, compatInsertRule, deepMerge, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId, version };
