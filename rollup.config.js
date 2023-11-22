@@ -1,5 +1,5 @@
 import typescript from '@rollup/plugin-typescript';
-import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
 import { dts } from 'rollup-plugin-dts';
 import del from 'rollup-plugin-delete';
 import { createRequire } from 'module';
@@ -18,8 +18,11 @@ const esmConfig = {
         }
     ],
     plugins: [
-        resolve(),
-        typescript()
+        typescript(),
+        replace({
+            preventAssignment: true,
+            __version__: pkg.version
+        })
     ]
 };
 
@@ -32,7 +35,7 @@ const dtsConfig = {
     },
     plugins: [
         dts(),
-        del({ hook: 'buildEnd', targets: ['dist/*.js', '!dist/index.js'] })
+        del({ hook: 'buildEnd', targets: ['dist/*.js', '!dist/index.js', 'dist/dts'] })
     ]
 };
 
