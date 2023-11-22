@@ -455,4 +455,8 @@ var fetchUtils = /*#__PURE__*/Object.freeze({
     sendFormData: sendFormData
 });
 
-export { buildRules, common as commonUtils, compatInsertRule, deepMerge, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId };
+const version = '3.0.0';
+// Prevent version from being modified after being set
+Object.defineProperty(exports, 'version', { writable: false, configurable: true });
+
+export { buildRules, common as commonUtils, compatInsertRule, deepMerge, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId, version };
