@@ -1,3 +1,5 @@
+const version = '3.0.2';
+
 function reportError(...error) {
     console.error(...error);
 }
@@ -454,7 +456,5 @@ var fetchUtils = /*#__PURE__*/Object.freeze({
     doFetch: doFetch,
     sendFormData: sendFormData
 });
-
-const version = '3.0.1';
 
 export { buildRules, common as commonUtils, compatInsertRule, deepMerge, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId, version };

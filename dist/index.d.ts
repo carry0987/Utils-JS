@@ -1,3 +1,5 @@
+declare const version: string;
+
 type ReplaceRule = {
     from: string;
     to: string;
@@ -170,7 +172,5 @@ declare const formUtils_encodeFormData: typeof encodeFormData;
 declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_encodeFormData as encodeFormData };
 }
-
-declare const version: string;
 
 export { buildRules, common as commonUtils, compatInsertRule, deepMerge, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId, version };
