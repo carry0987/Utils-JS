@@ -43,6 +43,15 @@ declare function isEmpty(str: unknown): boolean;
 declare function generateRandom(length?: number): string;
 declare function getUrlParameter(sParam: string, url?: string): string | null;
 
+declare function reportError(...error: any[]): void;
+declare function throwError(message: string): never;
+
+declare const errorUtils_reportError: typeof reportError;
+declare const errorUtils_throwError: typeof throwError;
+declare namespace errorUtils {
+  export { errorUtils_reportError as reportError, errorUtils_throwError as throwError };
+}
+
 declare function getElem(ele: string | QuerySelector, mode?: string | QuerySelector | null, parent?: QuerySelector): Element | NodeList | null;
 declare function createElem(tagName: string, attrs?: ElementAttributes, text?: string): Element;
 declare function insertAfter(referenceNode: Node, newNode: Node | string): void;
@@ -146,4 +155,4 @@ declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_encodeFormData as encodeFormData };
 }
 
-export { buildRules, compatInsertRule, deepMerge, domUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, getVersion, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId };
+export { buildRules, compatInsertRule, deepMerge, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, getVersion, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId };

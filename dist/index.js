@@ -1,4 +1,4 @@
-const version = '3.0.0rc1';
+const version = '3.0.0rc2';
 // Prevent version from being modified after being set
 Object.defineProperty(exports, 'version', { writable: false, configurable: true });
 
@@ -8,6 +8,12 @@ function reportError(...error) {
 function throwError(message) {
     throw new Error(message);
 }
+
+var errorUtils = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    reportError: reportError,
+    throwError: throwError
+});
 
 function getElem(ele, mode, parent) {
     if (typeof ele !== 'string')
@@ -439,4 +445,4 @@ var fetchUtils = /*#__PURE__*/Object.freeze({
     sendFormData: sendFormData
 });
 
-export { buildRules, compatInsertRule, deepMerge, domUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, getVersion, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId };
+export { buildRules, compatInsertRule, deepMerge, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, getVersion, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId };

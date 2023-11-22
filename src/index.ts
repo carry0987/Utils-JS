@@ -1,4 +1,5 @@
 export * from './general';
+export * as errorUtils from './module/errorUtils';
 export * as domUtils from './module/domUtils';
 export * as storageUtils from './module/storageUtils';
 export * as eventUtils from './module/eventUtils';
