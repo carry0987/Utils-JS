@@ -100,9 +100,15 @@ export function generateRandom(length: number = 8): string {
     return Math.random().toString(36).substring(2, 2 + length);
 }
 
-export function getUrlParameter(sParam: string, url: string = window.location.search): string | null {
+export function getUrlParameter(sParam: string, url: string = window.location.href): string | null {
     const isHashParam = sParam.startsWith('#');
-    const urlPart = isHashParam ? url.substring(url.indexOf('#') + 1) : url.substring(url.indexOf('?'));
+    let urlPart: string;
+    if (isHashParam) {
+        urlPart = url.substring(url.indexOf('#') + 1);
+    } else {
+        const searchPart = url.includes('#') ? url.substring(url.indexOf('?'), url.indexOf('#')) : url.substring(url.indexOf('?'));
+        urlPart = searchPart;
+    }
     const params = new URLSearchParams(urlPart);
     const paramName = isHashParam ? sParam.substring(1) : sParam;
     const paramValue = params.get(paramName);
