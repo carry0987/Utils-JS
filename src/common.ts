@@ -31,6 +31,7 @@ export function deepMerge<T>(target: T, ...sources: Partial<T>[]): T {
             }
         }
     }
+
     return deepMerge(target, ...sources);
 }
 
@@ -69,6 +70,7 @@ export function buildRules(ruleObject: { [property: string]: string }): string {
         property = property.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`);
         ruleSet += `${property}:${value};`;
     }
+
     return ruleSet;
 }
 
@@ -90,6 +92,7 @@ export function isEmpty(str: unknown): boolean {
     if (typeof str === 'number') {
         return false;
     }
+
     return !str || (typeof str === 'string' && str.length === 0);
 }
 
@@ -97,8 +100,12 @@ export function generateRandom(length: number = 8): string {
     return Math.random().toString(36).substring(2, 2 + length);
 }
 
-export function getUrlParameter(sParam: string, url: string = window.location.search): string | null {
-    let params = new URLSearchParams(url);
-    let param = params.get(sParam);
-    return param === null ? null : decodeURIComponent(param);
+export function getUrlParameter(sParam: string, url: string = window.location.href): string | null {
+    const isHashParam = sParam.startsWith('#');
+    const urlPart = isHashParam ? url.substring(url.indexOf('#') + 1) : url.substring(url.indexOf('?'));
+    const params = new URLSearchParams(urlPart);
+    const paramName = isHashParam ? sParam.substring(1) : sParam;
+    const paramValue = params.get(paramName);
+
+    return paramValue === null ? null : decodeURIComponent(paramValue);
 }

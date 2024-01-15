@@ -26,6 +26,7 @@ export function appendFormData(options: FormDataOptions, formData: FormData = ne
         // Non-object and non-null values, add directly
         formData.append(parentKey, data);
     }
+
     // If you don't want to add null values to FormData, you can do nothing here
     // Or if you want to convert null to other forms, you can handle it here
     return formData;
@@ -40,5 +41,6 @@ export function encodeFormData(data: any, parentKey: string = ''): FormData {
         data: data,
         parentKey: parentKey
     };
+
     return appendFormData(options);
 }

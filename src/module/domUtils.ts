@@ -12,6 +12,7 @@ export function getElem(ele: string | QuerySelector, mode?: string | QuerySelect
     } else if (parent && parent instanceof Node && 'querySelector' in parent) {
         searchContext = parent;
     }
+
     // If mode is 'all', search for all elements that match, otherwise, search for the first match
     return mode === 'all' ? searchContext.querySelectorAll(ele) : searchContext.querySelector(ele);
 }
@@ -58,16 +59,19 @@ export function insertBefore(referenceNode: Node, newNode: Node | string): void 
 
 export function addClass(ele: Element, className: string): Element {
     ele.classList.add(className);
+
     return ele;
 }
 
 export function removeClass(ele: Element, className: string): Element {
     ele.classList.remove(className);
+
     return ele;
 }
 
 export function toggleClass(ele: Element, className: string): Element {
     ele.classList.toggle(className);
+
     return ele;
 }
 

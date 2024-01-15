@@ -1,4 +1,4 @@
-const version = '3.1.0';
+const version = '3.1.1';
 
 function reportError(...error) {
     console.error(...error);
@@ -180,10 +180,13 @@ function isEmpty(str) {
 function generateRandom(length = 8) {
     return Math.random().toString(36).substring(2, 2 + length);
 }
-function getUrlParameter(sParam, url = window.location.search) {
-    let params = new URLSearchParams(url);
-    let param = params.get(sParam);
-    return param === null ? null : decodeURIComponent(param);
+function getUrlParameter(sParam, url = window.location.href) {
+    const isHashParam = sParam.startsWith('#');
+    const urlPart = isHashParam ? url.substring(url.indexOf('#') + 1) : url.substring(url.indexOf('?'));
+    const params = new URLSearchParams(urlPart);
+    const paramName = isHashParam ? sParam.substring(1) : sParam;
+    const paramValue = params.get(paramName);
+    return paramValue === null ? null : decodeURIComponent(paramValue);
 }
 
 var common = /*#__PURE__*/Object.freeze({
