@@ -100,7 +100,7 @@ export function generateRandom(length: number = 8): string {
     return Math.random().toString(36).substring(2, 2 + length);
 }
 
-export function getUrlParameter(sParam: string, url: string = window.location.href): string | null {
+export function getUrlParameter(sParam: string, url: string = window.location.search): string | null {
     const isHashParam = sParam.startsWith('#');
     const urlPart = isHashParam ? url.substring(url.indexOf('#') + 1) : url.substring(url.indexOf('?'));
     const params = new URLSearchParams(urlPart);
