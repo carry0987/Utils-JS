@@ -1,4 +1,4 @@
-const version = '3.1.3';
+const version = '3.2.0';
 
 function reportError(...error) {
     console.error(...error);
@@ -180,7 +180,7 @@ function isEmpty(str) {
 function generateRandom(length = 8) {
     return Math.random().toString(36).substring(2, 2 + length);
 }
-function getUrlParameter(sParam, url = window.location.href) {
+function getUrlParam(sParam, url = window.location.href) {
     const isHashParam = sParam.startsWith('#');
     let urlPart;
     if (isHashParam) {
@@ -202,7 +202,7 @@ var common = /*#__PURE__*/Object.freeze({
     compatInsertRule: compatInsertRule,
     deepMerge: deepMerge,
     generateRandom: generateRandom,
-    getUrlParameter: getUrlParameter,
+    getUrlParam: getUrlParam,
     injectStylesheet: injectStylesheet,
     isEmpty: isEmpty,
     isObject: isObject,
@@ -258,7 +258,7 @@ function removeSessionValue(key) {
 function setCookie(name, value, options) {
     let cookieString = encodeURIComponent(name) + '=' + encodeURIComponent(value) + ';';
     const defaultOptions = {
-        expires: new Date(Date.now() + 86400000),
+        expires: new Date(Date.now() + 86400000), // 1 day
         path: '/',
         secure: false,
         sameSite: 'Lax'
@@ -475,4 +475,4 @@ var interfaces = /*#__PURE__*/Object.freeze({
     __proto__: null
 });
 
-export { interfaces as Interfaces, types as Types, buildRules, common as commonUtils, compatInsertRule, deepMerge, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParameter, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId, version };
+export { interfaces as Interfaces, types as Types, buildRules, common as commonUtils, compatInsertRule, deepMerge, domUtils, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getUrlParam, injectStylesheet, isEmpty, isObject, removeStylesheet, replaceRule, setReplaceRule, setStylesheetId, storageUtils, stylesheetId, version };
