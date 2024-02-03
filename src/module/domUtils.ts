@@ -69,8 +69,8 @@ export function removeClass(ele: Element, className: string): Element {
     return ele;
 }
 
-export function toggleClass(ele: Element, className: string): Element {
-    ele.classList.toggle(className);
+export function toggleClass(ele: Element, className: string, force?: boolean | undefined): Element {
+    ele.classList.toggle(className, force);
 
     return ele;
 }

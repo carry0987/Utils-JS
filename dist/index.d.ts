@@ -90,7 +90,7 @@ declare function insertAfter(referenceNode: Node, newNode: Node | string): void;
 declare function insertBefore(referenceNode: Node, newNode: Node | string): void;
 declare function addClass(ele: Element, className: string): Element;
 declare function removeClass(ele: Element, className: string): Element;
-declare function toggleClass(ele: Element, className: string): Element;
+declare function toggleClass(ele: Element, className: string, force?: boolean | undefined): Element;
 declare function hasClass(ele: Element, className: string): boolean;
 
 declare const domUtils_addClass: typeof addClass;

@@ -1,4 +1,4 @@
-const version = '3.2.2';
+const version = '3.2.3';
 
 function reportError(...error) {
     console.error(...error);
@@ -75,8 +75,8 @@ function removeClass(ele, className) {
     ele.classList.remove(className);
     return ele;
 }
-function toggleClass(ele, className) {
-    ele.classList.toggle(className);
+function toggleClass(ele, className, force) {
+    ele.classList.toggle(className, force);
     return ele;
 }
 function hasClass(ele, className) {
