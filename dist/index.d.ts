@@ -16,26 +16,26 @@ type StylesObject = {
 type QuerySelector = Element | Document | DocumentFragment;
 type ElementEventTarget = Document | Element;
 type EventOptions = boolean | AddEventListenerOptions;
-type AddEventListenerParams = [
+type AddEventListenerParams<K extends Event = Event> = [
     element: ElementEventTarget,
     eventName: string,
-    handler: EventListenerOrEventListenerObject,
+    handler: (this: Element, ev: K) => any,
     options?: EventOptions
 ];
-type RemoveEventListenerParams = [
+type RemoveEventListenerParams<K extends Event = Event> = [
     element: ElementEventTarget,
     eventName: string,
-    handler: EventListenerOrEventListenerObject,
+    handler: (this: Element, ev: K) => any,
     options?: boolean | EventListenerOptions
 ];
 
-type types_AddEventListenerParams = AddEventListenerParams;
+type types_AddEventListenerParams<K extends Event = Event> = AddEventListenerParams<K>;
 type types_ElementAttributes = ElementAttributes;
 type types_ElementEventTarget = ElementEventTarget;
 type types_EventOptions = EventOptions;
 type types_Extension = Extension;
 type types_QuerySelector = QuerySelector;
-type types_RemoveEventListenerParams = RemoveEventListenerParams;
+type types_RemoveEventListenerParams<K extends Event = Event> = RemoveEventListenerParams<K>;
 type types_ReplaceRule = ReplaceRule;
 type types_StylesObject = StylesObject;
 declare namespace types {
