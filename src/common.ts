@@ -81,10 +81,10 @@ export function compatInsertRule(stylesheet: CSSStyleSheet, selector: string, cs
 }
 
 export function removeStylesheet(id: string | null = null): void {
-    id = isEmpty(id) ? '' : id;
-    let styleElement = getElem('#' + stylesheetId + id) as Element;
-    if (styleElement) {
-        styleElement.parentNode!.removeChild(styleElement);
+    const styleId = isEmpty(id) ? '' : id;
+    let styleElement = getElem('#' + stylesheetId + styleId);
+    if (styleElement && styleElement.parentNode) {
+        styleElement.parentNode.removeChild(styleElement);
     }
 }
 

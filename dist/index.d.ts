@@ -84,7 +84,8 @@ declare namespace errorUtils {
   export { errorUtils_reportError as reportError, errorUtils_throwError as throwError };
 }
 
-declare function getElem(ele: string | QuerySelector, mode?: string | QuerySelector | null, parent?: QuerySelector): Element | NodeList | null;
+declare function getElem<E extends Element = Element>(ele: string | E, mode: 'all', parent?: QuerySelector): NodeList;
+declare function getElem<E extends Element = Element>(ele: string | E, mode?: string | QuerySelector | null, parent?: QuerySelector): E | null;
 declare function createElem(tagName: string, attrs?: ElementAttributes, text?: string): Element;
 declare function insertAfter(referenceNode: Node, newNode: Node | string): void;
 declare function insertBefore(referenceNode: Node, newNode: Node | string): void;

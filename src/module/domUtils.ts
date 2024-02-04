@@ -1,8 +1,11 @@
 import { throwError } from './errorUtils';
 import { QuerySelector, ElementAttributes } from '../type/types';
 
-export function getElem(ele: string | QuerySelector, mode?: string | QuerySelector | null, parent?: QuerySelector): Element | NodeList | null {
-    if (typeof ele !== 'string') return ele as Element;
+export function getElem<E extends Element = Element>(ele: string | E, mode: 'all', parent?: QuerySelector): NodeList;
+export function getElem<E extends Element = Element>(ele: string | E, mode?: string | QuerySelector | null, parent?: QuerySelector): E | null;
+export function getElem<E extends Element = Element>(ele: string | E, mode?: string | QuerySelector | null, parent?: QuerySelector): E | NodeList | null {
+    // Return generic Element type or NodeList
+    if (typeof ele !== 'string') return ele as E;
     let searchContext: QuerySelector = document;
 
     if (mode === null && parent) {
@@ -14,7 +17,8 @@ export function getElem(ele: string | QuerySelector, mode?: string | QuerySelect
     }
 
     // If mode is 'all', search for all elements that match, otherwise, search for the first match
-    return mode === 'all' ? searchContext.querySelectorAll(ele) : searchContext.querySelector(ele);
+    // Casting the result as E or NodeList
+    return mode === 'all' ? searchContext.querySelectorAll<E>(ele) : searchContext.querySelector<E>(ele);
 }
 
 export function createElem(tagName: string, attrs: ElementAttributes = {}, text: string = ''): Element {
