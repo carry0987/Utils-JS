@@ -86,7 +86,7 @@ declare namespace errorUtils {
 
 declare function getElem<E extends Element = Element>(ele: string | E, mode: 'all', parent?: QuerySelector): NodeList;
 declare function getElem<E extends Element = Element>(ele: string | E, mode?: string | QuerySelector | null, parent?: QuerySelector): E | null;
-declare function createElem(tagName: string, attrs?: ElementAttributes, text?: string): Element;
+declare function createElem<K extends keyof HTMLElementTagNameMap>(tagName: K, attrs?: ElementAttributes, text?: string): HTMLElementTagNameMap[K];
 declare function insertAfter(referenceNode: Node, newNode: Node | string): void;
 declare function insertBefore(referenceNode: Node, newNode: Node | string): void;
 declare function addClass(ele: Element, className: string): Element;

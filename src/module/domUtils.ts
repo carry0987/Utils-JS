@@ -21,7 +21,7 @@ export function getElem<E extends Element = Element>(ele: string | E, mode?: str
     return mode === 'all' ? searchContext.querySelectorAll<E>(ele) : searchContext.querySelector<E>(ele);
 }
 
-export function createElem(tagName: string, attrs: ElementAttributes = {}, text: string = ''): Element {
+export function createElem<K extends keyof HTMLElementTagNameMap>(tagName: K, attrs: ElementAttributes = {}, text: string = ''): HTMLElementTagNameMap[K] {
     let elem = document.createElement(tagName);
     for (let attr in attrs) {
         if (Object.prototype.hasOwnProperty.call(attrs, attr)) {
