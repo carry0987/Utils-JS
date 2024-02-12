@@ -10,30 +10,18 @@ type StylesObject = Record<string, Record<string, string>>;
 type QuerySelector = Element | Document | DocumentFragment;
 type ElementEventTarget = Document | Element;
 type EventOptions = boolean | AddEventListenerOptions;
-type AddEventListenerParams<K extends Event = Event> = [
-    element: ElementEventTarget,
-    eventName: string,
-    handler: (this: Element, ev: K) => any,
-    options?: EventOptions
-];
-type RemoveEventListenerParams<K extends Event = Event> = [
-    element: ElementEventTarget,
-    eventName: string,
-    handler: (this: Element, ev: K) => any,
-    options?: boolean | EventListenerOptions
-];
+type RemoveEventOptions = boolean | EventListenerOptions;
 
-type types_AddEventListenerParams<K extends Event = Event> = AddEventListenerParams<K>;
 type types_ElementAttributes = ElementAttributes;
 type types_ElementEventTarget = ElementEventTarget;
 type types_EventOptions = EventOptions;
 type types_Extension = Extension;
 type types_QuerySelector = QuerySelector;
-type types_RemoveEventListenerParams<K extends Event = Event> = RemoveEventListenerParams<K>;
+type types_RemoveEventOptions = RemoveEventOptions;
 type types_ReplaceRule = ReplaceRule;
 type types_StylesObject = StylesObject;
 declare namespace types {
-  export type { types_AddEventListenerParams as AddEventListenerParams, types_ElementAttributes as ElementAttributes, types_ElementEventTarget as ElementEventTarget, types_EventOptions as EventOptions, types_Extension as Extension, types_QuerySelector as QuerySelector, types_RemoveEventListenerParams as RemoveEventListenerParams, types_ReplaceRule as ReplaceRule, types_StylesObject as StylesObject };
+  export type { types_ElementAttributes as ElementAttributes, types_ElementEventTarget as ElementEventTarget, types_EventOptions as EventOptions, types_Extension as Extension, types_QuerySelector as QuerySelector, types_RemoveEventOptions as RemoveEventOptions, types_ReplaceRule as ReplaceRule, types_StylesObject as StylesObject };
 }
 
 declare let stylesheetId: string;
@@ -157,10 +145,10 @@ declare namespace storageUtils {
   export { storageUtils_getCookie as getCookie, storageUtils_getLocalValue as getLocalValue, storageUtils_getSessionValue as getSessionValue, storageUtils_removeCookie as removeCookie, storageUtils_removeLocalValue as removeLocalValue, storageUtils_removeSessionValue as removeSessionValue, storageUtils_setCookie as setCookie, storageUtils_setLocalValue as setLocalValue, storageUtils_setSessionValue as setSessionValue };
 }
 
-declare function addEventListener(...params: AddEventListenerParams): void;
-declare function removeEventListener(...params: RemoveEventListenerParams): void;
-declare function createEvent(eventName: string, detail?: any, options?: EventInit): CustomEvent;
-declare function dispatchEvent(eventOrName: string | Event, element?: Document | Element, detail?: any, options?: EventInit): boolean;
+declare function addEventListener<K extends keyof HTMLElementEventMap>(element: ElementEventTarget, eventName: K, handler: (this: Element, ev: HTMLElementEventMap[K]) => any, options?: EventOptions): void;
+declare function removeEventListener<K extends keyof HTMLElementEventMap>(element: ElementEventTarget, eventName: K, handler: (this: Element, ev: HTMLElementEventMap[K]) => any, options?: RemoveEventOptions): void;
+declare function createEvent<T = unknown>(eventName: string, detail?: T, options?: EventInit): CustomEvent<T>;
+declare function dispatchEvent<T = unknown>(eventOrName: string | Event, element?: Document | Element, detail?: T, options?: EventInit): boolean;
 
 declare const eventUtils_addEventListener: typeof addEventListener;
 declare const eventUtils_createEvent: typeof createEvent;

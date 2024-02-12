@@ -1,4 +1,4 @@
-const version = '3.2.7';
+const version = '3.2.8';
 
 function reportError(...error) {
     console.error(...error);
@@ -315,12 +315,10 @@ var storageUtils = /*#__PURE__*/Object.freeze({
     setSessionValue: setSessionValue
 });
 
-function addEventListener(...params) {
-    const [element, eventName, handler, options] = params;
+function addEventListener(element, eventName, handler, options) {
     element.addEventListener(eventName, handler, options);
 }
-function removeEventListener(...params) {
-    const [element, eventName, handler, options] = params;
+function removeEventListener(element, eventName, handler, options) {
     element.removeEventListener(eventName, handler, options);
 }
 function createEvent(eventName, detail, options) {

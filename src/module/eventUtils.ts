@@ -1,24 +1,45 @@
 import { throwError, reportError } from './errorUtils';
-import { AddEventListenerParams, RemoveEventListenerParams } from '../type/types';
+import {
+    ElementEventTarget,
+    EventOptions,
+    RemoveEventOptions,
+} from '../type/types';
 
-export function addEventListener(...params: AddEventListenerParams): void {
-    const [element, eventName, handler, options] = params;
-    element.addEventListener(eventName, handler, options);
+export function addEventListener<K extends keyof HTMLElementEventMap>(
+    element: ElementEventTarget,
+    eventName: K,
+    handler: (this: Element, ev: HTMLElementEventMap[K]) => any,
+    options?: EventOptions
+): void {
+    element.addEventListener(eventName, handler as EventListener, options);
 }
 
-export function removeEventListener(...params: RemoveEventListenerParams): void {
-    const [element, eventName, handler, options] = params;
-    element.removeEventListener(eventName, handler, options);
+export function removeEventListener<K extends keyof HTMLElementEventMap>(
+    element: ElementEventTarget,
+    eventName: K,
+    handler: (this: Element, ev: HTMLElementEventMap[K]) => any,
+    options?: RemoveEventOptions
+): void {
+    element.removeEventListener(eventName, handler as EventListener, options);
 }
 
-export function createEvent(eventName: string, detail?: any, options?: EventInit): CustomEvent {
+export function createEvent<T = unknown>(
+    eventName: string,
+    detail?: T,
+    options?: EventInit
+): CustomEvent<T> {
     return new CustomEvent(eventName, { detail, ...options });
 }
 
-export function dispatchEvent(eventOrName: string | Event, element: Document | Element = document, detail?: any, options?: EventInit): boolean {
+export function dispatchEvent<T = unknown>(
+    eventOrName: string | Event,
+    element: Document | Element = document,
+    detail?: T,
+    options?: EventInit
+): boolean {
     try {
         if (typeof eventOrName === 'string') {
-            let event = createEvent(eventOrName, detail, options);
+            let event = createEvent<T>(eventOrName, detail, options);
             return element.dispatchEvent(event);
         } else if (eventOrName instanceof Event) {
             return element.dispatchEvent(eventOrName);
