@@ -64,7 +64,7 @@ export function injectStylesheet(stylesObject: StylesObject, id: string | null =
     }
 }
 
-export function buildRules(ruleObject: { [property: string]: string }): string {
+export function buildRules(ruleObject: Record<string, string>): string {
     let ruleSet = '';
     for (let [property, value] of Object.entries(ruleObject)) {
         property = property.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`);

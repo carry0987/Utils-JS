@@ -5,14 +5,8 @@ type ReplaceRule = {
     from: string;
     to: string;
 };
-type ElementAttributes = {
-    [key: string]: unknown;
-};
-type StylesObject = {
-    [selector: string]: {
-        [property: string]: string;
-    };
-};
+type ElementAttributes = Record<string, unknown>;
+type StylesObject = Record<string, Record<string, string>>;
 type QuerySelector = Element | Document | DocumentFragment;
 type ElementEventTarget = Document | Element;
 type EventOptions = boolean | AddEventListenerOptions;
@@ -49,9 +43,7 @@ declare function deepMerge<T>(target: T, ...sources: Partial<T>[]): T;
 declare function setStylesheetId(id: string): void;
 declare function setReplaceRule(from: string, to: string): void;
 declare function injectStylesheet(stylesObject: StylesObject, id?: string | null): void;
-declare function buildRules(ruleObject: {
-    [property: string]: string;
-}): string;
+declare function buildRules(ruleObject: Record<string, string>): string;
 declare function compatInsertRule(stylesheet: CSSStyleSheet, selector: string, cssText: string, id?: string | null): void;
 declare function removeStylesheet(id?: string | null): void;
 declare function isEmpty(str: unknown): boolean;

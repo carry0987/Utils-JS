@@ -1,7 +1,7 @@
 export type Extension = Record<string, unknown>;
 export type ReplaceRule = { from: string; to: string };
-export type ElementAttributes = { [key: string]: unknown };
-export type StylesObject = { [selector: string]: { [property: string]: string } };
+export type ElementAttributes = Record<string, unknown>;
+export type StylesObject = Record<string, Record<string, string>>;
 export type QuerySelector = Element | Document | DocumentFragment;
 // Event types
 export type ElementEventTarget = Document | Element;
