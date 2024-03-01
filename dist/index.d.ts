@@ -12,9 +12,9 @@ type ElementEventTarget = Document | Element;
 type EventOptions = boolean | AddEventListenerOptions | undefined;
 type RemoveEventOptions = boolean | EventListenerOptions | undefined;
 type EventName = keyof HTMLElementEventMap;
-type EventHandler<K extends EventName> = (this: Element, ev: HTMLElementEventMap[K]) => any;
+type EventHandler<K extends EventName> = (this: ElementEventTarget, ev: HTMLElementEventMap[K]) => any;
 type CustomEventName = string;
-type CustomEventHandler<T = unknown> = (this: Element, ev: CustomEvent<T>) => any;
+type CustomEventHandler<T = unknown> = (this: ElementEventTarget, ev: CustomEvent<T>) => any;
 type CombinedEventName = EventName | CustomEventName;
 type CombinedEventHandler = EventHandler<EventName> | CustomEventHandler;
 
