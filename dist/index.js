@@ -1,4 +1,4 @@
-const version = '3.2.9';
+const version = '3.2.10';
 
 function reportError(...error) {
     console.error(...error);
