@@ -5,5 +5,11 @@ export type StylesObject = Record<string, Record<string, string>>;
 export type QuerySelector = Element | Document | DocumentFragment;
 // Event types
 export type ElementEventTarget = Document | Element;
-export type EventOptions = boolean | AddEventListenerOptions;
-export type RemoveEventOptions = boolean | EventListenerOptions;
+export type EventOptions = boolean | AddEventListenerOptions | undefined;
+export type RemoveEventOptions = boolean | EventListenerOptions | undefined;
+export type EventName = keyof HTMLElementEventMap;
+export type EventHandler<K extends EventName> = (this: Element, ev: HTMLElementEventMap[K]) => any;
+export type CustomEventName = string;
+export type CustomEventHandler<T = unknown> = (this: Element, ev: CustomEvent<T>) => any;
+export type CombinedEventName = EventName | CustomEventName;
+export type CombinedEventHandler = EventHandler<EventName> | CustomEventHandler;

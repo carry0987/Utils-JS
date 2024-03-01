@@ -9,11 +9,23 @@ type ElementAttributes = Record<string, unknown>;
 type StylesObject = Record<string, Record<string, string>>;
 type QuerySelector = Element | Document | DocumentFragment;
 type ElementEventTarget = Document | Element;
-type EventOptions = boolean | AddEventListenerOptions;
-type RemoveEventOptions = boolean | EventListenerOptions;
+type EventOptions = boolean | AddEventListenerOptions | undefined;
+type RemoveEventOptions = boolean | EventListenerOptions | undefined;
+type EventName = keyof HTMLElementEventMap;
+type EventHandler<K extends EventName> = (this: Element, ev: HTMLElementEventMap[K]) => any;
+type CustomEventName = string;
+type CustomEventHandler<T = unknown> = (this: Element, ev: CustomEvent<T>) => any;
+type CombinedEventName = EventName | CustomEventName;
+type CombinedEventHandler = EventHandler<EventName> | CustomEventHandler;
 
+type types_CombinedEventHandler = CombinedEventHandler;
+type types_CombinedEventName = CombinedEventName;
+type types_CustomEventHandler<T = unknown> = CustomEventHandler<T>;
+type types_CustomEventName = CustomEventName;
 type types_ElementAttributes = ElementAttributes;
 type types_ElementEventTarget = ElementEventTarget;
+type types_EventHandler<K extends EventName> = EventHandler<K>;
+type types_EventName = EventName;
 type types_EventOptions = EventOptions;
 type types_Extension = Extension;
 type types_QuerySelector = QuerySelector;
@@ -21,7 +33,7 @@ type types_RemoveEventOptions = RemoveEventOptions;
 type types_ReplaceRule = ReplaceRule;
 type types_StylesObject = StylesObject;
 declare namespace types {
-  export type { types_ElementAttributes as ElementAttributes, types_ElementEventTarget as ElementEventTarget, types_EventOptions as EventOptions, types_Extension as Extension, types_QuerySelector as QuerySelector, types_RemoveEventOptions as RemoveEventOptions, types_ReplaceRule as ReplaceRule, types_StylesObject as StylesObject };
+  export type { types_CombinedEventHandler as CombinedEventHandler, types_CombinedEventName as CombinedEventName, types_CustomEventHandler as CustomEventHandler, types_CustomEventName as CustomEventName, types_ElementAttributes as ElementAttributes, types_ElementEventTarget as ElementEventTarget, types_EventHandler as EventHandler, types_EventName as EventName, types_EventOptions as EventOptions, types_Extension as Extension, types_QuerySelector as QuerySelector, types_RemoveEventOptions as RemoveEventOptions, types_ReplaceRule as ReplaceRule, types_StylesObject as StylesObject };
 }
 
 declare let stylesheetId: string;
@@ -145,8 +157,10 @@ declare namespace storageUtils {
   export { storageUtils_getCookie as getCookie, storageUtils_getLocalValue as getLocalValue, storageUtils_getSessionValue as getSessionValue, storageUtils_removeCookie as removeCookie, storageUtils_removeLocalValue as removeLocalValue, storageUtils_removeSessionValue as removeSessionValue, storageUtils_setCookie as setCookie, storageUtils_setLocalValue as setLocalValue, storageUtils_setSessionValue as setSessionValue };
 }
 
-declare function addEventListener<K extends keyof HTMLElementEventMap>(element: ElementEventTarget, eventName: K, handler: (this: Element, ev: HTMLElementEventMap[K]) => any, options?: EventOptions): void;
-declare function removeEventListener<K extends keyof HTMLElementEventMap>(element: ElementEventTarget, eventName: K, handler: (this: Element, ev: HTMLElementEventMap[K]) => any, options?: RemoveEventOptions): void;
+declare function addEventListener<K extends EventName>(element: ElementEventTarget, eventName: K, handler: EventHandler<K>, options?: EventOptions): void;
+declare function addEventListener<K extends CustomEventName>(element: ElementEventTarget, eventName: K, handler: CustomEventHandler, options?: EventOptions): void;
+declare function removeEventListener<K extends EventName>(element: ElementEventTarget, eventName: K, handler: EventHandler<K>, options?: RemoveEventOptions): void;
+declare function removeEventListener<K extends CustomEventName>(element: ElementEventTarget, eventName: K, handler: CustomEventHandler, options?: RemoveEventOptions): void;
 declare function createEvent<T = unknown>(eventName: string, detail?: T, options?: EventInit): CustomEvent<T>;
 declare function dispatchEvent<T = unknown>(eventOrName: string | Event, element?: Document | Element, detail?: T, options?: EventInit): boolean;
 

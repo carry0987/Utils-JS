@@ -3,23 +3,23 @@ import {
     ElementEventTarget,
     EventOptions,
     RemoveEventOptions,
+    EventName,
+    EventHandler,
+    CustomEventName,
+    CustomEventHandler,
+    CombinedEventName,
+    CombinedEventHandler
 } from '../type/types';
 
-export function addEventListener<K extends keyof HTMLElementEventMap>(
-    element: ElementEventTarget,
-    eventName: K,
-    handler: (this: Element, ev: HTMLElementEventMap[K]) => any,
-    options?: EventOptions
-): void {
+export function addEventListener<K extends EventName>(element: ElementEventTarget, eventName: K, handler: EventHandler<K>, options?: EventOptions): void;
+export function addEventListener<K extends CustomEventName>(element: ElementEventTarget, eventName: K, handler: CustomEventHandler, options?: EventOptions): void;
+export function addEventListener(element: ElementEventTarget, eventName: CombinedEventName, handler: CombinedEventHandler, options?: EventOptions): void {
     element.addEventListener(eventName, handler as EventListener, options);
 }
 
-export function removeEventListener<K extends keyof HTMLElementEventMap>(
-    element: ElementEventTarget,
-    eventName: K,
-    handler: (this: Element, ev: HTMLElementEventMap[K]) => any,
-    options?: RemoveEventOptions
-): void {
+export function removeEventListener<K extends EventName>(element: ElementEventTarget, eventName: K, handler: EventHandler<K>, options?: RemoveEventOptions): void;
+export function removeEventListener<K extends CustomEventName>(element: ElementEventTarget, eventName: K, handler: CustomEventHandler, options?: RemoveEventOptions): void;
+export function removeEventListener(element: ElementEventTarget, eventName: CombinedEventName, handler: CombinedEventHandler, options?: RemoveEventOptions): void {
     element.removeEventListener(eventName, handler as EventListener, options);
 }
 
