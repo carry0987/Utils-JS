@@ -1,8 +1,9 @@
 import { throwError } from './errorUtils';
 import { QuerySelector, ElementAttributes } from '../type/types';
 
-export function getElem<E extends Element = Element>(ele: string | E, mode: 'all', parent?: QuerySelector): NodeListOf<E>;
-export function getElem<E extends Element = Element>(ele: string | E, mode?: string | QuerySelector | null, parent?: QuerySelector): E | null;
+export function getElem<E extends Element = Element>(ele: E, mode?: string | QuerySelector | null, parent?: QuerySelector): E;
+export function getElem<E extends Element = Element>(ele: string, mode: 'all', parent?: QuerySelector): NodeListOf<E>;
+export function getElem<E extends Element = Element>(ele: string, mode?: string | QuerySelector | null, parent?: QuerySelector): E | null;
 export function getElem<E extends Element = Element>(ele: string | E, mode?: string | QuerySelector | null, parent?: QuerySelector): E | NodeListOf<E> | null {
     // Return generic Element type or NodeList
     if (typeof ele !== 'string') return ele as E;
