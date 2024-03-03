@@ -1,4 +1,4 @@
-const version = '3.2.12';
+const version = '3.2.13';
 
 function reportError(...error) {
     console.error(...error);
@@ -15,8 +15,12 @@ var errorUtils = /*#__PURE__*/Object.freeze({
 
 function getElem(ele, mode, parent) {
     // Return generic Element type or NodeList
-    if (typeof ele !== 'string')
+    if (typeof ele !== 'string') {
+        if (mode === 'all') {
+            return [ele];
+        }
         return ele;
+    }
     let searchContext = document;
     if (mode === null && parent) {
         searchContext = parent;
