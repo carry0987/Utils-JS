@@ -2,7 +2,7 @@ import { encodeFormData } from './formUtils';
 import { FetchOptions, SendFormDataOptions } from '../interface/interfaces';
 
 // Fetch API
-export async function doFetch(options: FetchOptions): Promise<any> {
+export async function doFetch<T>(options: FetchOptions): Promise<T> {
     const {
         url,
         method = 'GET',
@@ -38,7 +38,7 @@ export async function doFetch(options: FetchOptions): Promise<any> {
             resolve(request);
         });
         const response = await fetch(createRequest);
-        const responseData = await response.json();
+        const responseData = await response.json() as T;
         success?.(responseData);
         return responseData;
     } catch (caughtError) {
@@ -47,15 +47,15 @@ export async function doFetch(options: FetchOptions): Promise<any> {
     }
 }
 
-// Send form data
-export async function sendFormData(options: SendFormDataOptions): Promise<boolean> {
+// Send data
+export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
     const { url, data, method = 'POST', success, errorCallback } = options;
 
     const fetchOptions: FetchOptions = {
         url: url,
         method: method,
         body: encodeFormData(data),
-        success: (responseData) => {
+        success: (responseData: T) => {
             if (success) {
                 success(responseData);
             }
@@ -67,7 +67,30 @@ export async function sendFormData(options: SendFormDataOptions): Promise<boolea
         }
     };
 
-    return doFetch(fetchOptions)
+    return doFetch<T>(fetchOptions);
+}
+
+// Send form data
+export async function sendFormData<T>(options: SendFormDataOptions): Promise<boolean> {
+    const { url, data, method = 'POST', success, errorCallback } = options;
+
+    const fetchOptions: FetchOptions = {
+        url: url,
+        method: method,
+        body: encodeFormData(data),
+        success: (responseData: T) => {
+            if (success) {
+                success(responseData);
+            }
+        },
+        error: (caughtError) => {
+            if (errorCallback) {
+                errorCallback(caughtError);
+            }
+        }
+    };
+
+    return doFetch<any>(fetchOptions)
         .then(() => true)
         .catch(() => false);
 }

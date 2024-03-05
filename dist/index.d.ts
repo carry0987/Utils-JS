@@ -174,13 +174,15 @@ declare namespace eventUtils {
   export { eventUtils_addEventListener as addEventListener, eventUtils_createEvent as createEvent, eventUtils_dispatchEvent as dispatchEvent, eventUtils_removeEventListener as removeEventListener };
 }
 
-declare function doFetch(options: FetchOptions): Promise<any>;
-declare function sendFormData(options: SendFormDataOptions): Promise<boolean>;
+declare function doFetch<T>(options: FetchOptions): Promise<T>;
+declare function sendData<T>(options: SendFormDataOptions): Promise<T>;
+declare function sendFormData<T>(options: SendFormDataOptions): Promise<boolean>;
 
 declare const fetchUtils_doFetch: typeof doFetch;
+declare const fetchUtils_sendData: typeof sendData;
 declare const fetchUtils_sendFormData: typeof sendFormData;
 declare namespace fetchUtils {
-  export { fetchUtils_doFetch as doFetch, fetchUtils_sendFormData as sendFormData };
+  export { fetchUtils_doFetch as doFetch, fetchUtils_sendData as sendData, fetchUtils_sendFormData as sendFormData };
 }
 
 declare function appendFormData(options: FormDataOptions, formData?: FormData): FormData;
@@ -192,4 +194,4 @@ declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_encodeFormData as encodeFormData };
 }
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasClass, injectStylesheet, insertAfter, insertBefore, isEmpty, isObject, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasClass, injectStylesheet, insertAfter, insertBefore, isEmpty, isObject, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };

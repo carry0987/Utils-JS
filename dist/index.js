@@ -1,4 +1,4 @@
-const version = '3.2.13';
+const version = '3.2.14';
 
 function reportError(...error) {
     console.error(...error);
@@ -442,6 +442,26 @@ async function doFetch(options) {
         throw caughtError;
     }
 }
+// Send data
+async function sendData(options) {
+    const { url, data, method = 'POST', success, errorCallback } = options;
+    const fetchOptions = {
+        url: url,
+        method: method,
+        body: encodeFormData(data),
+        success: (responseData) => {
+            if (success) {
+                success(responseData);
+            }
+        },
+        error: (caughtError) => {
+            if (errorCallback) {
+                errorCallback(caughtError);
+            }
+        }
+    };
+    return doFetch(fetchOptions);
+}
 // Send form data
 async function sendFormData(options) {
     const { url, data, method = 'POST', success, errorCallback } = options;
@@ -468,6 +488,7 @@ async function sendFormData(options) {
 var fetchUtils = /*#__PURE__*/Object.freeze({
     __proto__: null,
     doFetch: doFetch,
+    sendData: sendData,
     sendFormData: sendFormData
 });
 
@@ -479,4 +500,4 @@ var interfaces = /*#__PURE__*/Object.freeze({
     __proto__: null
 });
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasClass, injectStylesheet, insertAfter, insertBefore, isEmpty, isObject, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasClass, injectStylesheet, insertAfter, insertBefore, isEmpty, isObject, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };
