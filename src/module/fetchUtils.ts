@@ -55,7 +55,7 @@ export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
         url: url,
         method: method,
         body: encodeFormData(data),
-        beforeSend,
+        beforeSend: beforeSend,
         success: (responseData: T) => {
             success?.(responseData);
         },
@@ -75,7 +75,7 @@ export async function sendFormData<T>(options: SendFormDataOptions): Promise<boo
         url: url,
         method: method,
         body: encodeFormData(data),
-        beforeSend,
+        beforeSend: beforeSend,
         success: (responseData: T) => {
             success?.(responseData);
         },
