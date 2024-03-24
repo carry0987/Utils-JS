@@ -17,6 +17,7 @@ export interface SendFormDataOptions {
     url: string;
     data: Record<string, any>;
     method?: string;
+    beforeSend?: () => void;
     success?: (result: any) => void;
     errorCallback?: (error: any) => void;
 }

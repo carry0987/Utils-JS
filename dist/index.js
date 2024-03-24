@@ -1,4 +1,4 @@
-const version = '3.2.15';
+const version = '3.2.16';
 
 function reportError(...error) {
     console.error(...error);
@@ -444,40 +444,34 @@ async function doFetch(options) {
 }
 // Send data
 async function sendData(options) {
-    const { url, data, method = 'POST', success, errorCallback } = options;
+    const { url, data, method = 'POST', success, errorCallback, beforeSend } = options;
     const fetchOptions = {
         url: url,
         method: method,
         body: encodeFormData(data),
+        beforeSend,
         success: (responseData) => {
-            if (success) {
-                success(responseData);
-            }
+            success?.(responseData);
         },
         error: (caughtError) => {
-            if (errorCallback) {
-                errorCallback(caughtError);
-            }
+            errorCallback?.(caughtError);
         }
     };
     return doFetch(fetchOptions);
 }
 // Send form data
 async function sendFormData(options) {
-    const { url, data, method = 'POST', success, errorCallback } = options;
+    const { url, data, method = 'POST', success, errorCallback, beforeSend } = options;
     const fetchOptions = {
         url: url,
         method: method,
         body: encodeFormData(data),
+        beforeSend,
         success: (responseData) => {
-            if (success) {
-                success(responseData);
-            }
+            success?.(responseData);
         },
         error: (caughtError) => {
-            if (errorCallback) {
-                errorCallback(caughtError);
-            }
+            errorCallback?.(caughtError);
         }
     };
     return doFetch(fetchOptions)
