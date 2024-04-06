@@ -76,7 +76,6 @@ declare namespace errorUtils {
   export { errorUtils_reportError as reportError, errorUtils_throwError as throwError };
 }
 
-declare function getElem<E extends Element = Element>(ele: E, mode: 'all', parent?: QuerySelector): Array<E>;
 declare function getElem<E extends Element = Element>(ele: string, mode: 'all', parent?: QuerySelector): NodeListOf<E>;
 declare function getElem<E extends Element = Element>(ele: E, mode?: string | QuerySelector | null, parent?: QuerySelector): E;
 declare function getElem<E extends Element = Element>(ele: string, mode?: string | QuerySelector | null, parent?: QuerySelector): E | null;
