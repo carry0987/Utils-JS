@@ -85,3 +85,43 @@ export function toggleClass(ele: Element, className: string, force?: boolean | u
 export function hasClass(ele: Element, className: string): boolean {
     return ele.classList.contains(className);
 }
+
+export function findParent(ele: Element, selector: string): Element | null {
+    return ele.closest(selector);
+}
+
+export function findParents(ele: Element, selector: string, maxDepth: number = Infinity): Element[] {
+    const parents: Element[] = [];
+    let parent = ele.parentElement;
+    let depth = 0;
+
+    while (parent && depth < maxDepth) {
+        if (parent.matches(selector)) {
+            parents.push(parent);
+        }
+        parent = parent.parentElement;
+        depth++;
+    }
+
+    return parents;
+}
+
+export function findChild(ele: Element, selector: string): Element | null {
+    return ele.querySelector(selector);
+}
+
+export function findChilds(ele: Element, selector: string, maxDepth: number = Infinity): Element[] {
+    const results: Element[] = [];
+    function recursiveFind(element: Element, depth: number) {
+        if (depth > maxDepth) return;
+        Array.from(element.children).forEach((child) => {
+            if (child.matches(selector)) {
+                results.push(child);
+            }
+            recursiveFind(child, depth + 1);
+        });
+    }
+    recursiveFind(ele, 0);
+
+    return results;
+}
