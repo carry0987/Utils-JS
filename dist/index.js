@@ -1,4 +1,4 @@
-const version = '3.3.2';
+const version = '3.3.3';
 
 function reportError(...error) {
     console.error(...error);
@@ -85,17 +85,17 @@ function toggleClass(ele, className, force) {
 function hasClass(ele, className) {
     return ele.classList.contains(className);
 }
-function hasParent(ele, selector, maxDepth = Infinity) {
+function hasParent(ele, selector, maxDepth = Infinity, returnElement = false) {
     let parent = ele.parentElement;
     let depth = 0;
     while (parent && depth < maxDepth) {
         if (parent.matches(selector)) {
-            return true;
+            return returnElement ? parent : true;
         }
         parent = parent.parentElement;
         depth++;
     }
-    return false;
+    return returnElement ? null : false;
 }
 function findParent(ele, selector) {
     return ele.closest(selector);

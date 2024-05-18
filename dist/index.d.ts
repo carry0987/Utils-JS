@@ -97,6 +97,7 @@ declare function removeClass(ele: Element, className: string): Element;
 declare function toggleClass(ele: Element, className: string, force?: boolean | undefined): Element;
 declare function hasClass(ele: Element, className: string): boolean;
 declare function hasParent<E extends Element = Element>(ele: E, selector: string, maxDepth?: number): boolean;
+declare function hasParent<E extends Element = Element>(ele: E, selector: string, maxDepth: number, returnElement: true): E | null;
 declare function findParent<E extends Element = Element>(ele: E, selector: string): E | null;
 declare function findParents<E extends Element = Element>(ele: E, selector: string, maxDepth?: number): E[];
 declare function hasChild<E extends Element = Element>(ele: E, selector: string): boolean;
