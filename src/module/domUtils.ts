@@ -86,41 +86,43 @@ export function hasClass(ele: Element, className: string): boolean {
     return ele.classList.contains(className);
 }
 
-export function findParent(ele: Element, selector: string): Element | null {
-    return ele.closest(selector);
+export function findParent<E extends Element = Element>(ele: E, selector: string): E | null {
+    return ele.closest<E>(selector);
 }
 
-export function findParents(ele: Element, selector: string, maxDepth: number = Infinity): Element[] {
-    const parents: Element[] = [];
-    let parent = ele.parentElement;
+export function findParents<E extends Element = Element>(ele: E, selector: string, maxDepth: number = Infinity): E[] {
+    const parents: E[] = [];
+    let parent = ele.parentElement as E | null;
     let depth = 0;
 
     while (parent && depth < maxDepth) {
         if (parent.matches(selector)) {
             parents.push(parent);
         }
-        parent = parent.parentElement;
+        parent = parent.parentElement as E | null;
         depth++;
     }
 
     return parents;
 }
 
-export function findChild(ele: Element, selector: string): Element | null {
-    return ele.querySelector(selector);
+export function findChild<E extends Element = Element>(ele: E, selector: string): E | null {
+    return ele.querySelector<E>(selector);
 }
 
-export function findChilds(ele: Element, selector: string, maxDepth: number = Infinity): Element[] {
-    const results: Element[] = [];
+export function findChilds<E extends Element = Element>(ele: E, selector: string, maxDepth: number = Infinity): E[] {
+    const results: E[] = [];
+
     function recursiveFind(element: Element, depth: number) {
         if (depth > maxDepth) return;
         Array.from(element.children).forEach((child) => {
-            if (child.matches(selector)) {
-                results.push(child);
+            if ((child as E).matches(selector)) {
+                results.push(child as E);
             }
             recursiveFind(child, depth + 1);
         });
     }
+
     recursiveFind(ele, 0);
 
     return results;

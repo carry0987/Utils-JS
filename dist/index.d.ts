@@ -96,10 +96,10 @@ declare function addClass(ele: Element, className: string): Element;
 declare function removeClass(ele: Element, className: string): Element;
 declare function toggleClass(ele: Element, className: string, force?: boolean | undefined): Element;
 declare function hasClass(ele: Element, className: string): boolean;
-declare function findParent(ele: Element, selector: string): Element | null;
-declare function findParents(ele: Element, selector: string, maxDepth?: number): Element[];
-declare function findChild(ele: Element, selector: string): Element | null;
-declare function findChilds(ele: Element, selector: string, maxDepth?: number): Element[];
+declare function findParent<E extends Element = Element>(ele: E, selector: string): E | null;
+declare function findParents<E extends Element = Element>(ele: E, selector: string, maxDepth?: number): E[];
+declare function findChild<E extends Element = Element>(ele: E, selector: string): E | null;
+declare function findChilds<E extends Element = Element>(ele: E, selector: string, maxDepth?: number): E[];
 
 declare const domUtils_addClass: typeof addClass;
 declare const domUtils_createElem: typeof createElem;
