@@ -1,4 +1,4 @@
-const version = '3.2.18';
+const version = '3.2.19';
 
 function reportError(...error) {
     console.error(...error);
@@ -106,6 +106,27 @@ const replaceRule = {
 function isObject(item) {
     return typeof item === 'object' && item !== null && !Array.isArray(item);
 }
+function isFunction(item) {
+    return typeof item === 'function';
+}
+function isString(item) {
+    return typeof item === 'string';
+}
+function isNumber(item) {
+    return typeof item === 'number';
+}
+function isBoolean(item) {
+    return typeof item === 'boolean';
+}
+function isArray(item) {
+    return Array.isArray(item);
+}
+function isEmpty(str) {
+    if (typeof str === 'number') {
+        return false;
+    }
+    return !str || (typeof str === 'string' && str.length === 0);
+}
 function deepMerge(target, ...sources) {
     if (!sources.length)
         return target;
@@ -174,12 +195,6 @@ function removeStylesheet(id = null) {
         styleElement.parentNode.removeChild(styleElement);
     }
 }
-function isEmpty(str) {
-    if (typeof str === 'number') {
-        return false;
-    }
-    return !str || (typeof str === 'string' && str.length === 0);
-}
 function generateRandom(length = 8) {
     return Math.random().toString(36).substring(2, 2 + length);
 }
@@ -207,8 +222,13 @@ var common = /*#__PURE__*/Object.freeze({
     generateRandom: generateRandom,
     getUrlParam: getUrlParam,
     injectStylesheet: injectStylesheet,
+    isArray: isArray,
+    isBoolean: isBoolean,
     isEmpty: isEmpty,
+    isFunction: isFunction,
+    isNumber: isNumber,
     isObject: isObject,
+    isString: isString,
     removeStylesheet: removeStylesheet,
     replaceRule: replaceRule,
     setReplaceRule: setReplaceRule,
@@ -491,4 +511,4 @@ var interfaces = /*#__PURE__*/Object.freeze({
     __proto__: null
 });
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasClass, injectStylesheet, insertAfter, insertBefore, isEmpty, isObject, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasClass, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };

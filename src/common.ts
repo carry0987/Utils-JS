@@ -11,6 +11,34 @@ export function isObject(item: unknown): item is Record<string, unknown> {
     return typeof item === 'object' && item !== null && !Array.isArray(item);
 }
 
+export function isFunction(item: unknown): item is Function {
+    return typeof item === 'function';
+}
+
+export function isString(item: unknown): item is string {
+    return typeof item === 'string';
+}
+
+export function isNumber(item: unknown): item is number {
+    return typeof item === 'number';
+}
+
+export function isBoolean(item: unknown): item is boolean {
+    return typeof item === 'boolean';
+}
+
+export function isArray(item: unknown): item is unknown[] {
+    return Array.isArray(item);
+}
+
+export function isEmpty(str: unknown): boolean {
+    if (typeof str === 'number') {
+        return false;
+    }
+
+    return !str || (typeof str === 'string' && str.length === 0);
+}
+
 export function deepMerge<T>(target: T, ...sources: Partial<T>[]): T {
     if (!sources.length) return target;
     const source = sources.shift() as Partial<T>;
@@ -86,14 +114,6 @@ export function removeStylesheet(id: string | null = null): void {
     if (styleElement && styleElement.parentNode) {
         styleElement.parentNode.removeChild(styleElement);
     }
-}
-
-export function isEmpty(str: unknown): boolean {
-    if (typeof str === 'number') {
-        return false;
-    }
-
-    return !str || (typeof str === 'string' && str.length === 0);
 }
 
 export function generateRandom(length: number = 8): string {

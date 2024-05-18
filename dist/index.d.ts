@@ -39,6 +39,12 @@ declare namespace types {
 declare let stylesheetId: string;
 declare const replaceRule: ReplaceRule;
 declare function isObject(item: unknown): item is Record<string, unknown>;
+declare function isFunction(item: unknown): item is Function;
+declare function isString(item: unknown): item is string;
+declare function isNumber(item: unknown): item is number;
+declare function isBoolean(item: unknown): item is boolean;
+declare function isArray(item: unknown): item is unknown[];
+declare function isEmpty(str: unknown): boolean;
 declare function deepMerge<T>(target: T, ...sources: Partial<T>[]): T;
 declare function setStylesheetId(id: string): void;
 declare function setReplaceRule(from: string, to: string): void;
@@ -46,7 +52,6 @@ declare function injectStylesheet(stylesObject: StylesObject, id?: string | null
 declare function buildRules(ruleObject: Record<string, string>): string;
 declare function compatInsertRule(stylesheet: CSSStyleSheet, selector: string, cssText: string, id?: string | null): void;
 declare function removeStylesheet(id?: string | null): void;
-declare function isEmpty(str: unknown): boolean;
 declare function generateRandom(length?: number): string;
 declare function getUrlParam(sParam: string, url?: string): string | null;
 
@@ -56,15 +61,20 @@ declare const common_deepMerge: typeof deepMerge;
 declare const common_generateRandom: typeof generateRandom;
 declare const common_getUrlParam: typeof getUrlParam;
 declare const common_injectStylesheet: typeof injectStylesheet;
+declare const common_isArray: typeof isArray;
+declare const common_isBoolean: typeof isBoolean;
 declare const common_isEmpty: typeof isEmpty;
+declare const common_isFunction: typeof isFunction;
+declare const common_isNumber: typeof isNumber;
 declare const common_isObject: typeof isObject;
+declare const common_isString: typeof isString;
 declare const common_removeStylesheet: typeof removeStylesheet;
 declare const common_replaceRule: typeof replaceRule;
 declare const common_setReplaceRule: typeof setReplaceRule;
 declare const common_setStylesheetId: typeof setStylesheetId;
 declare const common_stylesheetId: typeof stylesheetId;
 declare namespace common {
-  export { common_buildRules as buildRules, common_compatInsertRule as compatInsertRule, common_deepMerge as deepMerge, common_generateRandom as generateRandom, common_getUrlParam as getUrlParam, common_injectStylesheet as injectStylesheet, common_isEmpty as isEmpty, common_isObject as isObject, common_removeStylesheet as removeStylesheet, common_replaceRule as replaceRule, common_setReplaceRule as setReplaceRule, common_setStylesheetId as setStylesheetId, common_stylesheetId as stylesheetId };
+  export { common_buildRules as buildRules, common_compatInsertRule as compatInsertRule, common_deepMerge as deepMerge, common_generateRandom as generateRandom, common_getUrlParam as getUrlParam, common_injectStylesheet as injectStylesheet, common_isArray as isArray, common_isBoolean as isBoolean, common_isEmpty as isEmpty, common_isFunction as isFunction, common_isNumber as isNumber, common_isObject as isObject, common_isString as isString, common_removeStylesheet as removeStylesheet, common_replaceRule as replaceRule, common_setReplaceRule as setReplaceRule, common_setStylesheetId as setStylesheetId, common_stylesheetId as stylesheetId };
 }
 
 declare function reportError(...error: any[]): void;
@@ -194,4 +204,4 @@ declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_encodeFormData as encodeFormData };
 }
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasClass, injectStylesheet, insertAfter, insertBefore, isEmpty, isObject, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasClass, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };
