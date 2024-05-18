@@ -86,6 +86,21 @@ export function hasClass(ele: Element, className: string): boolean {
     return ele.classList.contains(className);
 }
 
+export function hasParent<E extends Element = Element>(ele: E, selector: string, maxDepth: number = Infinity): boolean {
+    let parent = ele.parentElement as E | null;
+    let depth = 0;
+
+    while (parent && depth < maxDepth) {
+        if (parent.matches(selector)) {
+            return true;
+        }
+        parent = parent.parentElement as E | null;
+        depth++;
+    }
+
+    return false;
+}
+
 export function findParent<E extends Element = Element>(ele: E, selector: string): E | null {
     return ele.closest<E>(selector);
 }
@@ -104,6 +119,10 @@ export function findParents<E extends Element = Element>(ele: E, selector: strin
     }
 
     return parents;
+}
+
+export function hasChild<E extends Element = Element>(ele: E, selector: string): boolean {
+    return ele.querySelector(selector) !== null;
 }
 
 export function findChild<E extends Element = Element>(ele: E, selector: string): E | null {

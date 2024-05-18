@@ -96,8 +96,10 @@ declare function addClass(ele: Element, className: string): Element;
 declare function removeClass(ele: Element, className: string): Element;
 declare function toggleClass(ele: Element, className: string, force?: boolean | undefined): Element;
 declare function hasClass(ele: Element, className: string): boolean;
+declare function hasParent<E extends Element = Element>(ele: E, selector: string, maxDepth?: number): boolean;
 declare function findParent<E extends Element = Element>(ele: E, selector: string): E | null;
 declare function findParents<E extends Element = Element>(ele: E, selector: string, maxDepth?: number): E[];
+declare function hasChild<E extends Element = Element>(ele: E, selector: string): boolean;
 declare function findChild<E extends Element = Element>(ele: E, selector: string): E | null;
 declare function findChilds<E extends Element = Element>(ele: E, selector: string, maxDepth?: number): E[];
 
@@ -108,13 +110,15 @@ declare const domUtils_findChilds: typeof findChilds;
 declare const domUtils_findParent: typeof findParent;
 declare const domUtils_findParents: typeof findParents;
 declare const domUtils_getElem: typeof getElem;
+declare const domUtils_hasChild: typeof hasChild;
 declare const domUtils_hasClass: typeof hasClass;
+declare const domUtils_hasParent: typeof hasParent;
 declare const domUtils_insertAfter: typeof insertAfter;
 declare const domUtils_insertBefore: typeof insertBefore;
 declare const domUtils_removeClass: typeof removeClass;
 declare const domUtils_toggleClass: typeof toggleClass;
 declare namespace domUtils {
-  export { domUtils_addClass as addClass, domUtils_createElem as createElem, domUtils_findChild as findChild, domUtils_findChilds as findChilds, domUtils_findParent as findParent, domUtils_findParents as findParents, domUtils_getElem as getElem, domUtils_hasClass as hasClass, domUtils_insertAfter as insertAfter, domUtils_insertBefore as insertBefore, domUtils_removeClass as removeClass, domUtils_toggleClass as toggleClass };
+  export { domUtils_addClass as addClass, domUtils_createElem as createElem, domUtils_findChild as findChild, domUtils_findChilds as findChilds, domUtils_findParent as findParent, domUtils_findParents as findParents, domUtils_getElem as getElem, domUtils_hasChild as hasChild, domUtils_hasClass as hasClass, domUtils_hasParent as hasParent, domUtils_insertAfter as insertAfter, domUtils_insertBefore as insertBefore, domUtils_removeClass as removeClass, domUtils_toggleClass as toggleClass };
 }
 
 interface FetchOptions {
@@ -212,4 +216,4 @@ declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_encodeFormData as encodeFormData };
 }
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasClass, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };
