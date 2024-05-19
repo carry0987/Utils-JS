@@ -63,6 +63,24 @@ export function deepMerge<T>(target: T, ...sources: Partial<T>[]): T {
     return deepMerge(target, ...sources);
 }
 
+export function deepClone<T>(obj: T): T {
+    let clone: any;
+    if (Array.isArray(obj)) {
+        clone = obj.map((item) => deepClone(item));
+    } else if (isObject(obj)) {
+        clone = { ...obj };
+        for (let key in clone) {
+            if (clone.hasOwnProperty(key)) {
+                clone[key] = deepClone(clone[key]);
+            }
+        }
+    } else {
+        clone = obj;
+    }
+
+    return clone;
+}
+
 export function setStylesheetId(id: string): void {
     stylesheetId = id;
 }

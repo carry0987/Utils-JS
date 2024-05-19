@@ -46,6 +46,7 @@ declare function isBoolean(item: unknown): item is boolean;
 declare function isArray(item: unknown): item is unknown[];
 declare function isEmpty(str: unknown): boolean;
 declare function deepMerge<T>(target: T, ...sources: Partial<T>[]): T;
+declare function deepClone<T>(obj: T): T;
 declare function setStylesheetId(id: string): void;
 declare function setReplaceRule(from: string, to: string): void;
 declare function injectStylesheet(stylesObject: StylesObject, id?: string | null): void;
@@ -57,6 +58,7 @@ declare function getUrlParam(sParam: string, url?: string): string | null;
 
 declare const common_buildRules: typeof buildRules;
 declare const common_compatInsertRule: typeof compatInsertRule;
+declare const common_deepClone: typeof deepClone;
 declare const common_deepMerge: typeof deepMerge;
 declare const common_generateRandom: typeof generateRandom;
 declare const common_getUrlParam: typeof getUrlParam;
@@ -74,7 +76,7 @@ declare const common_setReplaceRule: typeof setReplaceRule;
 declare const common_setStylesheetId: typeof setStylesheetId;
 declare const common_stylesheetId: typeof stylesheetId;
 declare namespace common {
-  export { common_buildRules as buildRules, common_compatInsertRule as compatInsertRule, common_deepMerge as deepMerge, common_generateRandom as generateRandom, common_getUrlParam as getUrlParam, common_injectStylesheet as injectStylesheet, common_isArray as isArray, common_isBoolean as isBoolean, common_isEmpty as isEmpty, common_isFunction as isFunction, common_isNumber as isNumber, common_isObject as isObject, common_isString as isString, common_removeStylesheet as removeStylesheet, common_replaceRule as replaceRule, common_setReplaceRule as setReplaceRule, common_setStylesheetId as setStylesheetId, common_stylesheetId as stylesheetId };
+  export { common_buildRules as buildRules, common_compatInsertRule as compatInsertRule, common_deepClone as deepClone, common_deepMerge as deepMerge, common_generateRandom as generateRandom, common_getUrlParam as getUrlParam, common_injectStylesheet as injectStylesheet, common_isArray as isArray, common_isBoolean as isBoolean, common_isEmpty as isEmpty, common_isFunction as isFunction, common_isNumber as isNumber, common_isObject as isObject, common_isString as isString, common_removeStylesheet as removeStylesheet, common_replaceRule as replaceRule, common_setReplaceRule as setReplaceRule, common_setStylesheetId as setStylesheetId, common_stylesheetId as stylesheetId };
 }
 
 declare function reportError(...error: any[]): void;
@@ -224,4 +226,4 @@ declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_encodeFormData as encodeFormData };
 }
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };

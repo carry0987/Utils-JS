@@ -1,4 +1,4 @@
-const version = '3.3.7';
+const version = '3.3.8';
 
 function reportError(...error) {
     console.error(...error);
@@ -206,6 +206,24 @@ function deepMerge(target, ...sources) {
     }
     return deepMerge(target, ...sources);
 }
+function deepClone(obj) {
+    let clone;
+    if (Array.isArray(obj)) {
+        clone = obj.map((item) => deepClone(item));
+    }
+    else if (isObject(obj)) {
+        clone = { ...obj };
+        for (let key in clone) {
+            if (clone.hasOwnProperty(key)) {
+                clone[key] = deepClone(clone[key]);
+            }
+        }
+    }
+    else {
+        clone = obj;
+    }
+    return clone;
+}
 function setStylesheetId(id) {
     stylesheetId = id;
 }
@@ -273,6 +291,7 @@ var common = /*#__PURE__*/Object.freeze({
     __proto__: null,
     buildRules: buildRules,
     compatInsertRule: compatInsertRule,
+    deepClone: deepClone,
     deepMerge: deepMerge,
     generateRandom: generateRandom,
     getUrlParam: getUrlParam,
@@ -586,4 +605,4 @@ var interfaces = /*#__PURE__*/Object.freeze({
     __proto__: null
 });
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };
