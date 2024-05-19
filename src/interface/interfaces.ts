@@ -4,6 +4,7 @@ export interface FetchOptions {
     headers?: HeadersInit;
     cache?: RequestCache;
     mode?: RequestMode;
+    credentials?: RequestCredentials;
     body?: BodyInit | Record<string, unknown>;
     beforeSend?: () => void;
     success?: (data: any) => void;
@@ -22,6 +23,7 @@ export interface SendFormDataOptions {
     headers?: HeadersInit;
     cache?: RequestCache;
     mode?: RequestMode;
+    credentials?: RequestCredentials;
     beforeSend?: () => void;
     success?: (result: any) => void;
     errorCallback?: (error: any) => void;

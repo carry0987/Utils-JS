@@ -1,4 +1,4 @@
-const version = '3.3.6';
+const version = '3.3.7';
 
 function reportError(...error) {
     console.error(...error);
@@ -480,13 +480,14 @@ var formUtils = /*#__PURE__*/Object.freeze({
 
 // Fetch API
 async function doFetch(options) {
-    const { url, method = 'GET', headers = {}, cache = 'no-cache', mode = 'cors', body = null, beforeSend = null, success = null, error = null, } = options;
+    const { url, method = 'GET', headers = {}, cache = 'no-cache', mode = 'cors', credentials = 'same-origin', body = null, beforeSend = null, success = null, error = null, } = options;
     let initHeaders = headers instanceof Headers ? headers : new Headers(headers);
     let init = {
         method: method,
         mode: mode,
         headers: initHeaders,
-        cache: cache
+        cache: cache,
+        credentials: credentials
     };
     if (body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
         let data = body;
@@ -527,13 +528,14 @@ async function doFetch(options) {
 }
 // Send data
 async function sendData(options) {
-    const { url, data, method = 'POST', headers, cache, mode, success, errorCallback, beforeSend } = options;
+    const { url, data, method = 'POST', headers, cache, mode, credentials, success, errorCallback, beforeSend } = options;
     const fetchOptions = {
         url: url,
         method: method,
         headers: headers,
         cache: cache,
         mode: mode,
+        credentials: credentials,
         body: encodeFormData(data),
         beforeSend: beforeSend,
         success: (responseData) => {
@@ -547,13 +549,14 @@ async function sendData(options) {
 }
 // Send form data
 async function sendFormData(options) {
-    const { url, data, method = 'POST', headers, cache, mode, success, errorCallback, beforeSend } = options;
+    const { url, data, method = 'POST', headers, cache, mode, credentials, success, errorCallback, beforeSend } = options;
     const fetchOptions = {
         url: url,
         method: method,
         headers: headers,
         cache: cache,
         mode: mode,
+        credentials: credentials,
         body: encodeFormData(data),
         beforeSend: beforeSend,
         success: (responseData) => {

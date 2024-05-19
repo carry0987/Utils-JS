@@ -9,6 +9,7 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
         headers = {},
         cache = 'no-cache',
         mode = 'cors',
+        credentials = 'same-origin',
         body = null,
         beforeSend = null,
         success = null,
@@ -20,7 +21,8 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
         method: method,
         mode: mode,
         headers: initHeaders,
-        cache: cache
+        cache: cache,
+        credentials: credentials
     };
 
     if (body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
@@ -62,7 +64,7 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
 
 // Send data
 export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
-    const { url, data, method = 'POST', headers, cache, mode, success, errorCallback, beforeSend} = options;
+    const { url, data, method = 'POST', headers, cache, mode, credentials, success, errorCallback, beforeSend} = options;
 
     const fetchOptions: FetchOptions = {
         url: url,
@@ -70,6 +72,7 @@ export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
         headers: headers,
         cache: cache,
         mode: mode,
+        credentials: credentials,
         body: encodeFormData(data),
         beforeSend: beforeSend,
         success: (responseData: T) => {
@@ -85,7 +88,7 @@ export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
 
 // Send form data
 export async function sendFormData<T>(options: SendFormDataOptions): Promise<boolean> {
-    const { url, data, method = 'POST', headers, cache, mode, success, errorCallback, beforeSend } = options;
+    const { url, data, method = 'POST', headers, cache, mode, credentials, success, errorCallback, beforeSend } = options;
 
     const fetchOptions: FetchOptions = {
         url: url,
@@ -93,6 +96,7 @@ export async function sendFormData<T>(options: SendFormDataOptions): Promise<boo
         headers: headers,
         cache: cache,
         mode: mode,
+        credentials: credentials,
         body: encodeFormData(data),
         beforeSend: beforeSend,
         success: (responseData: T) => {
