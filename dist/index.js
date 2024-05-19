@@ -1,4 +1,4 @@
-const version = '3.3.8';
+const version = '3.3.9';
 
 function reportError(...error) {
     console.error(...error);
@@ -192,9 +192,9 @@ function deepMerge(target, ...sources) {
                 const sourceKey = key;
                 const value = source[sourceKey];
                 const targetKey = key;
-                if (isObject(value)) {
+                if (isObject(value) || isArray(value)) {
                     if (!target[targetKey] || typeof target[targetKey] !== 'object') {
-                        target[targetKey] = {};
+                        target[targetKey] = Array.isArray(value) ? [] : {};
                     }
                     deepMerge(target[targetKey], value);
                 }
@@ -208,7 +208,7 @@ function deepMerge(target, ...sources) {
 }
 function deepClone(obj) {
     let clone;
-    if (Array.isArray(obj)) {
+    if (isArray(obj)) {
         clone = obj.map((item) => deepClone(item));
     }
     else if (isObject(obj)) {

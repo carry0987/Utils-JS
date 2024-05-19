@@ -48,9 +48,9 @@ export function deepMerge<T>(target: T, ...sources: Partial<T>[]): T {
                 const sourceKey = key as keyof Partial<T>;
                 const value = source[sourceKey];
                 const targetKey = key as keyof T;
-                if (isObject(value)) {
+                if (isObject(value) || isArray(value)) {
                     if (!target[targetKey] || typeof target[targetKey] !== 'object') {
-                        target[targetKey] = {} as any;
+                        target[targetKey] = Array.isArray(value) ? [] : {} as any;
                     }
                     deepMerge(target[targetKey] as any, value as any);
                 } else {
@@ -65,7 +65,7 @@ export function deepMerge<T>(target: T, ...sources: Partial<T>[]): T {
 
 export function deepClone<T>(obj: T): T {
     let clone: any;
-    if (Array.isArray(obj)) {
+    if (isArray(obj)) {
         clone = obj.map((item) => deepClone(item));
     } else if (isObject(obj)) {
         clone = { ...obj };
