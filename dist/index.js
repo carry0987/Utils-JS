@@ -1,4 +1,4 @@
-const version = '3.3.9';
+const version = '3.3.10';
 
 function reportError(...error) {
     console.error(...error);
@@ -286,6 +286,21 @@ function getUrlParam(sParam, url = window.location.href) {
     const paramValue = params.get(paramName);
     return paramValue === null ? null : decodeURIComponent(paramValue);
 }
+function setUrlParams(url, params, overwrite = true) {
+    const urlObj = new URL(url);
+    // Iterate over params object keys and set params
+    for (const [paramName, paramValue] of Object.entries(params)) {
+        // Convert paramValue to string, as URLSearchParams only accepts strings
+        const valueStr = paramValue === null ? '' : String(paramValue);
+        // If overwrite is false and param already exists, skip setting it
+        if (!overwrite && urlObj.searchParams.has(paramName)) {
+            continue;
+        }
+        // Set the parameter value
+        urlObj.searchParams.set(paramName, valueStr);
+    }
+    return urlObj.toString();
+}
 
 var common = /*#__PURE__*/Object.freeze({
     __proto__: null,
@@ -307,6 +322,7 @@ var common = /*#__PURE__*/Object.freeze({
     replaceRule: replaceRule,
     setReplaceRule: setReplaceRule,
     setStylesheetId: setStylesheetId,
+    setUrlParams: setUrlParams,
     get stylesheetId () { return stylesheetId; }
 });
 
@@ -500,6 +516,7 @@ var formUtils = /*#__PURE__*/Object.freeze({
 // Fetch API
 async function doFetch(options) {
     const { url, method = 'GET', headers = {}, cache = 'no-cache', mode = 'cors', credentials = 'same-origin', body = null, beforeSend = null, success = null, error = null, } = options;
+    let requestURL = url;
     let initHeaders = headers instanceof Headers ? headers : new Headers(headers);
     let init = {
         method: method,
@@ -508,7 +525,10 @@ async function doFetch(options) {
         cache: cache,
         credentials: credentials
     };
-    if (body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
+    if (body !== null && method.toUpperCase() === 'GET') {
+        requestURL = setUrlParams(typeof url === 'string' ? url : url.toString(), body, true);
+    }
+    else if (body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
         let data = body;
         if (!(body instanceof FormData)) {
             data = JSON.stringify(body);
@@ -521,11 +541,11 @@ async function doFetch(options) {
     }
     // Handle different types of URL
     let request;
-    if (typeof url === 'string' || url instanceof URL) {
-        request = new Request(url, init);
+    if (typeof requestURL === 'string' || requestURL instanceof URL) {
+        request = new Request(requestURL, init);
     }
-    else if (url instanceof Request) {
-        request = url;
+    else if (requestURL instanceof Request) {
+        request = requestURL;
     }
     else {
         throw new Error('Invalid URL type');
@@ -605,4 +625,4 @@ var interfaces = /*#__PURE__*/Object.freeze({
     __proto__: null
 });
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParams, storageUtils, stylesheetId, throwError, toggleClass, version };

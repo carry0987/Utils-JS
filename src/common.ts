@@ -1,4 +1,5 @@
 import { getElem, createElem } from './module/domUtils';
+import { URLParams } from './interface/interfaces';
 import { ReplaceRule, StylesObject } from './type/types';
 
 export let stylesheetId: string = 'utils-style';
@@ -152,4 +153,21 @@ export function getUrlParam(sParam: string, url: string = window.location.href):
     const paramValue = params.get(paramName);
 
     return paramValue === null ? null : decodeURIComponent(paramValue);
+}
+
+export function setUrlParams(url: string, params: URLParams, overwrite: boolean = true): string {
+    const urlObj = new URL(url);
+    // Iterate over params object keys and set params
+    for (const [paramName, paramValue] of Object.entries(params)) {
+        // Convert paramValue to string, as URLSearchParams only accepts strings
+        const valueStr = paramValue === null ? '' : String(paramValue);
+        // If overwrite is false and param already exists, skip setting it
+        if (!overwrite && urlObj.searchParams.has(paramName)) {
+            continue;
+        }
+        // Set the parameter value
+        urlObj.searchParams.set(paramName, valueStr);
+    }
+
+    return urlObj.toString();
 }

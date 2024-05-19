@@ -1,3 +1,7 @@
+export interface URLParams {
+    [key: string]: string | number | boolean | null;
+}
+
 export interface FetchOptions {
     url: string | Request | URL;
     method?: string;

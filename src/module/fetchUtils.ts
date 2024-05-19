@@ -1,4 +1,5 @@
 import { encodeFormData } from './formUtils';
+import { setUrlParams } from '../common'; 
 import { FetchOptions, SendFormDataOptions } from '../interface/interfaces';
 
 // Fetch API
@@ -16,6 +17,7 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
         error = null,
     } = options;
 
+    let requestURL: string | Request | URL = url;
     let initHeaders = headers instanceof Headers ? headers : new Headers(headers);
     let init: RequestInit = {
         method: method,
@@ -25,7 +27,9 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
         credentials: credentials
     };
 
-    if (body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
+    if (body !== null && method.toUpperCase() === 'GET') {
+        requestURL = setUrlParams(typeof url === 'string' ? url : url.toString(), body as Record<string, string | number>, true);
+    } else if (body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
         let data = body;
         if (!(body instanceof FormData)) {
             data = JSON.stringify(body);
@@ -39,10 +43,10 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
 
     // Handle different types of URL
     let request: Request;
-    if (typeof url === 'string' || url instanceof URL) {
-        request = new Request(url, init);
-    } else if (url instanceof Request) {
-        request = url;
+    if (typeof requestURL === 'string' || requestURL instanceof URL) {
+        request = new Request(requestURL, init);
+    } else if (requestURL instanceof Request) {
+        request = requestURL;
     } else {
         throw new Error('Invalid URL type');
     }

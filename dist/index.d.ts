@@ -1,5 +1,53 @@
 declare const version: string;
 
+interface URLParams {
+    [key: string]: string | number | boolean | null;
+}
+interface FetchOptions {
+    url: string | Request | URL;
+    method?: string;
+    headers?: HeadersInit;
+    cache?: RequestCache;
+    mode?: RequestMode;
+    credentials?: RequestCredentials;
+    body?: BodyInit | Record<string, unknown>;
+    beforeSend?: () => void;
+    success?: (data: any) => void;
+    error?: (error: any) => void;
+}
+interface FormDataOptions {
+    data: Record<string, any>;
+    parentKey?: string;
+}
+interface SendFormDataOptions {
+    url: string | Request | URL;
+    data: Record<string, any>;
+    method?: string;
+    headers?: HeadersInit;
+    cache?: RequestCache;
+    mode?: RequestMode;
+    credentials?: RequestCredentials;
+    beforeSend?: () => void;
+    success?: (result: any) => void;
+    errorCallback?: (error: any) => void;
+}
+interface CookieOptions {
+    expires?: Date;
+    path?: string;
+    domain?: string;
+    secure?: boolean;
+    sameSite?: 'Strict' | 'Lax' | 'None';
+}
+
+type interfaces_CookieOptions = CookieOptions;
+type interfaces_FetchOptions = FetchOptions;
+type interfaces_FormDataOptions = FormDataOptions;
+type interfaces_SendFormDataOptions = SendFormDataOptions;
+type interfaces_URLParams = URLParams;
+declare namespace interfaces {
+  export type { interfaces_CookieOptions as CookieOptions, interfaces_FetchOptions as FetchOptions, interfaces_FormDataOptions as FormDataOptions, interfaces_SendFormDataOptions as SendFormDataOptions, interfaces_URLParams as URLParams };
+}
+
 type Extension = Record<string, unknown>;
 type ReplaceRule = {
     from: string;
@@ -55,6 +103,7 @@ declare function compatInsertRule(stylesheet: CSSStyleSheet, selector: string, c
 declare function removeStylesheet(id?: string | null): void;
 declare function generateRandom(length?: number): string;
 declare function getUrlParam(sParam: string, url?: string): string | null;
+declare function setUrlParams(url: string, params: URLParams, overwrite?: boolean): string;
 
 declare const common_buildRules: typeof buildRules;
 declare const common_compatInsertRule: typeof compatInsertRule;
@@ -74,9 +123,10 @@ declare const common_removeStylesheet: typeof removeStylesheet;
 declare const common_replaceRule: typeof replaceRule;
 declare const common_setReplaceRule: typeof setReplaceRule;
 declare const common_setStylesheetId: typeof setStylesheetId;
+declare const common_setUrlParams: typeof setUrlParams;
 declare const common_stylesheetId: typeof stylesheetId;
 declare namespace common {
-  export { common_buildRules as buildRules, common_compatInsertRule as compatInsertRule, common_deepClone as deepClone, common_deepMerge as deepMerge, common_generateRandom as generateRandom, common_getUrlParam as getUrlParam, common_injectStylesheet as injectStylesheet, common_isArray as isArray, common_isBoolean as isBoolean, common_isEmpty as isEmpty, common_isFunction as isFunction, common_isNumber as isNumber, common_isObject as isObject, common_isString as isString, common_removeStylesheet as removeStylesheet, common_replaceRule as replaceRule, common_setReplaceRule as setReplaceRule, common_setStylesheetId as setStylesheetId, common_stylesheetId as stylesheetId };
+  export { common_buildRules as buildRules, common_compatInsertRule as compatInsertRule, common_deepClone as deepClone, common_deepMerge as deepMerge, common_generateRandom as generateRandom, common_getUrlParam as getUrlParam, common_injectStylesheet as injectStylesheet, common_isArray as isArray, common_isBoolean as isBoolean, common_isEmpty as isEmpty, common_isFunction as isFunction, common_isNumber as isNumber, common_isObject as isObject, common_isString as isString, common_removeStylesheet as removeStylesheet, common_replaceRule as replaceRule, common_setReplaceRule as setReplaceRule, common_setStylesheetId as setStylesheetId, common_setUrlParams as setUrlParams, common_stylesheetId as stylesheetId };
 }
 
 declare function reportError(...error: any[]): void;
@@ -122,50 +172,6 @@ declare const domUtils_removeClass: typeof removeClass;
 declare const domUtils_toggleClass: typeof toggleClass;
 declare namespace domUtils {
   export { domUtils_addClass as addClass, domUtils_createElem as createElem, domUtils_findChild as findChild, domUtils_findChilds as findChilds, domUtils_findParent as findParent, domUtils_findParents as findParents, domUtils_getElem as getElem, domUtils_hasChild as hasChild, domUtils_hasClass as hasClass, domUtils_hasParent as hasParent, domUtils_insertAfter as insertAfter, domUtils_insertBefore as insertBefore, domUtils_removeClass as removeClass, domUtils_toggleClass as toggleClass };
-}
-
-interface FetchOptions {
-    url: string | Request | URL;
-    method?: string;
-    headers?: HeadersInit;
-    cache?: RequestCache;
-    mode?: RequestMode;
-    credentials?: RequestCredentials;
-    body?: BodyInit | Record<string, unknown>;
-    beforeSend?: () => void;
-    success?: (data: any) => void;
-    error?: (error: any) => void;
-}
-interface FormDataOptions {
-    data: Record<string, any>;
-    parentKey?: string;
-}
-interface SendFormDataOptions {
-    url: string | Request | URL;
-    data: Record<string, any>;
-    method?: string;
-    headers?: HeadersInit;
-    cache?: RequestCache;
-    mode?: RequestMode;
-    credentials?: RequestCredentials;
-    beforeSend?: () => void;
-    success?: (result: any) => void;
-    errorCallback?: (error: any) => void;
-}
-interface CookieOptions {
-    expires?: Date;
-    path?: string;
-    domain?: string;
-    secure?: boolean;
-    sameSite?: 'Strict' | 'Lax' | 'None';
-}
-
-type interfaces_CookieOptions = CookieOptions;
-type interfaces_FetchOptions = FetchOptions;
-type interfaces_FormDataOptions = FormDataOptions;
-type interfaces_SendFormDataOptions = SendFormDataOptions;
-declare namespace interfaces {
-  export type { interfaces_CookieOptions as CookieOptions, interfaces_FetchOptions as FetchOptions, interfaces_FormDataOptions as FormDataOptions, interfaces_SendFormDataOptions as SendFormDataOptions };
 }
 
 declare function setLocalValue(key: string, value: any, stringify?: boolean): void;
@@ -226,4 +232,4 @@ declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_encodeFormData as encodeFormData };
 }
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParams, storageUtils, stylesheetId, throwError, toggleClass, version };
