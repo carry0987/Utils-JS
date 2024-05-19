@@ -77,7 +77,7 @@ export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
         cache: cache,
         mode: mode,
         credentials: credentials,
-        body: encode ? encodeFormData(data) : data,
+        body: (encode && method.toUpperCase() !== 'GET') ? encodeFormData(data) : data,
         beforeSend: beforeSend,
         success: (responseData: T) => {
             success?.(responseData);
@@ -115,3 +115,9 @@ export async function sendFormData<T>(options: SendFormDataOptions): Promise<boo
         .then(() => true)
         .catch(() => false);
 }
+
+// Alias for sendData
+export const fetchData = sendData;
+
+// Alias for sendFormData
+export const sendForm = sendFormData;

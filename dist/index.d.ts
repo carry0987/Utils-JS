@@ -216,12 +216,16 @@ declare namespace eventUtils {
 declare function doFetch<T>(options: FetchOptions): Promise<T>;
 declare function sendData<T>(options: SendFormDataOptions): Promise<T>;
 declare function sendFormData<T>(options: SendFormDataOptions): Promise<boolean>;
+declare const fetchData: typeof sendData;
+declare const sendForm: typeof sendFormData;
 
 declare const fetchUtils_doFetch: typeof doFetch;
+declare const fetchUtils_fetchData: typeof fetchData;
 declare const fetchUtils_sendData: typeof sendData;
+declare const fetchUtils_sendForm: typeof sendForm;
 declare const fetchUtils_sendFormData: typeof sendFormData;
 declare namespace fetchUtils {
-  export { fetchUtils_doFetch as doFetch, fetchUtils_sendData as sendData, fetchUtils_sendFormData as sendFormData };
+  export { fetchUtils_doFetch as doFetch, fetchUtils_fetchData as fetchData, fetchUtils_sendData as sendData, fetchUtils_sendForm as sendForm, fetchUtils_sendFormData as sendFormData };
 }
 
 declare function appendFormData(options: FormDataOptions, formData?: FormData): FormData;
@@ -233,4 +237,4 @@ declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_encodeFormData as encodeFormData };
 }
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, storageUtils, stylesheetId, throwError, toggleClass, version };
