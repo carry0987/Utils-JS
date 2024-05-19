@@ -31,7 +31,17 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
         }
         init.body = data as BodyInit;
     }
-    let request = new Request(url, init);
+
+    // Handle different types of URL
+    let request: Request;
+    if (typeof url === 'string' || url instanceof URL) {
+        request = new Request(url, init);
+    } else if (url instanceof Request) {
+        request = url;
+    } else {
+        throw new Error('Invalid URL type');
+    }
+
     try {
         const createRequest = await new Promise<Request>((resolve) => {
             beforeSend?.();

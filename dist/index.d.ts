@@ -123,7 +123,7 @@ declare namespace domUtils {
 }
 
 interface FetchOptions {
-    url: string;
+    url: string | Request | URL;
     method?: string;
     headers?: HeadersInit;
     body?: BodyInit | Record<string, unknown>;
@@ -136,7 +136,7 @@ interface FormDataOptions {
     parentKey?: string;
 }
 interface SendFormDataOptions {
-    url: string;
+    url: string | Request | URL;
     data: Record<string, any>;
     method?: string;
     beforeSend?: () => void;

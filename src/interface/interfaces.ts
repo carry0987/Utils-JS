@@ -1,5 +1,5 @@
 export interface FetchOptions {
-    url: string;
+    url: string | Request | URL;
     method?: string;
     headers?: HeadersInit;
     body?: BodyInit | Record<string, unknown>;
@@ -14,7 +14,7 @@ export interface FormDataOptions {
 }
 
 export interface SendFormDataOptions {
-    url: string;
+    url: string | Request | URL;
     data: Record<string, any>;
     method?: string;
     beforeSend?: () => void;
