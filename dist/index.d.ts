@@ -139,6 +139,7 @@ interface SendFormDataOptions {
     url: string | Request | URL;
     data: Record<string, any>;
     method?: string;
+    headers?: HeadersInit;
     beforeSend?: () => void;
     success?: (result: any) => void;
     errorCallback?: (error: any) => void;

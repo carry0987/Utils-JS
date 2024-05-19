@@ -59,11 +59,12 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
 
 // Send data
 export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
-    const { url, data, method = 'POST', success, errorCallback, beforeSend} = options;
+    const { url, data, method = 'POST', headers, success, errorCallback, beforeSend} = options;
 
     const fetchOptions: FetchOptions = {
         url: url,
         method: method,
+        headers: headers,
         body: encodeFormData(data),
         beforeSend: beforeSend,
         success: (responseData: T) => {
@@ -79,11 +80,12 @@ export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
 
 // Send form data
 export async function sendFormData<T>(options: SendFormDataOptions): Promise<boolean> {
-    const { url, data, method = 'POST', success, errorCallback, beforeSend } = options;
+    const { url, data, method = 'POST', headers, success, errorCallback, beforeSend } = options;
 
     const fetchOptions: FetchOptions = {
         url: url,
         method: method,
+        headers: headers,
         body: encodeFormData(data),
         beforeSend: beforeSend,
         success: (responseData: T) => {

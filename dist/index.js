@@ -1,4 +1,4 @@
-const version = '3.3.4';
+const version = '3.3.5';
 
 function reportError(...error) {
     console.error(...error);
@@ -526,10 +526,11 @@ async function doFetch(options) {
 }
 // Send data
 async function sendData(options) {
-    const { url, data, method = 'POST', success, errorCallback, beforeSend } = options;
+    const { url, data, method = 'POST', headers, success, errorCallback, beforeSend } = options;
     const fetchOptions = {
         url: url,
         method: method,
+        headers: headers,
         body: encodeFormData(data),
         beforeSend: beforeSend,
         success: (responseData) => {
@@ -543,10 +544,11 @@ async function sendData(options) {
 }
 // Send form data
 async function sendFormData(options) {
-    const { url, data, method = 'POST', success, errorCallback, beforeSend } = options;
+    const { url, data, method = 'POST', headers, success, errorCallback, beforeSend } = options;
     const fetchOptions = {
         url: url,
         method: method,
+        headers: headers,
         body: encodeFormData(data),
         beforeSend: beforeSend,
         success: (responseData) => {
