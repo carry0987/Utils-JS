@@ -155,7 +155,7 @@ export function getUrlParam(sParam: string, url: string = window.location.href):
     return paramValue === null ? null : decodeURIComponent(paramValue);
 }
 
-export function setUrlParams(url: string, params: URLParams, overwrite: boolean = true): string {
+export function setUrlParam(url: string, params: URLParams, overwrite: boolean = true): string {
     const urlObj = new URL(url);
     // Iterate over params object keys and set params
     for (const [paramName, paramValue] of Object.entries(params)) {

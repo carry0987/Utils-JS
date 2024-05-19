@@ -1,4 +1,4 @@
-const version = '3.3.10';
+const version = '3.3.11';
 
 function reportError(...error) {
     console.error(...error);
@@ -286,7 +286,7 @@ function getUrlParam(sParam, url = window.location.href) {
     const paramValue = params.get(paramName);
     return paramValue === null ? null : decodeURIComponent(paramValue);
 }
-function setUrlParams(url, params, overwrite = true) {
+function setUrlParam(url, params, overwrite = true) {
     const urlObj = new URL(url);
     // Iterate over params object keys and set params
     for (const [paramName, paramValue] of Object.entries(params)) {
@@ -322,7 +322,7 @@ var common = /*#__PURE__*/Object.freeze({
     replaceRule: replaceRule,
     setReplaceRule: setReplaceRule,
     setStylesheetId: setStylesheetId,
-    setUrlParams: setUrlParams,
+    setUrlParam: setUrlParam,
     get stylesheetId () { return stylesheetId; }
 });
 
@@ -526,7 +526,7 @@ async function doFetch(options) {
         credentials: credentials
     };
     if (body !== null && method.toUpperCase() === 'GET') {
-        requestURL = setUrlParams(typeof url === 'string' ? url : url.toString(), body, true);
+        requestURL = setUrlParam(typeof url === 'string' ? url : url.toString(), body, true);
     }
     else if (body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
         let data = body;
@@ -625,4 +625,4 @@ var interfaces = /*#__PURE__*/Object.freeze({
     __proto__: null
 });
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParams, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, storageUtils, stylesheetId, throwError, toggleClass, version };
