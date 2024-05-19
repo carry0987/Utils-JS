@@ -1,4 +1,4 @@
-const version = '3.3.5';
+const version = '3.3.6';
 
 function reportError(...error) {
     console.error(...error);
@@ -480,12 +480,13 @@ var formUtils = /*#__PURE__*/Object.freeze({
 
 // Fetch API
 async function doFetch(options) {
-    const { url, method = 'GET', headers = {}, body = null, beforeSend = null, success = null, error = null, } = options;
+    const { url, method = 'GET', headers = {}, cache = 'no-cache', mode = 'cors', body = null, beforeSend = null, success = null, error = null, } = options;
     let initHeaders = headers instanceof Headers ? headers : new Headers(headers);
     let init = {
-        method,
-        mode: 'cors',
-        headers: initHeaders
+        method: method,
+        mode: mode,
+        headers: initHeaders,
+        cache: cache
     };
     if (body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
         let data = body;
@@ -526,11 +527,13 @@ async function doFetch(options) {
 }
 // Send data
 async function sendData(options) {
-    const { url, data, method = 'POST', headers, success, errorCallback, beforeSend } = options;
+    const { url, data, method = 'POST', headers, cache, mode, success, errorCallback, beforeSend } = options;
     const fetchOptions = {
         url: url,
         method: method,
         headers: headers,
+        cache: cache,
+        mode: mode,
         body: encodeFormData(data),
         beforeSend: beforeSend,
         success: (responseData) => {
@@ -544,11 +547,13 @@ async function sendData(options) {
 }
 // Send form data
 async function sendFormData(options) {
-    const { url, data, method = 'POST', headers, success, errorCallback, beforeSend } = options;
+    const { url, data, method = 'POST', headers, cache, mode, success, errorCallback, beforeSend } = options;
     const fetchOptions = {
         url: url,
         method: method,
         headers: headers,
+        cache: cache,
+        mode: mode,
         body: encodeFormData(data),
         beforeSend: beforeSend,
         success: (responseData) => {

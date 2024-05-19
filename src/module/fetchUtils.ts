@@ -7,6 +7,8 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
         url,
         method = 'GET',
         headers = {},
+        cache = 'no-cache',
+        mode = 'cors',
         body = null,
         beforeSend = null,
         success = null,
@@ -15,9 +17,10 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
 
     let initHeaders = headers instanceof Headers ? headers : new Headers(headers);
     let init: RequestInit = {
-        method,
-        mode: 'cors',
-        headers: initHeaders
+        method: method,
+        mode: mode,
+        headers: initHeaders,
+        cache: cache
     };
 
     if (body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
@@ -59,12 +62,14 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
 
 // Send data
 export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
-    const { url, data, method = 'POST', headers, success, errorCallback, beforeSend} = options;
+    const { url, data, method = 'POST', headers, cache, mode, success, errorCallback, beforeSend} = options;
 
     const fetchOptions: FetchOptions = {
         url: url,
         method: method,
         headers: headers,
+        cache: cache,
+        mode: mode,
         body: encodeFormData(data),
         beforeSend: beforeSend,
         success: (responseData: T) => {
@@ -80,12 +85,14 @@ export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
 
 // Send form data
 export async function sendFormData<T>(options: SendFormDataOptions): Promise<boolean> {
-    const { url, data, method = 'POST', headers, success, errorCallback, beforeSend } = options;
+    const { url, data, method = 'POST', headers, cache, mode, success, errorCallback, beforeSend } = options;
 
     const fetchOptions: FetchOptions = {
         url: url,
         method: method,
         headers: headers,
+        cache: cache,
+        mode: mode,
         body: encodeFormData(data),
         beforeSend: beforeSend,
         success: (responseData: T) => {

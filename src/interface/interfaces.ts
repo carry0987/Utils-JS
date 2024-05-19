@@ -2,6 +2,8 @@ export interface FetchOptions {
     url: string | Request | URL;
     method?: string;
     headers?: HeadersInit;
+    cache?: RequestCache;
+    mode?: RequestMode;
     body?: BodyInit | Record<string, unknown>;
     beforeSend?: () => void;
     success?: (data: any) => void;
@@ -18,6 +20,8 @@ export interface SendFormDataOptions {
     data: Record<string, any>;
     method?: string;
     headers?: HeadersInit;
+    cache?: RequestCache;
+    mode?: RequestMode;
     beforeSend?: () => void;
     success?: (result: any) => void;
     errorCallback?: (error: any) => void;
