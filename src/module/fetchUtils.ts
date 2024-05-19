@@ -14,7 +14,7 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
         body = null,
         beforeSend = null,
         success = null,
-        error = null,
+        error = null
     } = options;
 
     let requestURL: string | Request | URL = url;
@@ -68,7 +68,7 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
 
 // Send data
 export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
-    const { url, data, method = 'POST', headers, cache, mode, credentials, success, errorCallback, beforeSend} = options;
+    const { url, data, method = 'POST', headers, cache, mode, credentials, success, errorCallback, beforeSend, encode = true } = options;
 
     const fetchOptions: FetchOptions = {
         url: url,
@@ -77,7 +77,7 @@ export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
         cache: cache,
         mode: mode,
         credentials: credentials,
-        body: encodeFormData(data),
+        body: encode ? encodeFormData(data) : data,
         beforeSend: beforeSend,
         success: (responseData: T) => {
             success?.(responseData);

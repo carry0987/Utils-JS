@@ -31,6 +31,7 @@ export interface SendFormDataOptions {
     beforeSend?: () => void;
     success?: (result: any) => void;
     errorCallback?: (error: any) => void;
+    encode?: boolean;
 }
 
 export interface CookieOptions {
