@@ -1,6 +1,6 @@
-import { getElem, createElem } from './module/domUtils';
-import { URLParams } from './interface/interfaces';
-import { ReplaceRule, StylesObject } from './type/types';
+import { getElem, createElem } from '../module/domUtils';
+import { URLParams } from '../interface/interfaces';
+import { ReplaceRule, StylesObject } from '../type/types';
 
 export let stylesheetId: string = 'utils-style';
 export const replaceRule: ReplaceRule = {

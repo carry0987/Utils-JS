@@ -1,5 +1,5 @@
 import { encodeFormData } from './formUtils';
-import { setUrlParam } from '../common'; 
+import { setUrlParam } from '../component/common'; 
 import { FetchOptions, SendFormDataOptions } from '../interface/interfaces';
 
 // Fetch API

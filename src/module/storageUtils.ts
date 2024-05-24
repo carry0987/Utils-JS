@@ -1,4 +1,4 @@
-import { deepMerge } from '../common';
+import { deepMerge } from '../component/common';
 import { reportError } from './errorUtils';
 import { CookieOptions } from '../interface/interfaces';
 

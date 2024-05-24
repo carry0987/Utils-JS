@@ -3,13 +3,13 @@
     "module": "ESNext",
     "target": "ESNext",
     "moduleResolution": "node",
+    "importHelpers": true,
     "strict": true,
     "esModuleInterop": true,
     "declaration": true,
     "outDir": "./dist",
     "declarationDir": "dist/dts/"
   },
-  "importHelpers": true,
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }
