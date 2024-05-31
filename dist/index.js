@@ -1,4 +1,4 @@
-const version = '3.4.0';
+const version = '3.4.1';
 
 function reportError(...error) {
     console.error(...error);
@@ -561,8 +561,9 @@ async function doFetch(options) {
         return responseData;
     }
     catch (caughtError) {
-        error?.(caughtError);
-        throw caughtError;
+        const errorObj = caughtError instanceof Error ? caughtError : new Error(String(caughtError));
+        error?.(errorObj);
+        throw errorObj;
     }
 }
 // Send data

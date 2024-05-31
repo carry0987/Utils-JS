@@ -3,7 +3,7 @@ declare const version: string;
 interface URLParams {
     [key: string]: string | number | boolean | null;
 }
-interface FetchParams {
+interface FetchParams<T = any> {
     url: string | Request | URL;
     method?: string;
     headers?: HeadersInit;
@@ -11,13 +11,13 @@ interface FetchParams {
     mode?: RequestMode;
     credentials?: RequestCredentials;
     beforeSend?: () => void;
-    success?: (data: any) => void;
-    error?: (error: any) => void;
+    success?: (data: T) => void;
+    error?: (error: Error) => void;
 }
-interface FetchOptions extends FetchParams {
+interface FetchOptions<T = any> extends FetchParams<T> {
     body?: BodyInit | Record<string, unknown>;
 }
-interface SendFormDataOptions extends FetchParams {
+interface SendFormDataOptions<T = any> extends FetchParams<T> {
     data: Record<string, any>;
     encode?: boolean;
 }
@@ -34,10 +34,10 @@ interface CookieOptions {
 }
 
 type interfaces_CookieOptions = CookieOptions;
-type interfaces_FetchOptions = FetchOptions;
-type interfaces_FetchParams = FetchParams;
+type interfaces_FetchOptions<T = any> = FetchOptions<T>;
+type interfaces_FetchParams<T = any> = FetchParams<T>;
 type interfaces_FormDataOptions = FormDataOptions;
-type interfaces_SendFormDataOptions = SendFormDataOptions;
+type interfaces_SendFormDataOptions<T = any> = SendFormDataOptions<T>;
 type interfaces_URLParams = URLParams;
 declare namespace interfaces {
   export type { interfaces_CookieOptions as CookieOptions, interfaces_FetchOptions as FetchOptions, interfaces_FetchParams as FetchParams, interfaces_FormDataOptions as FormDataOptions, interfaces_SendFormDataOptions as SendFormDataOptions, interfaces_URLParams as URLParams };
@@ -207,9 +207,9 @@ declare namespace eventUtils {
   export { eventUtils_addEventListener as addEventListener, eventUtils_createEvent as createEvent, eventUtils_dispatchEvent as dispatchEvent, eventUtils_removeEventListener as removeEventListener };
 }
 
-declare function doFetch<T>(options: FetchOptions): Promise<T>;
-declare function sendData<T>(options: SendFormDataOptions): Promise<T>;
-declare function sendFormData<T>(options: SendFormDataOptions): Promise<boolean>;
+declare function doFetch<T>(options: FetchOptions<T>): Promise<T>;
+declare function sendData<T>(options: SendFormDataOptions<T>): Promise<T>;
+declare function sendFormData<T>(options: SendFormDataOptions<T>): Promise<boolean>;
 declare const fetchData: typeof sendData;
 declare const sendForm: typeof sendFormData;
 

@@ -3,7 +3,7 @@ import { setUrlParam } from '../component/common';
 import { FetchOptions, SendFormDataOptions } from '../interface/interfaces';
 
 // Fetch API
-export async function doFetch<T>(options: FetchOptions): Promise<T> {
+export async function doFetch<T>(options: FetchOptions<T>): Promise<T> {
     const {
         url,
         method = 'GET',
@@ -60,17 +60,18 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
         const responseData = await response.json() as T;
         success?.(responseData);
         return responseData;
-    } catch (caughtError) {
-        error?.(caughtError);
-        throw caughtError;
+    } catch (caughtError: unknown) {
+        const errorObj = caughtError instanceof Error ? caughtError : new Error(String(caughtError));
+        error?.(errorObj);
+        throw errorObj;
     }
 }
 
 // Send data
-export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
+export async function sendData<T>(options: SendFormDataOptions<T>): Promise<T> {
     const { url, data, method = 'POST', headers, cache, mode, credentials, success, error, beforeSend, encode = true } = options;
 
-    const fetchOptions: FetchOptions = {
+    const fetchOptions: FetchOptions<T> = {
         url: url,
         method: method,
         headers: headers,
@@ -82,7 +83,7 @@ export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
         success: (responseData: T) => {
             success?.(responseData);
         },
-        error: (caughtError) => {
+        error: (caughtError: Error) => {
             error?.(caughtError);
         }
     };
@@ -91,10 +92,10 @@ export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
 }
 
 // Send form data
-export async function sendFormData<T>(options: SendFormDataOptions): Promise<boolean> {
+export async function sendFormData<T>(options: SendFormDataOptions<T>): Promise<boolean> {
     const { url, data, method = 'POST', headers, cache, mode, credentials, success, error, beforeSend } = options;
 
-    const fetchOptions: FetchOptions = {
+    const fetchOptions: FetchOptions<T> = {
         url: url,
         method: method,
         headers: headers,
@@ -106,7 +107,7 @@ export async function sendFormData<T>(options: SendFormDataOptions): Promise<boo
         success: (responseData: T) => {
             success?.(responseData);
         },
-        error: (caughtError) => {
+        error: (caughtError: Error) => {
             error?.(caughtError);
         }
     };
