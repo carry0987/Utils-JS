@@ -111,7 +111,7 @@ export async function sendFormData<T>(options: SendFormDataOptions): Promise<boo
         }
     };
 
-    return doFetch<any>(fetchOptions)
+    return doFetch<T>(fetchOptions)
         .then(() => true)
         .catch(() => false);
 }
