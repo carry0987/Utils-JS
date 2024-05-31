@@ -2,36 +2,30 @@ export interface URLParams {
     [key: string]: string | number | boolean | null;
 }
 
-export interface FetchOptions {
+export interface FetchParams {
     url: string | Request | URL;
     method?: string;
     headers?: HeadersInit;
     cache?: RequestCache;
     mode?: RequestMode;
     credentials?: RequestCredentials;
-    body?: BodyInit | Record<string, unknown>;
     beforeSend?: () => void;
     success?: (data: any) => void;
     error?: (error: any) => void;
+}
+
+export interface FetchOptions extends FetchParams {
+    body?: BodyInit | Record<string, unknown>;
+}
+
+export interface SendFormDataOptions extends FetchParams {
+    data: Record<string, any>;
+    encode?: boolean;
 }
 
 export interface FormDataOptions {
     data: Record<string, any>;
     parentKey?: string;
-}
-
-export interface SendFormDataOptions {
-    url: string | Request | URL;
-    data: Record<string, any>;
-    method?: string;
-    headers?: HeadersInit;
-    cache?: RequestCache;
-    mode?: RequestMode;
-    credentials?: RequestCredentials;
-    beforeSend?: () => void;
-    success?: (result: any) => void;
-    errorCallback?: (error: any) => void;
-    encode?: boolean;
 }
 
 export interface CookieOptions {

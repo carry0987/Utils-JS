@@ -3,34 +3,27 @@ declare const version: string;
 interface URLParams {
     [key: string]: string | number | boolean | null;
 }
-interface FetchOptions {
+interface FetchParams {
     url: string | Request | URL;
     method?: string;
     headers?: HeadersInit;
     cache?: RequestCache;
     mode?: RequestMode;
     credentials?: RequestCredentials;
-    body?: BodyInit | Record<string, unknown>;
     beforeSend?: () => void;
     success?: (data: any) => void;
     error?: (error: any) => void;
+}
+interface FetchOptions extends FetchParams {
+    body?: BodyInit | Record<string, unknown>;
+}
+interface SendFormDataOptions extends FetchParams {
+    data: Record<string, any>;
+    encode?: boolean;
 }
 interface FormDataOptions {
     data: Record<string, any>;
     parentKey?: string;
-}
-interface SendFormDataOptions {
-    url: string | Request | URL;
-    data: Record<string, any>;
-    method?: string;
-    headers?: HeadersInit;
-    cache?: RequestCache;
-    mode?: RequestMode;
-    credentials?: RequestCredentials;
-    beforeSend?: () => void;
-    success?: (result: any) => void;
-    errorCallback?: (error: any) => void;
-    encode?: boolean;
 }
 interface CookieOptions {
     expires?: Date;
@@ -42,11 +35,12 @@ interface CookieOptions {
 
 type interfaces_CookieOptions = CookieOptions;
 type interfaces_FetchOptions = FetchOptions;
+type interfaces_FetchParams = FetchParams;
 type interfaces_FormDataOptions = FormDataOptions;
 type interfaces_SendFormDataOptions = SendFormDataOptions;
 type interfaces_URLParams = URLParams;
 declare namespace interfaces {
-  export type { interfaces_CookieOptions as CookieOptions, interfaces_FetchOptions as FetchOptions, interfaces_FormDataOptions as FormDataOptions, interfaces_SendFormDataOptions as SendFormDataOptions, interfaces_URLParams as URLParams };
+  export type { interfaces_CookieOptions as CookieOptions, interfaces_FetchOptions as FetchOptions, interfaces_FetchParams as FetchParams, interfaces_FormDataOptions as FormDataOptions, interfaces_SendFormDataOptions as SendFormDataOptions, interfaces_URLParams as URLParams };
 }
 
 type Extension = Record<string, unknown>;

@@ -68,7 +68,7 @@ export async function doFetch<T>(options: FetchOptions): Promise<T> {
 
 // Send data
 export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
-    const { url, data, method = 'POST', headers, cache, mode, credentials, success, errorCallback, beforeSend, encode = true } = options;
+    const { url, data, method = 'POST', headers, cache, mode, credentials, success, error, beforeSend, encode = true } = options;
 
     const fetchOptions: FetchOptions = {
         url: url,
@@ -83,7 +83,7 @@ export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
             success?.(responseData);
         },
         error: (caughtError) => {
-            errorCallback?.(caughtError);
+            error?.(caughtError);
         }
     };
 
@@ -92,7 +92,7 @@ export async function sendData<T>(options: SendFormDataOptions): Promise<T> {
 
 // Send form data
 export async function sendFormData<T>(options: SendFormDataOptions): Promise<boolean> {
-    const { url, data, method = 'POST', headers, cache, mode, credentials, success, errorCallback, beforeSend } = options;
+    const { url, data, method = 'POST', headers, cache, mode, credentials, success, error, beforeSend } = options;
 
     const fetchOptions: FetchOptions = {
         url: url,
@@ -107,7 +107,7 @@ export async function sendFormData<T>(options: SendFormDataOptions): Promise<boo
             success?.(responseData);
         },
         error: (caughtError) => {
-            errorCallback?.(caughtError);
+            error?.(caughtError);
         }
     };
 
