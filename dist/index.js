@@ -1,4 +1,4 @@
-const version = '3.4.1';
+const version = '3.4.2';
 
 function reportError(...error) {
     console.error(...error);
@@ -194,7 +194,7 @@ function deepMerge(target, ...sources) {
                 const targetKey = key;
                 if (isObject(value) || isArray(value)) {
                     if (!target[targetKey] || typeof target[targetKey] !== 'object') {
-                        target[targetKey] = Array.isArray(value) ? [] : {};
+                        target[targetKey] = isArray(value) ? [] : {};
                     }
                     deepMerge(target[targetKey], value);
                 }

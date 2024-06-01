@@ -51,7 +51,7 @@ export function deepMerge<T>(target: T, ...sources: Partial<T>[]): T {
                 const targetKey = key as keyof T;
                 if (isObject(value) || isArray(value)) {
                     if (!target[targetKey] || typeof target[targetKey] !== 'object') {
-                        target[targetKey] = Array.isArray(value) ? [] : {} as any;
+                        target[targetKey] = isArray(value) ? [] : {} as any;
                     }
                     deepMerge(target[targetKey] as any, value as any);
                 } else {
