@@ -1,4 +1,4 @@
-const version = '3.4.4';
+const version = '3.4.5';
 
 function reportError(...error) {
     console.error(...error);
@@ -305,7 +305,14 @@ function removeStylesheet(id = null) {
     }
 }
 function generateRandom(length = 8) {
-    return Math.random().toString(36).substring(2, 2 + length);
+    let result = '';
+    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charactersLength);
+        result += characters[randomIndex];
+    }
+    return result;
 }
 function getUrlParam(sParam, url = window.location.href) {
     const isHashParam = sParam.startsWith('#');
@@ -503,7 +510,12 @@ var eventUtils = /*#__PURE__*/Object.freeze({
 // Append form data
 function appendFormData(options, formData = new FormData()) {
     const { data, parentKey = '' } = options;
-    if (data !== null && typeof data === 'object') {
+    if (data instanceof FormData) {
+        data.forEach((value, key) => {
+            formData.append(key, value);
+        });
+    }
+    else if (data !== null && typeof data === 'object') {
         // Check if it is Blob or File, if so, add directly
         if (data instanceof Blob || data instanceof File) {
             const formKey = parentKey || 'file'; // If no key is specified, the default is 'file'

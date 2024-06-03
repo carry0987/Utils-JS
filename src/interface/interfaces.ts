@@ -19,12 +19,12 @@ export interface FetchOptions<T = any> extends FetchParams<T> {
 }
 
 export interface SendFormDataOptions<T = any> extends FetchParams<T> {
-    data: Record<string, any>;
+    data: Record<string, any> | Blob | File | FormData;
     encode?: boolean;
 }
 
 export interface FormDataOptions {
-    data: Record<string, any>;
+    data: Record<string, any> | Blob | File | FormData | null;
     parentKey?: string;
 }
 

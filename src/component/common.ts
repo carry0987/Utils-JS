@@ -178,7 +178,16 @@ export function removeStylesheet(id: string | null = null): void {
 }
 
 export function generateRandom(length: number = 8): string {
-    return Math.random().toString(36).substring(2, 2 + length);
+    let result = '';
+    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charactersLength);
+        result += characters[randomIndex];
+    }
+
+    return result;
 }
 
 export function getUrlParam(sParam: string, url: string = window.location.href): string | null {

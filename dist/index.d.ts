@@ -18,11 +18,11 @@ interface FetchOptions<T = any> extends FetchParams<T> {
     body?: BodyInit | Record<string, unknown>;
 }
 interface SendFormDataOptions<T = any> extends FetchParams<T> {
-    data: Record<string, any>;
+    data: Record<string, any> | Blob | File | FormData;
     encode?: boolean;
 }
 interface FormDataOptions {
-    data: Record<string, any>;
+    data: Record<string, any> | Blob | File | FormData | null;
     parentKey?: string;
 }
 interface CookieOptions {
