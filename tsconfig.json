@@ -10,6 +10,6 @@
     "outDir": "./dist",
     "declarationDir": "dist/dts/"
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

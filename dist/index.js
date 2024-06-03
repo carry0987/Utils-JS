@@ -1,4 +1,4 @@
-const version = '3.4.3';
+const version = '3.4.4';
 
 function reportError(...error) {
     console.error(...error);
@@ -243,11 +243,20 @@ function deepClone(obj) {
     return clone;
 }
 function shallowClone(obj) {
-    if (isObject(obj)) {
-        return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
-    }
-    else if (isArray(obj)) {
-        return obj.slice();
+    if (isObject(obj) || isArray(obj)) {
+        // Recursively clone properties
+        const clone = isArray(obj) ? [] : Object.create(Object.getPrototypeOf(obj));
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                const value = obj[key];
+                clone[key] = isObject(value)
+                    ? shallowClone(value)
+                    : isArray(value)
+                        ? [...value]
+                        : value;
+            }
+        }
+        return clone;
     }
     return obj;
 }

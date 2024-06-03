@@ -103,10 +103,22 @@ export function deepClone<T>(obj: T): T {
 }
 
 export function shallowClone<T>(obj: T): T {
-    if (isObject(obj)) {
-        return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
-    } else if (isArray(obj)) {
-        return obj.slice() as unknown as T;
+    if (isObject(obj) || isArray(obj)) {
+        // Recursively clone properties
+        const clone = isArray(obj) ? [] : Object.create(Object.getPrototypeOf(obj));
+
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                const value = (obj as any)[key];
+                clone[key] = isObject(value) 
+                    ? shallowClone(value) 
+                    : isArray(value) 
+                        ? [...value] 
+                        : value;
+            }
+        }
+
+        return clone;
     }
 
     return obj;
