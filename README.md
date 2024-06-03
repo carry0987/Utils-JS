@@ -1,10 +1,10 @@
 # Utils-JS
-[![version](https://img.shields.io/npm/v/@carry0987/utils.svg)](https://www.npmjs.com/package/@carry0987/utils) [![CI](https://github.com/carry0987/Utils-JS/actions/workflows/ci.yml/badge.svg)]  
+[![version](https://img.shields.io/npm/v/@carry0987/utils.svg)](https://www.npmjs.com/package/@carry0987/utils) ![CI](https://github.com/carry0987/Utils-JS/actions/workflows/ci.yml/badge.svg)  
 A library for using common tools and alias methods
 
 ## Installation
 ```bash
-npm install @carry0987/utils -D
+npm i @carry0987/utils -D
 ```
 
 ## Usage
