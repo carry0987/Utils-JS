@@ -3,7 +3,7 @@ import { setUrlParam } from '../component/common';
 import { FetchOptions, SendFormDataOptions } from '../interface/interfaces';
 
 // Fetch API
-export async function doFetch<T>(options: FetchOptions<T>): Promise<T> {
+export async function doFetch<T>(options: FetchOptions<T>): Promise<Response> {
     const {
         url,
         method = 'GET',
@@ -18,8 +18,8 @@ export async function doFetch<T>(options: FetchOptions<T>): Promise<T> {
     } = options;
 
     let requestURL: string | Request | URL = url;
-    let initHeaders = headers instanceof Headers ? headers : new Headers(headers);
-    let init: RequestInit = {
+    const initHeaders = headers instanceof Headers ? headers : new Headers(headers);
+    const init: RequestInit = {
         method: method,
         mode: mode,
         headers: initHeaders,
@@ -57,9 +57,17 @@ export async function doFetch<T>(options: FetchOptions<T>): Promise<T> {
             resolve(request);
         });
         const response = await fetch(createRequest);
-        const responseData = await response.json() as T;
-        success?.(responseData);
-        return responseData;
+        if (response.ok) {
+            if (typeof success === 'function') {
+                // Clone the response and parse the clone
+                const clonedResponse = response.clone();
+                const responseData = await clonedResponse.json() as T;
+                success?.(responseData);
+            }
+        } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response;
     } catch (caughtError: unknown) {
         const errorObj = caughtError instanceof Error ? caughtError : new Error(String(caughtError));
         error?.(errorObj);
@@ -88,7 +96,7 @@ export async function sendData<T>(options: SendFormDataOptions<T>): Promise<T> {
         }
     };
 
-    return doFetch<T>(fetchOptions);
+    return (await doFetch<T>(fetchOptions)).json();
 }
 
 // Send form data

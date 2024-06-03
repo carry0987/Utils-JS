@@ -211,7 +211,7 @@ declare namespace eventUtils {
   export { eventUtils_addEventListener as addEventListener, eventUtils_createEvent as createEvent, eventUtils_dispatchEvent as dispatchEvent, eventUtils_removeEventListener as removeEventListener };
 }
 
-declare function doFetch<T>(options: FetchOptions<T>): Promise<T>;
+declare function doFetch<T>(options: FetchOptions<T>): Promise<Response>;
 declare function sendData<T>(options: SendFormDataOptions<T>): Promise<T>;
 declare function sendFormData<T>(options: SendFormDataOptions<T>): Promise<boolean>;
 declare const fetchData: typeof sendData;

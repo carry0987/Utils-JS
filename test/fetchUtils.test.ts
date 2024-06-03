@@ -14,7 +14,8 @@ describe('fetchUtils', () => {
 
     test('doFetch makes a successful GET request', async () => {
         const response = await fetchUtils.doFetch<{ message: string }>({ url: testUrl });
-        expect(response.message).toBe('GET request successful');
+        const responseData = await response.json();
+        expect(responseData.message).toBe('GET request successful');
     });
 
     test('sendData makes a successful POST request', async () => {

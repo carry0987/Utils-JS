@@ -1,4 +1,4 @@
-const version = '3.4.5';
+const version = '3.5.0';
 
 function reportError(...error) {
     console.error(...error);
@@ -567,8 +567,8 @@ var formUtils = /*#__PURE__*/Object.freeze({
 async function doFetch(options) {
     const { url, method = 'GET', headers = {}, cache = 'no-cache', mode = 'cors', credentials = 'same-origin', body = null, beforeSend = null, success = null, error = null } = options;
     let requestURL = url;
-    let initHeaders = headers instanceof Headers ? headers : new Headers(headers);
-    let init = {
+    const initHeaders = headers instanceof Headers ? headers : new Headers(headers);
+    const init = {
         method: method,
         mode: mode,
         headers: initHeaders,
@@ -606,9 +606,18 @@ async function doFetch(options) {
             resolve(request);
         });
         const response = await fetch(createRequest);
-        const responseData = await response.json();
-        success?.(responseData);
-        return responseData;
+        if (response.ok) {
+            if (typeof success === 'function') {
+                // Clone the response and parse the clone
+                const clonedResponse = response.clone();
+                const responseData = await clonedResponse.json();
+                success?.(responseData);
+            }
+        }
+        else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response;
     }
     catch (caughtError) {
         const errorObj = caughtError instanceof Error ? caughtError : new Error(String(caughtError));
@@ -635,7 +644,7 @@ async function sendData(options) {
             error?.(caughtError);
         }
     };
-    return doFetch(fetchOptions);
+    return (await doFetch(fetchOptions)).json();
 }
 // Send form data
 async function sendFormData(options) {
