@@ -64,6 +64,26 @@ export function deepMerge<T>(target: T, ...sources: Partial<T>[]): T {
     return deepMerge(target, ...sources);
 }
 
+export function shallowMerge<T>(target: T, ...sources: Partial<T>[]): T {
+    sources.forEach(source => {
+        if (source) {
+            Object.keys(source).forEach(key => {
+                const targetKey = key as keyof T;
+                const sourceValue = source[targetKey];
+
+                if (isObject(sourceValue) && typeof target[targetKey]?.constructor === 'function' && sourceValue instanceof target[targetKey]!.constructor) {
+                    // If the source value is an object and its constructor matches the target's constructor.
+                    target[targetKey] = Object.assign(Object.create(Object.getPrototypeOf(sourceValue), {}), sourceValue);
+                } else {
+                    target[targetKey] = sourceValue as T[typeof targetKey];
+                }
+            });
+        }
+    });
+
+    return target;
+}
+
 export function deepClone<T>(obj: T): T {
     let clone: any;
     if (isArray(obj)) {
@@ -80,6 +100,16 @@ export function deepClone<T>(obj: T): T {
     }
 
     return clone;
+}
+
+export function shallowClone<T>(obj: T): T {
+    if (isObject(obj)) {
+        return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
+    } else if (isArray(obj)) {
+        return obj.slice() as unknown as T;
+    }
+
+    return obj;
 }
 
 export function setStylesheetId(id: string): void {

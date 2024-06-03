@@ -1,4 +1,4 @@
-const version = '3.4.2';
+const version = '3.4.3';
 
 function reportError(...error) {
     console.error(...error);
@@ -206,6 +206,24 @@ function deepMerge(target, ...sources) {
     }
     return deepMerge(target, ...sources);
 }
+function shallowMerge(target, ...sources) {
+    sources.forEach(source => {
+        if (source) {
+            Object.keys(source).forEach(key => {
+                const targetKey = key;
+                const sourceValue = source[targetKey];
+                if (isObject(sourceValue) && typeof target[targetKey]?.constructor === 'function' && sourceValue instanceof target[targetKey].constructor) {
+                    // If the source value is an object and its constructor matches the target's constructor.
+                    target[targetKey] = Object.assign(Object.create(Object.getPrototypeOf(sourceValue), {}), sourceValue);
+                }
+                else {
+                    target[targetKey] = sourceValue;
+                }
+            });
+        }
+    });
+    return target;
+}
 function deepClone(obj) {
     let clone;
     if (isArray(obj)) {
@@ -223,6 +241,15 @@ function deepClone(obj) {
         clone = obj;
     }
     return clone;
+}
+function shallowClone(obj) {
+    if (isObject(obj)) {
+        return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
+    }
+    else if (isArray(obj)) {
+        return obj.slice();
+    }
+    return obj;
 }
 function setStylesheetId(id) {
     stylesheetId = id;
@@ -323,6 +350,8 @@ var common = /*#__PURE__*/Object.freeze({
     setReplaceRule: setReplaceRule,
     setStylesheetId: setStylesheetId,
     setUrlParam: setUrlParam,
+    shallowClone: shallowClone,
+    shallowMerge: shallowMerge,
     get stylesheetId () { return stylesheetId; }
 });
 
@@ -632,4 +661,4 @@ var interfaces = /*#__PURE__*/Object.freeze({
     __proto__: null
 });
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowMerge, storageUtils, stylesheetId, throwError, toggleClass, version };
