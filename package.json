@@ -12,6 +12,9 @@
     "build:dts": "rollup --config rollup.config.js --environment BUILD:dts",
     "build": "npm run build:js && npm run build:dts"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist"
   ],
