@@ -34,3 +34,6 @@ removeLocalValue('key');
 ```
 
 By using specific imports, you can take advantage of tree shaking in bundlers like Webpack or Rollup, which can statically analyze the imports and remove unused code.
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
