@@ -1,3 +1,5 @@
+'use strict';
+
 const version = '3.6.2';
 
 function reportError(...error) {
@@ -153,7 +155,7 @@ var domUtils = /*#__PURE__*/Object.freeze({
     toggleClass: toggleClass
 });
 
-let stylesheetId = 'utils-style';
+exports.stylesheetId = 'utils-style';
 const replaceRule = {
     from: '.utils',
     to: '.utils-'
@@ -330,7 +332,7 @@ function shallowEqual(obj1, obj2) {
     return true;
 }
 function setStylesheetId(id) {
-    stylesheetId = id;
+    exports.stylesheetId = id;
 }
 function setReplaceRule(from, to) {
     replaceRule.from = from;
@@ -342,7 +344,7 @@ function injectStylesheet(stylesObject, id = null) {
     // Create a style element
     let style = createElem('style');
     // WebKit hack
-    style.id = stylesheetId + id;
+    style.id = exports.stylesheetId + id;
     style.textContent = '';
     // Add the style element to the document head
     document.head.append(style);
@@ -368,7 +370,7 @@ function compatInsertRule(stylesheet, selector, cssText, id = null) {
 }
 function removeStylesheet(id = null) {
     const styleId = isEmpty(id) ? '' : id;
-    let styleElement = getElem('#' + stylesheetId + styleId);
+    let styleElement = getElem('#' + exports.stylesheetId + styleId);
     if (styleElement && styleElement.parentNode) {
         styleElement.parentNode.removeChild(styleElement);
     }
@@ -446,7 +448,7 @@ var common = /*#__PURE__*/Object.freeze({
     shallowClone: shallowClone,
     shallowEqual: shallowEqual,
     shallowMerge: shallowMerge,
-    get stylesheetId () { return stylesheetId; }
+    get stylesheetId () { return exports.stylesheetId; }
 });
 
 function setLocalValue(key, value, stringify = true) {
@@ -769,4 +771,73 @@ var interfaces = /*#__PURE__*/Object.freeze({
     __proto__: null
 });
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, throwError, toggleClass, version };
+exports.Interfaces = interfaces;
+exports.Types = types;
+exports.addClass = addClass;
+exports.addEventListener = addEventListener;
+exports.appendFormData = appendFormData;
+exports.buildRules = buildRules;
+exports.commonUtils = common;
+exports.compatInsertRule = compatInsertRule;
+exports.createElem = createElem;
+exports.createEvent = createEvent;
+exports.deepClone = deepClone;
+exports.deepEqual = deepEqual;
+exports.deepMerge = deepMerge;
+exports.dispatchEvent = dispatchEvent;
+exports.doFetch = doFetch;
+exports.domUtils = domUtils;
+exports.encodeFormData = encodeFormData;
+exports.errorUtils = errorUtils;
+exports.eventUtils = eventUtils;
+exports.fetchData = fetchData;
+exports.fetchUtils = fetchUtils;
+exports.findChild = findChild;
+exports.findChilds = findChilds;
+exports.findParent = findParent;
+exports.findParents = findParents;
+exports.formUtils = formUtils;
+exports.generateRandom = generateRandom;
+exports.generateUUID = generateUUID;
+exports.getCookie = getCookie;
+exports.getElem = getElem;
+exports.getLocalValue = getLocalValue;
+exports.getSessionValue = getSessionValue;
+exports.getUrlParam = getUrlParam;
+exports.hasChild = hasChild;
+exports.hasClass = hasClass;
+exports.hasParent = hasParent;
+exports.injectStylesheet = injectStylesheet;
+exports.insertAfter = insertAfter;
+exports.insertBefore = insertBefore;
+exports.isArray = isArray;
+exports.isBoolean = isBoolean;
+exports.isEmpty = isEmpty;
+exports.isFunction = isFunction;
+exports.isNumber = isNumber;
+exports.isObject = isObject;
+exports.isString = isString;
+exports.removeClass = removeClass;
+exports.removeCookie = removeCookie;
+exports.removeEventListener = removeEventListener;
+exports.removeLocalValue = removeLocalValue;
+exports.removeSessionValue = removeSessionValue;
+exports.removeStylesheet = removeStylesheet;
+exports.replaceRule = replaceRule;
+exports.reportError = reportError;
+exports.sendData = sendData;
+exports.sendForm = sendForm;
+exports.sendFormData = sendFormData;
+exports.setCookie = setCookie;
+exports.setLocalValue = setLocalValue;
+exports.setReplaceRule = setReplaceRule;
+exports.setSessionValue = setSessionValue;
+exports.setStylesheetId = setStylesheetId;
+exports.setUrlParam = setUrlParam;
+exports.shallowClone = shallowClone;
+exports.shallowEqual = shallowEqual;
+exports.shallowMerge = shallowMerge;
+exports.storageUtils = storageUtils;
+exports.throwError = throwError;
+exports.toggleClass = toggleClass;
+exports.version = version;

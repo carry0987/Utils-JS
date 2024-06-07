@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "ESNext",
     "target": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "importHelpers": true,
     "strict": true,
     "esModuleInterop": true,
@@ -11,5 +11,5 @@
     "declarationDir": "dist/dts/"
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "**/__tests__/**/*"]
 }
