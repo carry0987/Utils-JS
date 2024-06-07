@@ -6,7 +6,6 @@ import { createRequire } from 'module';
 const pkg = createRequire(import.meta.url)('./package.json');
 
 const isDts = process.env.BUILD === 'dts';
-const isCjs = process.env.BUILD === 'cjs';
 const sourceFile = 'src/index.ts';
 
 // ESM build configuration
@@ -16,25 +15,6 @@ const esmConfig = {
         {
             file: pkg.module,
             format: 'es',
-            sourcemap: false
-        }
-    ],
-    plugins: [
-        typescript(),
-        replace({
-            preventAssignment: true,
-            __version__: pkg.version
-        })
-    ]
-};
-
-// CJS build configuration
-const cjsConfig = {
-    input: sourceFile,
-    output: [
-        {
-            file: 'dist/index.cjs',
-            format: 'cjs',
             sourcemap: false
         }
     ],
@@ -60,4 +40,4 @@ const dtsConfig = {
     ]
 };
 
-export default isDts ? dtsConfig : isCjs ? cjsConfig : esmConfig;
+export default isDts ? dtsConfig : esmConfig;

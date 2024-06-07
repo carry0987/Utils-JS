@@ -1,7 +1,7 @@
 import { storageUtils, reportError } from '../src/index';
 
-jest.mock('../src/module/errorUtils', () => ({
-    reportError: jest.fn()
+vi.mock('../src/module/errorUtils', () => ({
+    reportError: vi.fn()
 }));
 
 describe('storageUtils', () => {

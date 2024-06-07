@@ -1,18 +1,17 @@
 {
   "name": "@carry0987/utils",
-  "version": "3.6.2",
+  "version": "3.6.3",
   "description": "A library for using common tools and alias methods",
   "type": "module",
-  "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "test": "jest --config jest.config.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "build:js": "rollup --config rollup.config.ts --configPlugin typescript --environment BUILD:js",
-    "build:cjs": "rollup --config rollup.config.ts --configPlugin typescript --environment BUILD:cjs",
     "build:dts": "rollup --config rollup.config.ts --configPlugin typescript --environment BUILD:dts",
-    "build": "npm run build:js && npm run build:cjs && npm run build:dts"
+    "build": "npm run build:js && npm run build:dts"
   },
   "publishConfig": {
     "access": "public"
@@ -35,18 +34,13 @@
   },
   "homepage": "https://github.com/carry0987/Utils-JS#readme",
   "devDependencies": {
-    "@happy-dom/jest-environment": "^14.12.0",
     "@rollup/plugin-replace": "^5.0.7",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/jest": "^29.5.12",
-    "jest": "^29.7.0",
+    "happy-dom": "^14.12.0",
     "msw": "^2.3.1",
     "rollup": "^4.18.0",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-dts": "^6.1.1",
-    "ts-jest": "^29.1.4",
-    "ts-node": "^10.9.2",
-    "tslib": "^2.6.3",
-    "typescript": "^5.4.5"
+    "vitest": "^1.6.0"
   }
 }

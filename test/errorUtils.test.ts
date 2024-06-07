@@ -2,11 +2,11 @@ import { errorUtils } from '../src/index';
 
 describe('errorUtils', () => {
     beforeEach(() => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     afterEach(() => {
-        jest.restoreAllMocks();
+        vi.restoreAllMocks();
     });
 
     test('reportError should call console.error with the provided arguments', () => {

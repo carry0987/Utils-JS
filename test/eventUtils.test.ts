@@ -10,14 +10,14 @@ describe('eventUtils', () => {
     });
 
     test('addEventListener adds an event handler', () => {
-        const handler = jest.fn();
+        const handler = vi.fn();
         eventUtils.addEventListener(element, 'click', handler);
         element.click();
         expect(handler).toHaveBeenCalled();
     });
 
     test('removeEventListener removes an event handler', () => {
-        const handler = jest.fn();
+        const handler = vi.fn();
         eventUtils.addEventListener(element, 'click', handler);
         eventUtils.removeEventListener(element, 'click', handler);
         element.click();
@@ -33,7 +33,7 @@ describe('eventUtils', () => {
     });
 
     test('dispatchEvent dispatches a custom event', () => {
-        const handler = jest.fn();
+        const handler = vi.fn();
         const detail = { foo: 'bar' };
 
         element.addEventListener('customEvent', handler);
@@ -43,7 +43,7 @@ describe('eventUtils', () => {
     });
 
     test('dispatchEvent dispatches a pre-created event', () => {
-        const handler = jest.fn();
+        const handler = vi.fn();
         const customEvent = new Event('customEvent');
 
         element.addEventListener('customEvent', handler);
@@ -53,7 +53,7 @@ describe('eventUtils', () => {
     });
 
     test('dispatchEvent returns false and logs error on invalid event type', () => {
-        const reportErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const reportErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
         const result = eventUtils.dispatchEvent(123 as unknown as string, element);
 
         expect(result).toBe(false);
