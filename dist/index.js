@@ -1,4 +1,4 @@
-const version = '3.5.0';
+const version = '3.6.0';
 
 function reportError(...error) {
     console.error(...error);
@@ -260,6 +260,75 @@ function shallowClone(obj) {
     }
     return obj;
 }
+function deepEqual(obj1, obj2) {
+    if (typeof obj1 !== typeof obj2)
+        return false;
+    if (obj1 === null || obj2 === null)
+        return obj1 === obj2;
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 === null || obj2 === null) {
+        return obj1 === obj2;
+    }
+    if (obj1 instanceof Date && obj2 instanceof Date) {
+        return obj1.getTime() === obj2.getTime();
+    }
+    if (Array.isArray(obj1) && Array.isArray(obj2)) {
+        if (obj1.length !== obj2.length)
+            return false;
+        return obj1.every((item, index) => deepEqual(item, obj2[index]));
+    }
+    if (Array.isArray(obj1) || Array.isArray(obj2))
+        return false;
+    if (obj1 instanceof Set && obj2 instanceof Set) {
+        if (obj1.size !== obj2.size)
+            return false;
+        for (const item of obj1) {
+            if (!obj2.has(item))
+                return false;
+        }
+        return true;
+    }
+    if (obj1 instanceof Map && obj2 instanceof Map) {
+        if (obj1.size !== obj2.size)
+            return false;
+        for (const [key, value] of obj1) {
+            if (!deepEqual(value, obj2.get(key)))
+                return false;
+        }
+        return true;
+    }
+    if (Object.getPrototypeOf(obj1) !== Object.getPrototypeOf(obj2))
+        return false;
+    const keys1 = Reflect.ownKeys(obj1);
+    const keys2 = Reflect.ownKeys(obj2);
+    if (keys1.length !== keys2.length)
+        return false;
+    for (const key of keys1) {
+        if (!deepEqual(obj1[key], obj2[key]))
+            return false;
+    }
+    return true;
+}
+function shallowEqual(obj1, obj2) {
+    if (typeof obj1 !== typeof obj2)
+        return false;
+    if (obj1 === null || obj2 === null)
+        return obj1 === obj2;
+    // If both are the same reference, they are equal
+    if (obj1 === obj2)
+        return true;
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
+        return obj1 === obj2;
+    }
+    const keys1 = Reflect.ownKeys(obj1);
+    const keys2 = Reflect.ownKeys(obj2);
+    if (keys1.length !== keys2.length)
+        return false;
+    for (const key of keys1) {
+        if (obj1[key] !== obj2[key])
+            return false;
+    }
+    return true;
+}
 function setStylesheetId(id) {
     stylesheetId = id;
 }
@@ -350,6 +419,7 @@ var common = /*#__PURE__*/Object.freeze({
     buildRules: buildRules,
     compatInsertRule: compatInsertRule,
     deepClone: deepClone,
+    deepEqual: deepEqual,
     deepMerge: deepMerge,
     generateRandom: generateRandom,
     getUrlParam: getUrlParam,
@@ -367,6 +437,7 @@ var common = /*#__PURE__*/Object.freeze({
     setStylesheetId: setStylesheetId,
     setUrlParam: setUrlParam,
     shallowClone: shallowClone,
+    shallowEqual: shallowEqual,
     shallowMerge: shallowMerge,
     get stylesheetId () { return stylesheetId; }
 });
@@ -691,4 +762,4 @@ var interfaces = /*#__PURE__*/Object.freeze({
     __proto__: null
 });
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowMerge, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, throwError, toggleClass, version };

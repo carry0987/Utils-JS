@@ -64,6 +64,43 @@ test('deepClone clones deeply nested objects correctly', () => {
     expect(clone.a.c).not.toBe(obj.a.c); // Check nested array reference
 });
 
+test('deepEqual compares deeply nested objects correctly', () => {
+    const obj1 = { a: { b: 1, c: [2, 3] } };
+    const obj2 = { a: { b: 1, c: [2, 3] } };
+    const obj3 = { a: { b: 1, c: [2, 4] } };
+
+    expect(commonUtils.deepEqual(obj1, obj2)).toBe(true);
+    expect(commonUtils.deepEqual(obj1, obj3)).toBe(false);
+});
+
+test('deepEqual detects different types correctly', () => {
+    const obj1 = { a: 1 };
+    const obj2: Record<string, unknown> = { a: '1' };
+
+    expect(commonUtils.deepEqual(obj1, obj2)).toBe(false);
+});
+
+test('shallowEqual compares shallow properties correctly', () => {
+    const obj1 = { a: 1, b: 2 };
+    const obj2 = { a: 1, b: 2 };
+    const obj3 = { a: 1, b: 3 };
+    const obj4 = { a: 1 };
+    const obj5 = { a: { b: 2 } };
+    const obj6 = { a: { b: 2 } };
+
+    expect(commonUtils.shallowEqual(obj1, obj2)).toBe(true);
+    expect(commonUtils.shallowEqual(obj1, obj3)).toBe(false);
+    expect(commonUtils.shallowEqual(obj1, obj4)).toBe(false);
+    expect(commonUtils.shallowEqual(obj5, obj6)).toBe(false); // Different references
+});
+
+test('shallowEqual compares different types correctly', () => {
+    const obj1: Record<string, unknown> = { a: 1, b: 2 };
+    const obj2: Record<string, unknown> = { 0: 1, 1: 2 };
+
+    expect(commonUtils.shallowEqual(obj1, obj2)).toBe(false);
+});
+
 test('isObject identifies objects correctly', () => {
     expect(commonUtils.isObject({})).toBe(true);
     expect(commonUtils.isObject([])).toBe(false);

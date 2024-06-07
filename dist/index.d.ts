@@ -92,6 +92,8 @@ declare function deepMerge<T>(target: T, ...sources: Partial<T>[]): T;
 declare function shallowMerge<T>(target: T, ...sources: Partial<T>[]): T;
 declare function deepClone<T>(obj: T): T;
 declare function shallowClone<T>(obj: T): T;
+declare function deepEqual<T>(obj1: T, obj2: T): boolean;
+declare function shallowEqual<T>(obj1: T, obj2: T): boolean;
 declare function setStylesheetId(id: string): void;
 declare function setReplaceRule(from: string, to: string): void;
 declare function injectStylesheet(stylesObject: StylesObject, id?: string | null): void;
@@ -105,6 +107,7 @@ declare function setUrlParam(url: string, params: URLParams, overwrite?: boolean
 declare const common_buildRules: typeof buildRules;
 declare const common_compatInsertRule: typeof compatInsertRule;
 declare const common_deepClone: typeof deepClone;
+declare const common_deepEqual: typeof deepEqual;
 declare const common_deepMerge: typeof deepMerge;
 declare const common_generateRandom: typeof generateRandom;
 declare const common_getUrlParam: typeof getUrlParam;
@@ -122,10 +125,11 @@ declare const common_setReplaceRule: typeof setReplaceRule;
 declare const common_setStylesheetId: typeof setStylesheetId;
 declare const common_setUrlParam: typeof setUrlParam;
 declare const common_shallowClone: typeof shallowClone;
+declare const common_shallowEqual: typeof shallowEqual;
 declare const common_shallowMerge: typeof shallowMerge;
 declare const common_stylesheetId: typeof stylesheetId;
 declare namespace common {
-  export { common_buildRules as buildRules, common_compatInsertRule as compatInsertRule, common_deepClone as deepClone, common_deepMerge as deepMerge, common_generateRandom as generateRandom, common_getUrlParam as getUrlParam, common_injectStylesheet as injectStylesheet, common_isArray as isArray, common_isBoolean as isBoolean, common_isEmpty as isEmpty, common_isFunction as isFunction, common_isNumber as isNumber, common_isObject as isObject, common_isString as isString, common_removeStylesheet as removeStylesheet, common_replaceRule as replaceRule, common_setReplaceRule as setReplaceRule, common_setStylesheetId as setStylesheetId, common_setUrlParam as setUrlParam, common_shallowClone as shallowClone, common_shallowMerge as shallowMerge, common_stylesheetId as stylesheetId };
+  export { common_buildRules as buildRules, common_compatInsertRule as compatInsertRule, common_deepClone as deepClone, common_deepEqual as deepEqual, common_deepMerge as deepMerge, common_generateRandom as generateRandom, common_getUrlParam as getUrlParam, common_injectStylesheet as injectStylesheet, common_isArray as isArray, common_isBoolean as isBoolean, common_isEmpty as isEmpty, common_isFunction as isFunction, common_isNumber as isNumber, common_isObject as isObject, common_isString as isString, common_removeStylesheet as removeStylesheet, common_replaceRule as replaceRule, common_setReplaceRule as setReplaceRule, common_setStylesheetId as setStylesheetId, common_setUrlParam as setUrlParam, common_shallowClone as shallowClone, common_shallowEqual as shallowEqual, common_shallowMerge as shallowMerge, common_stylesheetId as stylesheetId };
 }
 
 declare function reportError(...error: any[]): void;
@@ -235,4 +239,4 @@ declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_encodeFormData as encodeFormData };
 }
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowMerge, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, throwError, toggleClass, version };
