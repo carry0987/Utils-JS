@@ -144,6 +144,13 @@ test('generateRandom generates strings of correct length', () => {
     expect(commonUtils.generateRandom(8)).toHaveLength(8);
 });
 
+test('generateUUID generates a valid UUID v4', () => {
+    const uuid = commonUtils.generateUUID();
+    const uuidV4Regex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+    expect(uuidV4Regex.test(uuid)).toBe(true);
+});
+
 test('getUrlParam gets URL parameter correctly', () => {
     const url = 'http://example.com?page=1&size=20';
     expect(commonUtils.getUrlParam('page', url)).toBe('1');

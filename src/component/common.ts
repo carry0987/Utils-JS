@@ -263,6 +263,17 @@ export function generateRandom(length: number = 8): string {
     return result;
 }
 
+export function generateUUID(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+        /[xy]/g,
+        (c) => {
+            const r = (Math.random() * 16) | 0,
+                v = c === 'x' ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+        }
+    );
+}
+
 export function getUrlParam(sParam: string, url: string = window.location.href): string | null {
     const isHashParam = sParam.startsWith('#');
     let urlPart: string;
