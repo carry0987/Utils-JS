@@ -1,3 +1,4 @@
+import { test, expect } from 'vitest';
 import { version } from '../src/component/version';
 
 test('version should be a string', () => {

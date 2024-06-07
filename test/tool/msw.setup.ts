@@ -1,3 +1,4 @@
+import { afterEach, beforeAll, afterAll } from 'vitest';
 import { server } from './server';
 
 export const setupMsw = () => {

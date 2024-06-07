@@ -1,3 +1,4 @@
+import { describe, beforeEach, test, expect, vi } from 'vitest';
 import { storageUtils, reportError } from '../src/index';
 
 vi.mock('../src/module/errorUtils', () => ({

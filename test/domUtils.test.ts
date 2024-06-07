@@ -1,3 +1,4 @@
+import { describe, beforeEach, test, expect } from 'vitest';
 import { domUtils } from '../src/index';
 
 describe('domUtils', () => {

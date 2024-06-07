@@ -1,3 +1,4 @@
+import { describe, beforeEach, test, expect, vi } from 'vitest';
 import { eventUtils } from '../src/index';
 
 describe('eventUtils', () => {

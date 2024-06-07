@@ -8,9 +8,8 @@
     "esModuleInterop": true,
     "declaration": true,
     "outDir": "./dist",
-    "declarationDir": "dist/dts/",
-    "types": ["vitest/globals"]
+    "declarationDir": "dist/dts/"
   },
-  "include": ["src/**/*.ts", "test"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist", "**/__tests__/**/*"]
 }
