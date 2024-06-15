@@ -8,6 +8,25 @@ const pkg = createRequire(import.meta.url)('./package.json');
 const isDts = process.env.BUILD === 'dts';
 const sourceFile = 'src/index.ts';
 
+// CommonJS build configuration
+const cjsConfig = {
+    input: sourceFile,
+    output: [
+        {
+            file: pkg.main,
+            format: 'cjs',
+            sourcemap: false
+        }
+    ],
+    plugins: [
+        typescript(),
+        replace({
+            preventAssignment: true,
+            __version__: pkg.version
+        })
+    ]
+};
+
 // ESM build configuration
 const esmConfig = {
     input: sourceFile,
@@ -40,4 +59,4 @@ const dtsConfig = {
     ]
 };
 
-export default isDts ? dtsConfig : esmConfig;
+export default isDts ? dtsConfig : [esmConfig, cjsConfig];
