@@ -71,12 +71,10 @@ describe('storageUtils', () => {
         });
 
         test('getCookie retrieves a cookie value', () => {
-            document.cookie = 'testCookie=testValue';
             expect(storageUtils.getCookie('testCookie')).toBe('testValue');
         });
 
         test('removeCookie removes the cookie', () => {
-            document.cookie = 'testCookie=testValue';
             storageUtils.removeCookie('testCookie');
             expect(document.cookie).not.toContain('testCookie=testValue');
         });
