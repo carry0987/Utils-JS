@@ -87,7 +87,7 @@ declare function isString(item: unknown): item is string;
 declare function isNumber(item: unknown): item is number;
 declare function isBoolean(item: unknown): item is boolean;
 declare function isArray(item: unknown): item is unknown[];
-declare function isEmpty(str: unknown): boolean;
+declare function isEmpty(value: unknown): boolean;
 declare function deepMerge<T>(target: T, ...sources: Partial<T>[]): T;
 declare function shallowMerge<T>(target: T, ...sources: Partial<T>[]): T;
 declare function deepClone<T>(obj: T): T;

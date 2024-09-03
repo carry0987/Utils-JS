@@ -139,6 +139,10 @@ test('isEmpty checks emptiness correctly', () => {
     expect(commonUtils.isEmpty('test')).toBe(false);
     expect(commonUtils.isEmpty(0)).toBe(false);
     expect(commonUtils.isEmpty(null)).toBe(true);
+    expect(commonUtils.isEmpty([])).toBe(true);
+    expect(commonUtils.isEmpty([1, 2, 3])).toBe(false);
+    expect(commonUtils.isEmpty({})).toBe(true);
+    expect(commonUtils.isEmpty({ key: 'value' })).toBe(false);
 });
 
 test('generateRandom generates strings of correct length', () => {

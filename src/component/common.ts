@@ -9,7 +9,7 @@ export const replaceRule: ReplaceRule = {
 };
 
 export function isObject(item: unknown): item is Record<string, unknown> {
-    return typeof item === 'object' && item !== null && !Array.isArray(item);
+    return typeof item === 'object' && item !== null && !isArray(item);
 }
 
 export function isFunction(item: unknown): item is Function {
@@ -32,12 +32,26 @@ export function isArray(item: unknown): item is unknown[] {
     return Array.isArray(item);
 }
 
-export function isEmpty(str: unknown): boolean {
-    if (typeof str === 'number') {
+export function isEmpty(value: unknown): boolean {
+    // Check for number
+    if (typeof value === 'number') {
         return false;
     }
+    // Check for string
+    if (typeof value === 'string' && value.length === 0) {
+        return true;
+    }
+    // Check for array
+    if (isArray(value) && value.length === 0) {
+        return true;
+    }
+    // Check for object
+    if (isObject(value) && Object.keys(value).length === 0) {
+        return true;
+    }
 
-    return !str || (typeof str === 'string' && str.length === 0);
+    // Check for any falsy values
+    return !value;
 }
 
 export function deepMerge<T>(target: T, ...sources: Partial<T>[]): T {

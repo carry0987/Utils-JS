@@ -1,6 +1,6 @@
 'use strict';
 
-const version = '3.6.5';
+const version = '3.6.6';
 
 function reportError(...error) {
     console.error(...error);
@@ -161,7 +161,7 @@ const replaceRule = {
     to: '.utils-'
 };
 function isObject(item) {
-    return typeof item === 'object' && item !== null && !Array.isArray(item);
+    return typeof item === 'object' && item !== null && !isArray(item);
 }
 function isFunction(item) {
     return typeof item === 'function';
@@ -178,11 +178,25 @@ function isBoolean(item) {
 function isArray(item) {
     return Array.isArray(item);
 }
-function isEmpty(str) {
-    if (typeof str === 'number') {
+function isEmpty(value) {
+    // Check for number
+    if (typeof value === 'number') {
         return false;
     }
-    return !str || (typeof str === 'string' && str.length === 0);
+    // Check for string
+    if (typeof value === 'string' && value.length === 0) {
+        return true;
+    }
+    // Check for array
+    if (isArray(value) && value.length === 0) {
+        return true;
+    }
+    // Check for object
+    if (isObject(value) && Object.keys(value).length === 0) {
+        return true;
+    }
+    // Check for any falsy values
+    return !value;
 }
 function deepMerge(target, ...sources) {
     if (!sources.length)
