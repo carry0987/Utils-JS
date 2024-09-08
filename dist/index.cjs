@@ -1,6 +1,6 @@
 'use strict';
 
-const version = '3.7.0';
+const version = '3.7.1';
 
 function reportError(...error) {
     console.error(...error);
@@ -650,6 +650,25 @@ function encodeFormData(data, parentKey = '') {
     };
     return appendFormData(options);
 }
+// Decode FormData back to an object
+function decodeFormData(formData) {
+    const data = {};
+    formData.forEach((value, key) => {
+        // If a key already exists, convert to an array or push to existing array
+        if (key in data) {
+            if (Array.isArray(data[key])) {
+                data[key].push(value);
+            }
+            else {
+                data[key] = [data[key], value];
+            }
+        }
+        else {
+            data[key] = value;
+        }
+    });
+    return data;
+}
 // Convert FormData to URLParams
 function formDataToURLParams(formData) {
     const params = {};
@@ -689,6 +708,7 @@ var formUtils = /*#__PURE__*/Object.freeze({
     __proto__: null,
     appendFormData: appendFormData,
     bodyToURLParams: bodyToURLParams,
+    decodeFormData: decodeFormData,
     encodeFormData: encodeFormData,
     formDataToURLParams: formDataToURLParams
 });
@@ -833,6 +853,7 @@ exports.commonUtils = common;
 exports.compatInsertRule = compatInsertRule;
 exports.createElem = createElem;
 exports.createEvent = createEvent;
+exports.decodeFormData = decodeFormData;
 exports.deepClone = deepClone;
 exports.deepEqual = deepEqual;
 exports.deepMerge = deepMerge;

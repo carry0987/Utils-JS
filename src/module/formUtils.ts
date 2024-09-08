@@ -49,6 +49,26 @@ export function encodeFormData(data: any, parentKey: string = ''): FormData {
     return appendFormData(options);
 }
 
+// Decode FormData back to an object
+export function decodeFormData(formData: FormData): Record<string, any> {
+    const data: Record<string, any> = {};
+
+    formData.forEach((value, key) => {
+        // If a key already exists, convert to an array or push to existing array
+        if (key in data) {
+            if (Array.isArray(data[key])) {
+                data[key].push(value);
+            } else {
+                data[key] = [data[key], value];
+            }
+        } else {
+            data[key] = value;
+        }
+    });
+
+    return data;
+}
+
 // Convert FormData to URLParams
 export function formDataToURLParams(formData: FormData): URLParams {
     const params: URLParams = {};

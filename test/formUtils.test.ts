@@ -83,6 +83,18 @@ describe('formUtils', () => {
     });
 });
 
+test('decodeFormData decodes FormData to an object correctly', () => {
+    const formData = new FormData();
+    formData.append('key1', 'value1');
+    formData.append('key2', 'value2');
+    formData.append('key1', 'value3'); // Add another value to an existing key
+
+    const result = formUtils.decodeFormData(formData);
+
+    expect(result.key1).toEqual(['value1', 'value3']); // Ensure handling multiple values
+    expect(result.key2).toBe('value2');
+});
+
 test('formDataToURLParams converts FormData to URLParams correctly', () => {
     const formData = new FormData();
     formData.append('key1', 'value1');
