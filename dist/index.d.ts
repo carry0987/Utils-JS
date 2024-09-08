@@ -234,11 +234,15 @@ declare namespace fetchUtils {
 
 declare function appendFormData(options: FormDataOptions, formData?: FormData): FormData;
 declare function encodeFormData(data: any, parentKey?: string): FormData;
+declare function formDataToURLParams(formData: FormData): URLParams;
+declare function bodyToURLParams(body: FormData | BodyInit | Record<string, unknown>): URLParams;
 
 declare const formUtils_appendFormData: typeof appendFormData;
+declare const formUtils_bodyToURLParams: typeof bodyToURLParams;
 declare const formUtils_encodeFormData: typeof encodeFormData;
+declare const formUtils_formDataToURLParams: typeof formDataToURLParams;
 declare namespace formUtils {
-  export { formUtils_appendFormData as appendFormData, formUtils_encodeFormData as encodeFormData };
+  export { formUtils_appendFormData as appendFormData, formUtils_bodyToURLParams as bodyToURLParams, formUtils_encodeFormData as encodeFormData, formUtils_formDataToURLParams as formDataToURLParams };
 }
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, throwError, toggleClass, version };

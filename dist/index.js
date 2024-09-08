@@ -1,4 +1,4 @@
-const version = '3.6.7';
+const version = '3.7.0';
 
 function reportError(...error) {
     console.error(...error);
@@ -648,11 +648,47 @@ function encodeFormData(data, parentKey = '') {
     };
     return appendFormData(options);
 }
+// Convert FormData to URLParams
+function formDataToURLParams(formData) {
+    const params = {};
+    formData.forEach((value, key) => {
+        // Assume formData values are strings, additional parsing can be added if needed
+        if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number' || value === null) {
+            params[key] = value;
+        }
+        else {
+            // Convert any non-string values to string if necessary
+            params[key] = value.toString();
+        }
+    });
+    return params;
+}
+// Convert a generic body to URLParams
+function bodyToURLParams(body) {
+    const params = {};
+    if (body instanceof FormData) {
+        return formDataToURLParams(body);
+    }
+    else if (typeof body === 'object' && body !== null) {
+        // Handle generic object by iterating over its keys
+        Object.entries(body).forEach(([key, value]) => {
+            if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value === null) {
+                params[key] = value;
+            }
+            else {
+                params[key] = JSON.stringify(value); // Serialize complex objects
+            }
+        });
+    }
+    return params;
+}
 
 var formUtils = /*#__PURE__*/Object.freeze({
     __proto__: null,
     appendFormData: appendFormData,
-    encodeFormData: encodeFormData
+    bodyToURLParams: bodyToURLParams,
+    encodeFormData: encodeFormData,
+    formDataToURLParams: formDataToURLParams
 });
 
 // Fetch API
@@ -668,7 +704,8 @@ async function doFetch(options) {
         credentials: credentials
     };
     if (body !== null && method.toUpperCase() === 'GET') {
-        requestURL = setUrlParam(typeof url === 'string' ? url : url.toString(), body, true);
+        const params = bodyToURLParams(body);
+        requestURL = setUrlParam(typeof url === 'string' ? url : url.toString(), params, true);
     }
     else if (body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
         let data = body;
@@ -783,4 +820,4 @@ var interfaces = /*#__PURE__*/Object.freeze({
     __proto__: null
 });
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, throwError, toggleClass, version };

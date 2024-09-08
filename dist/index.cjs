@@ -1,6 +1,6 @@
 'use strict';
 
-const version = '3.6.7';
+const version = '3.7.0';
 
 function reportError(...error) {
     console.error(...error);
@@ -650,11 +650,47 @@ function encodeFormData(data, parentKey = '') {
     };
     return appendFormData(options);
 }
+// Convert FormData to URLParams
+function formDataToURLParams(formData) {
+    const params = {};
+    formData.forEach((value, key) => {
+        // Assume formData values are strings, additional parsing can be added if needed
+        if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number' || value === null) {
+            params[key] = value;
+        }
+        else {
+            // Convert any non-string values to string if necessary
+            params[key] = value.toString();
+        }
+    });
+    return params;
+}
+// Convert a generic body to URLParams
+function bodyToURLParams(body) {
+    const params = {};
+    if (body instanceof FormData) {
+        return formDataToURLParams(body);
+    }
+    else if (typeof body === 'object' && body !== null) {
+        // Handle generic object by iterating over its keys
+        Object.entries(body).forEach(([key, value]) => {
+            if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value === null) {
+                params[key] = value;
+            }
+            else {
+                params[key] = JSON.stringify(value); // Serialize complex objects
+            }
+        });
+    }
+    return params;
+}
 
 var formUtils = /*#__PURE__*/Object.freeze({
     __proto__: null,
     appendFormData: appendFormData,
-    encodeFormData: encodeFormData
+    bodyToURLParams: bodyToURLParams,
+    encodeFormData: encodeFormData,
+    formDataToURLParams: formDataToURLParams
 });
 
 // Fetch API
@@ -670,7 +706,8 @@ async function doFetch(options) {
         credentials: credentials
     };
     if (body !== null && method.toUpperCase() === 'GET') {
-        requestURL = setUrlParam(typeof url === 'string' ? url : url.toString(), body, true);
+        const params = bodyToURLParams(body);
+        requestURL = setUrlParam(typeof url === 'string' ? url : url.toString(), params, true);
     }
     else if (body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
         let data = body;
@@ -790,6 +827,7 @@ exports.Types = types;
 exports.addClass = addClass;
 exports.addEventListener = addEventListener;
 exports.appendFormData = appendFormData;
+exports.bodyToURLParams = bodyToURLParams;
 exports.buildRules = buildRules;
 exports.commonUtils = common;
 exports.compatInsertRule = compatInsertRule;
@@ -810,6 +848,7 @@ exports.findChild = findChild;
 exports.findChilds = findChilds;
 exports.findParent = findParent;
 exports.findParents = findParents;
+exports.formDataToURLParams = formDataToURLParams;
 exports.formUtils = formUtils;
 exports.generateRandom = generateRandom;
 exports.generateUUID = generateUUID;

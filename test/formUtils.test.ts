@@ -82,3 +82,38 @@ describe('formUtils', () => {
         expect(formData).toBe(data);
     });
 });
+
+test('formDataToURLParams converts FormData to URLParams correctly', () => {
+    const formData = new FormData();
+    formData.append('key1', 'value1');
+    formData.append('key2', 'value2');
+
+    const urlParams = formUtils.formDataToURLParams(formData);
+
+    expect(urlParams.key1).toBe('value1');
+    expect(urlParams.key2).toBe('value2');
+});
+
+test('convertBodyToURLParams converts FormData, BodyInit and objects to URLParams correctly', () => {
+    // Test for FormData
+    const formData = new FormData();
+    formData.append('formKey', 'formValue');
+    let urlParams = formUtils.bodyToURLParams(formData);
+    expect(urlParams.formKey).toBe('formValue');
+
+    // Test for generic Object
+    const dataObject = {
+        objKey1: 'objValue1',
+        objKey2: 123, // testing number conversion
+        objKey3: false, // testing boolean conversion
+    };
+    urlParams = formUtils.bodyToURLParams(dataObject);
+    expect(urlParams.objKey1).toBe('objValue1');
+    expect(urlParams.objKey2).toBe(123);
+    expect(urlParams.objKey3).toBe(false);
+
+    // Test for complex object serialization
+    const complexObject = { objKey1: { nestedKey: 'nestedValue' } };
+    urlParams = formUtils.bodyToURLParams(complexObject);
+    expect(urlParams.objKey1).toBe(JSON.stringify(complexObject.objKey1));
+});

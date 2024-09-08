@@ -1,4 +1,4 @@
-import { FormDataOptions } from '../interface/interfaces';
+import { FormDataOptions, URLParams } from '../interface/interfaces';
 
 // Append form data
 export function appendFormData(options: FormDataOptions, formData: FormData = new FormData()): FormData {
@@ -47,4 +47,40 @@ export function encodeFormData(data: any, parentKey: string = ''): FormData {
     };
 
     return appendFormData(options);
+}
+
+// Convert FormData to URLParams
+export function formDataToURLParams(formData: FormData): URLParams {
+    const params: URLParams = {};
+    formData.forEach((value, key) => {
+        // Assume formData values are strings, additional parsing can be added if needed
+        if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number' || value === null) {
+            params[key] = value;
+        } else {
+            // Convert any non-string values to string if necessary
+            params[key] = value.toString();
+        }
+    });
+
+    return params;
+}
+
+// Convert a generic body to URLParams
+export function bodyToURLParams(body: FormData | BodyInit | Record<string, unknown>): URLParams {
+    const params: URLParams = {};
+
+    if (body instanceof FormData) {
+        return formDataToURLParams(body);
+    } else if (typeof body === 'object' && body !== null) {
+        // Handle generic object by iterating over its keys
+        Object.entries(body).forEach(([key, value]) => {
+            if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value === null) {
+                params[key] = value;
+            } else {
+                params[key] = JSON.stringify(value); // Serialize complex objects
+            }
+        });
+    }
+
+    return params;
 }

@@ -1,4 +1,4 @@
-import { encodeFormData } from './formUtils';
+import { encodeFormData, bodyToURLParams } from './formUtils';
 import { setUrlParam } from '../component/common'; 
 import { FetchOptions, SendFormDataOptions } from '../interface/interfaces';
 
@@ -28,7 +28,8 @@ export async function doFetch<T>(options: FetchOptions<T>): Promise<Response> {
     };
 
     if (body !== null && method.toUpperCase() === 'GET') {
-        requestURL = setUrlParam(typeof url === 'string' ? url : url.toString(), body as Record<string, string | number>, true);
+        const params = bodyToURLParams(body);
+        requestURL = setUrlParam(typeof url === 'string' ? url : url.toString(), params, true);
     } else if (body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
         let data = body;
         if (!(body instanceof FormData)) {
