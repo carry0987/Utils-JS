@@ -91,7 +91,7 @@ export function bodyToURLParams(body: FormData | BodyInit | Record<string, unkno
 
     if (body instanceof FormData) {
         return formDataToURLParams(body);
-    } else if (typeof body === 'object' && body !== null) {
+    } else if (typeof body === 'object') {
         // Handle generic object by iterating over its keys
         Object.entries(body).forEach(([key, value]) => {
             if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value === null) {
