@@ -1,4 +1,4 @@
-const version = '3.7.2';
+const version = '3.7.3';
 
 function reportError(...error) {
     console.error(...error);
@@ -786,12 +786,8 @@ async function sendData(options) {
         credentials: credentials,
         body: (encode && method.toUpperCase() !== 'GET') ? encodeFormData(data) : data,
         beforeSend: beforeSend,
-        success: (responseData) => {
-            success?.(responseData);
-        },
-        error: (caughtError) => {
-            error?.(caughtError);
-        }
+        success: success,
+        error: error
     };
     return (await doFetch(fetchOptions)).json();
 }
@@ -807,12 +803,8 @@ async function sendFormData(options) {
         credentials: credentials,
         body: encodeFormData(data),
         beforeSend: beforeSend,
-        success: (responseData) => {
-            success?.(responseData);
-        },
-        error: (caughtError) => {
-            error?.(caughtError);
-        }
+        success: success,
+        error: error
     };
     return doFetch(fetchOptions)
         .then(() => true)

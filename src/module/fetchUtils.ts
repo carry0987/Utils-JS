@@ -89,12 +89,8 @@ export async function sendData<T>(options: SendFormDataOptions<T>): Promise<T> {
         credentials: credentials,
         body: (encode && method.toUpperCase() !== 'GET') ? encodeFormData(data) : data,
         beforeSend: beforeSend,
-        success: (responseData: T) => {
-            success?.(responseData);
-        },
-        error: (caughtError: Error) => {
-            error?.(caughtError);
-        }
+        success: success,
+        error: error
     };
 
     return (await doFetch<T>(fetchOptions)).json();
@@ -113,12 +109,8 @@ export async function sendFormData<T>(options: SendFormDataOptions<T>): Promise<
         credentials: credentials,
         body: encodeFormData(data),
         beforeSend: beforeSend,
-        success: (responseData: T) => {
-            success?.(responseData);
-        },
-        error: (caughtError: Error) => {
-            error?.(caughtError);
-        }
+        success: success,
+        error: error
     };
 
     return doFetch<T>(fetchOptions)
