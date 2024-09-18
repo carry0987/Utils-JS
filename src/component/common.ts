@@ -83,14 +83,7 @@ export function shallowMerge<T>(target: T, ...sources: Partial<T>[]): T {
         if (source) {
             Object.keys(source).forEach(key => {
                 const targetKey = key as keyof T;
-                const sourceValue = source[targetKey];
-
-                if (isObject(sourceValue) && typeof target[targetKey]?.constructor === 'function' && sourceValue instanceof target[targetKey]!.constructor) {
-                    // If the source value is an object and its constructor matches the target's constructor.
-                    target[targetKey] = Object.assign(Object.create(Object.getPrototypeOf(sourceValue), {}), sourceValue);
-                } else {
-                    target[targetKey] = sourceValue as T[typeof targetKey];
-                }
+                target[targetKey] = source[targetKey] as T[typeof targetKey];
             });
         }
     });

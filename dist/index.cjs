@@ -1,6 +1,6 @@
 'use strict';
 
-const version = '3.7.3';
+const version = '3.7.4';
 
 function reportError(...error) {
     console.error(...error);
@@ -227,14 +227,7 @@ function shallowMerge(target, ...sources) {
         if (source) {
             Object.keys(source).forEach(key => {
                 const targetKey = key;
-                const sourceValue = source[targetKey];
-                if (isObject(sourceValue) && typeof target[targetKey]?.constructor === 'function' && sourceValue instanceof target[targetKey].constructor) {
-                    // If the source value is an object and its constructor matches the target's constructor.
-                    target[targetKey] = Object.assign(Object.create(Object.getPrototypeOf(sourceValue), {}), sourceValue);
-                }
-                else {
-                    target[targetKey] = sourceValue;
-                }
+                target[targetKey] = source[targetKey];
             });
         }
     });
