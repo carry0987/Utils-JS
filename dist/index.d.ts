@@ -19,10 +19,10 @@ interface FetchParams<T = any> {
     error?: (error: Error) => void;
 }
 interface FetchOptions<T = any> extends FetchParams<T> {
-    body?: BodyInit | Record<string, unknown>;
+    body?: BodyInit | Record<string, unknown> | FormData | null;
 }
 interface SendFormDataOptions<T = any> extends FetchParams<T> {
-    data: Record<string, any> | Blob | File | FormData;
+    data?: Record<string, any> | Blob | File | FormData | null;
     encode?: boolean;
 }
 interface FormDataOptions {

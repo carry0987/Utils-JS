@@ -20,11 +20,11 @@ export interface FetchParams<T = any> {
 }
 
 export interface FetchOptions<T = any> extends FetchParams<T> {
-    body?: BodyInit | Record<string, unknown>;
+    body?: BodyInit | Record<string, unknown> | FormData | null;
 }
 
 export interface SendFormDataOptions<T = any> extends FetchParams<T> {
-    data: Record<string, any> | Blob | File | FormData;
+    data?: Record<string, any> | Blob | File | FormData | null;
     encode?: boolean;
 }
 
