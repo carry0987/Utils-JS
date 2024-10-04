@@ -1,3 +1,8 @@
+export interface URLSource {
+    url: string;
+    ignore: Array<string> | string;
+}
+
 export interface URLParams {
     [key: string]: string | number | boolean | null;
 }

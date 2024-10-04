@@ -1,6 +1,6 @@
 {
   "name": "@carry0987/utils",
-  "version": "3.7.4",
+  "version": "3.7.5",
   "description": "A library for using common tools and alias methods",
   "type": "module",
   "main": "dist/index.cjs",
@@ -45,10 +45,10 @@
     "@rollup/plugin-replace": "^5.0.7",
     "@rollup/plugin-typescript": "^11.1.6",
     "happy-dom": "^15.7.4",
-    "msw": "^2.4.6",
-    "rollup": "^4.21.3",
+    "msw": "^2.4.9",
+    "rollup": "^4.24.0",
     "rollup-plugin-delete": "^2.1.0",
     "rollup-plugin-dts": "^6.1.1",
-    "vitest": "^2.1.1"
+    "vitest": "^2.1.2"
   }
 }

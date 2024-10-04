@@ -1,5 +1,9 @@
 declare const version: string;
 
+interface URLSource {
+    url: string;
+    ignore: Array<string> | string;
+}
 interface URLParams {
     [key: string]: string | number | boolean | null;
 }
@@ -39,8 +43,9 @@ type interfaces_FetchParams<T = any> = FetchParams<T>;
 type interfaces_FormDataOptions = FormDataOptions;
 type interfaces_SendFormDataOptions<T = any> = SendFormDataOptions<T>;
 type interfaces_URLParams = URLParams;
+type interfaces_URLSource = URLSource;
 declare namespace interfaces {
-  export type { interfaces_CookieOptions as CookieOptions, interfaces_FetchOptions as FetchOptions, interfaces_FetchParams as FetchParams, interfaces_FormDataOptions as FormDataOptions, interfaces_SendFormDataOptions as SendFormDataOptions, interfaces_URLParams as URLParams };
+  export type { interfaces_CookieOptions as CookieOptions, interfaces_FetchOptions as FetchOptions, interfaces_FetchParams as FetchParams, interfaces_FormDataOptions as FormDataOptions, interfaces_SendFormDataOptions as SendFormDataOptions, interfaces_URLParams as URLParams, interfaces_URLSource as URLSource };
 }
 
 type Extension = Record<string, unknown>;
@@ -103,7 +108,7 @@ declare function removeStylesheet(id?: string | null): void;
 declare function generateRandom(length?: number): string;
 declare function generateUUID(): string;
 declare function getUrlParam(sParam: string, url?: string): string | null;
-declare function setUrlParam(url: string, params: URLParams, overwrite?: boolean): string;
+declare function setUrlParam(url: string | URLSource, params: URLParams, overwrite?: boolean): string;
 
 declare const common_buildRules: typeof buildRules;
 declare const common_compatInsertRule: typeof compatInsertRule;

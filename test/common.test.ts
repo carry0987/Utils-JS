@@ -162,12 +162,50 @@ test('getUrlParam gets URL parameter correctly', () => {
     expect(commonUtils.getUrlParam('size', url)).toBe('20');
 });
 
-test('setUrlParam sets URL parameter correctly', () => {
-    const url = 'http://example.com?page=1&size=20';
+test('setUrlParam sets URL parameters without ignore', () => {
+    const url = 'http://example.com?page=1';
     const params = { page: '2', sort: 'asc' };
     const result = commonUtils.setUrlParam(url, params);
 
-    expect(result).toBe('http://example.com/?page=2&size=20&sort=asc');
+    expect(result).toBe('http://example.com/?page=2&sort=asc');
+});
+
+test('setUrlParam sets URL parameters with single ignore', () => {
+    const urlSource = {
+        url: 'https://example.com/public/?/api&page=1',
+        ignore: '?/api'
+    };
+    const params = { request: 'hello' };
+    const result = commonUtils.setUrlParam(urlSource, params);
+
+    expect(result).toBe('https://example.com/public/?/api&page=1&request=hello');
+});
+
+test('setUrlParam sets URL parameters with multiple ignores', () => {
+    const urlSource = {
+        url: 'https://example.com/public/?/api&token=123',
+        ignore: ['?/api', '&token=123']
+    };
+    const params = { request: 'hello' };
+    const result = commonUtils.setUrlParam(urlSource, params);
+
+    expect(result).toBe('https://example.com/public/?/api&token=123&request=hello');
+});
+
+test('setUrlParam maintains existing params when not overwriting', () => {
+    const url = 'http://example.com?page=1';
+    const params = { page: '2', sort: 'asc' };
+    const result = commonUtils.setUrlParam(url, params, false);
+
+    expect(result).toBe('http://example.com/?page=1&sort=asc');
+});
+
+test('setUrlParam replaces parameter when overwriting', () => {
+    const url = 'http://example.com?page=1';
+    const params = { page: '2' };
+    const result = commonUtils.setUrlParam(url, params);
+
+    expect(result).toBe('http://example.com/?page=2');
 });
 
 test('setStylesheetId sets stylesheet ID correctly', () => {

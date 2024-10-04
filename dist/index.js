@@ -1,4 +1,4 @@
-const version = '3.7.4';
+const version = '3.7.5';
 
 function reportError(...error) {
     console.error(...error);
@@ -412,18 +412,54 @@ function getUrlParam(sParam, url = window.location.href) {
     return paramValue === null ? null : decodeURIComponent(paramValue);
 }
 function setUrlParam(url, params, overwrite = true) {
-    const urlObj = new URL(url);
-    // Iterate over params object keys and set params
+    let originalUrl;
+    let ignoreArray = [];
+    // Determine if URLSource object is being used
+    if (typeof url === 'object') {
+        originalUrl = url.url; // Extract the URL string
+        if (Array.isArray(url.ignore)) {
+            ignoreArray = url.ignore.map(part => {
+                return part.startsWith('?') || part.startsWith('&') ? part.substring(1) : part;
+            });
+        }
+        else if (typeof url.ignore === 'string') {
+            let part = url.ignore;
+            if (part.startsWith('?') || part.startsWith('&')) {
+                part = part.substring(1);
+            }
+            ignoreArray.push(part);
+        }
+    }
+    else {
+        originalUrl = url;
+    }
+    const urlObj = new URL(originalUrl);
+    // Extract search string
+    let searchString = urlObj.search.substring(1); // Remove the leading '?'
+    // Split the search string into parameters
+    const paramsList = searchString.length > 0 ? searchString.split('&') : [];
+    const ignoredParams = [];
+    const otherParams = [];
+    for (const param of paramsList) {
+        if (ignoreArray.includes(param)) {
+            ignoredParams.push(param);
+        }
+        else {
+            otherParams.push(param);
+        }
+    }
+    const urlSearchParams = new URLSearchParams(otherParams.join('&'));
+    // Process remaining logic to set params
     for (const [paramName, paramValue] of Object.entries(params)) {
-        // Convert paramValue to string, as URLSearchParams only accepts strings
         const valueStr = paramValue === null ? '' : String(paramValue);
-        // If overwrite is false and param already exists, skip setting it
-        if (!overwrite && urlObj.searchParams.has(paramName)) {
+        if (!overwrite && urlSearchParams.has(paramName)) {
             continue;
         }
-        // Set the parameter value
-        urlObj.searchParams.set(paramName, valueStr);
+        urlSearchParams.set(paramName, valueStr);
     }
+    const newSearchParams = ignoredParams.concat(urlSearchParams.toString().split('&').filter(p => p));
+    const finalSearchString = newSearchParams.join('&');
+    urlObj.search = finalSearchString ? '?' + finalSearchString : '';
     return urlObj.toString();
 }
 
