@@ -27,10 +27,10 @@ export async function doFetch<T>(options: FetchOptions<T>): Promise<Response> {
         credentials: credentials
     };
 
-    if (body !== null && method.toUpperCase() === 'GET') {
+    if (body && body !== null && method.toUpperCase() === 'GET') {
         const params = bodyToURLParams(body);
         requestURL = setUrlParam(typeof url === 'string' ? url : url.toString(), params, true);
-    } else if (body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
+    } else if (body && body !== null && ['PUT', 'POST', 'DELETE'].includes(method.toUpperCase())) {
         let data = body;
         if (!(body instanceof FormData)) {
             data = JSON.stringify(body);
@@ -107,7 +107,7 @@ export async function sendFormData<T>(options: SendFormDataOptions<T>): Promise<
         cache: cache,
         mode: mode,
         credentials: credentials,
-        body: encodeFormData(data),
+        body: data ? encodeFormData(data) : null,
         beforeSend: beforeSend,
         success: success,
         error: error
