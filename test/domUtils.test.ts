@@ -157,4 +157,13 @@ describe('domUtils', () => {
         expect(foundChildren).toContain(child1);
         expect(foundChildren).toContain(child2);
     });
+
+    test('templateToHtml converts template content to HTML string', () => {
+        const template = document.createElement('template');
+        template.innerHTML = '<div class="card"><p>Card content</p></div>';
+        const content = template.content.cloneNode(true) as DocumentFragment;
+        const result = domUtils.templateToHtml(content);
+
+        expect(result).toBe('<div class="card"><p>Card content</p></div>');
+    });
 });

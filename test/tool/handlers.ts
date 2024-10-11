@@ -7,8 +7,8 @@ export const handlers = [
         return new Response(JSON.stringify(responseData), {
             status: 200,
             headers: {
-                'Content-Type': 'application/json',
-            },
+                'Content-Type': 'application/json'
+            }
         });
     }),
 
@@ -18,8 +18,8 @@ export const handlers = [
         return new Response(JSON.stringify(responseData), {
             status: 200,
             headers: {
-                'Content-Type': 'application/json',
-            },
+                'Content-Type': 'application/json'
+            }
         });
-    }),
+    })
 ];

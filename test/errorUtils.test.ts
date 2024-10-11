@@ -13,7 +13,7 @@ describe('errorUtils', () => {
     test('reportError should call console.error with the provided arguments', () => {
         const errorArgs = ['Test error message', { code: 500 }];
         errorUtils.reportError(...errorArgs);
-        
+
         expect(console.error).toHaveBeenCalledWith(...errorArgs);
     });
 

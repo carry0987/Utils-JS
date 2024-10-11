@@ -52,7 +52,7 @@ describe('formUtils', () => {
     });
 
     test('appendFormData correctly handles non-object and non-null values', () => {
-        let formData = formUtils.appendFormData({ data: { value: 'Hello World'}, parentKey: 'key' });
+        let formData = formUtils.appendFormData({ data: { value: 'Hello World' }, parentKey: 'key' });
         expect(formData.get('key[value]')).toBe('Hello World');
 
         formData = formUtils.appendFormData({ data: { value: 123 }, parentKey: 'key' });
@@ -117,7 +117,7 @@ test('convertBodyToURLParams converts FormData, BodyInit and objects to URLParam
     const dataObject = {
         objKey1: 'objValue1',
         objKey2: 123, // testing number conversion
-        objKey3: false, // testing boolean conversion
+        objKey3: false // testing boolean conversion
     };
     urlParams = formUtils.bodyToURLParams(dataObject);
     expect(urlParams.objKey1).toBe('objValue1');

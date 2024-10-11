@@ -14,7 +14,7 @@ export function getLocalValue(key: string, parseJson: boolean = true): any {
     if (parseJson) {
         try {
             value = JSON.parse(value!);
-        } catch(e) {
+        } catch (e) {
             reportError('Error while parsing stored json value: ', e);
         }
     }
@@ -38,7 +38,7 @@ export function getSessionValue(key: string, parseJson: boolean = true): any {
     if (parseJson) {
         try {
             value = JSON.parse(value!);
-        } catch(e) {
+        } catch (e) {
             reportError('Error while parsing stored json value: ', e);
         }
     }

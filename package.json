@@ -1,6 +1,6 @@
 {
   "name": "@carry0987/utils",
-  "version": "3.7.7",
+  "version": "3.7.8",
   "description": "A library for using common tools and alias methods",
   "type": "module",
   "main": "dist/index.cjs",
@@ -15,11 +15,12 @@
   },
   "sideEffects": false,
   "scripts": {
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "build:js": "rollup --config rollup.config.ts --configPlugin typescript --environment BUILD:js",
     "build:dts": "rollup --config rollup.config.ts --configPlugin typescript --environment BUILD:dts",
-    "build": "npm run build:js && npm run build:dts"
+    "build": "npm run build:js && npm run build:dts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "publishConfig": {
     "access": "public"
@@ -42,10 +43,11 @@
   },
   "homepage": "https://github.com/carry0987/Utils-JS#readme",
   "devDependencies": {
-    "@rollup/plugin-replace": "^5.0.7",
-    "@rollup/plugin-typescript": "^11.1.6",
+    "@rollup/plugin-replace": "^6.0.1",
+    "@rollup/plugin-typescript": "^12.1.0",
     "happy-dom": "^15.7.4",
-    "msw": "^2.4.9",
+    "msw": "^2.4.10",
+    "prettier": "^3.3.3",
     "rollup": "^4.24.0",
     "rollup-plugin-delete": "^2.1.0",
     "rollup-plugin-dts": "^6.1.1",

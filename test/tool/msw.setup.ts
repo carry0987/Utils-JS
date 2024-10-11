@@ -8,7 +8,7 @@ export const setupMsw = () => {
     // Reset any request handlers that are declared during the tests,
     // so they don't affect other tests.
     afterEach(() => server.resetHandlers());
-    
+
     // Clean up after the tests are finished.
     afterAll(() => server.close());
 };

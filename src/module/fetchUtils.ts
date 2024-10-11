@@ -1,5 +1,5 @@
 import { encodeFormData, bodyToURLParams } from './formUtils';
-import { setUrlParam } from '../component/common'; 
+import { setUrlParam } from '../component/common';
 import { FetchOptions, SendFormDataOptions } from '../interface/interfaces';
 
 // Fetch API
@@ -62,7 +62,7 @@ export async function doFetch<T>(options: FetchOptions<T>): Promise<Response> {
             if (typeof success === 'function') {
                 // Clone the response and parse the clone
                 const clonedResponse = response.clone();
-                const responseData = await clonedResponse.json() as T;
+                const responseData = (await clonedResponse.json()) as T;
                 success?.(responseData);
             }
         } else {
@@ -78,7 +78,19 @@ export async function doFetch<T>(options: FetchOptions<T>): Promise<Response> {
 
 // Send data
 export async function sendData<T>(options: SendFormDataOptions<T>): Promise<T> {
-    const { url, data, method = 'POST', headers, cache, mode, credentials, success, error, beforeSend, encode = true } = options;
+    const {
+        url,
+        data,
+        method = 'POST',
+        headers,
+        cache,
+        mode,
+        credentials,
+        success,
+        error,
+        beforeSend,
+        encode = true
+    } = options;
 
     const fetchOptions: FetchOptions<T> = {
         url: url,
@@ -87,7 +99,7 @@ export async function sendData<T>(options: SendFormDataOptions<T>): Promise<T> {
         cache: cache,
         mode: mode,
         credentials: credentials,
-        body: (encode && method.toUpperCase() !== 'GET') ? encodeFormData(data) : data,
+        body: encode && method.toUpperCase() !== 'GET' ? encodeFormData(data) : data,
         beforeSend: beforeSend,
         success: success,
         error: error

@@ -14,7 +14,7 @@ export function appendFormData(options: FormDataOptions, formData: FormData = ne
             formData.append(formKey, data);
         } else {
             // Traverse object properties
-            Object.keys(data).forEach(key => {
+            Object.keys(data).forEach((key) => {
                 const value = data[key];
                 const formKey = parentKey ? `${parentKey}[${key}]` : key;
                 if (value !== null && typeof value === 'object') {
@@ -94,7 +94,12 @@ export function bodyToURLParams(body: FormData | BodyInit | Record<string, unkno
     } else if (typeof body === 'object') {
         // Handle generic object by iterating over its keys
         Object.entries(body).forEach(([key, value]) => {
-            if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value === null) {
+            if (
+                typeof value === 'string' ||
+                typeof value === 'number' ||
+                typeof value === 'boolean' ||
+                value === null
+            ) {
                 params[key] = value;
             } else {
                 params[key] = JSON.stringify(value); // Serialize complex objects

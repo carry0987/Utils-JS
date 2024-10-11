@@ -1,6 +1,6 @@
 'use strict';
 
-const version = '3.7.7';
+const version = '3.7.8';
 
 function reportError(...error) {
     console.error(...error);
@@ -136,6 +136,21 @@ function findChilds(ele, selector, maxDepth = Infinity) {
     recursiveFind(ele, 0);
     return results;
 }
+function templateToHtml(templateElem) {
+    let sourceElem;
+    // Check the type of templateElem
+    if (templateElem instanceof HTMLTemplateElement) {
+        // If it's a HTMLTemplateElement, proceed with cloning content
+        sourceElem = templateElem.content.cloneNode(true);
+    }
+    else {
+        // If it's a DocumentFragment, proceed with cloning content
+        sourceElem = templateElem;
+    }
+    const tempDiv = document.createElement('div');
+    tempDiv.appendChild(sourceElem);
+    return tempDiv.innerHTML;
+}
 
 var domUtils = /*#__PURE__*/Object.freeze({
     __proto__: null,
@@ -152,6 +167,7 @@ var domUtils = /*#__PURE__*/Object.freeze({
     insertAfter: insertAfter,
     insertBefore: insertBefore,
     removeClass: removeClass,
+    templateToHtml: templateToHtml,
     toggleClass: toggleClass
 });
 
@@ -223,9 +239,9 @@ function deepMerge(target, ...sources) {
     return deepMerge(target, ...sources);
 }
 function shallowMerge(target, ...sources) {
-    sources.forEach(source => {
+    sources.forEach((source) => {
         if (source) {
-            Object.keys(source).forEach(key => {
+            Object.keys(source).forEach((key) => {
                 const targetKey = key;
                 target[targetKey] = source[targetKey];
             });
@@ -258,11 +274,7 @@ function shallowClone(obj) {
         for (const key in obj) {
             if (obj.hasOwnProperty(key)) {
                 const value = obj[key];
-                clone[key] = isObject(value)
-                    ? shallowClone(value)
-                    : isArray(value)
-                        ? [...value]
-                        : value;
+                clone[key] = isObject(value) ? shallowClone(value) : isArray(value) ? [...value] : value;
             }
         }
         return clone;
@@ -405,7 +417,9 @@ function getUrlParam(sParam, url = window.location.href) {
         urlPart = url.substring(url.indexOf('#') + 1);
     }
     else {
-        const searchPart = url.includes('#') ? url.substring(url.indexOf('?'), url.indexOf('#')) : url.substring(url.indexOf('?'));
+        const searchPart = url.includes('#')
+            ? url.substring(url.indexOf('?'), url.indexOf('#'))
+            : url.substring(url.indexOf('?'));
         urlPart = searchPart;
     }
     const params = new URLSearchParams(urlPart);
@@ -420,7 +434,7 @@ function setUrlParam(url, params, overwrite = true) {
     if (typeof url === 'object') {
         originalUrl = url.url; // Extract the URL string
         if (Array.isArray(url.ignore)) {
-            ignoreArray = url.ignore.map(part => {
+            ignoreArray = url.ignore.map((part) => {
                 return part.startsWith('?') || part.startsWith('&') ? part.substring(1) : part;
             });
         }
@@ -459,7 +473,10 @@ function setUrlParam(url, params, overwrite = true) {
         }
         urlSearchParams.set(paramName, valueStr);
     }
-    const newSearchParams = ignoredParams.concat(urlSearchParams.toString().split('&').filter(p => p));
+    const newSearchParams = ignoredParams.concat(urlSearchParams
+        .toString()
+        .split('&')
+        .filter((p) => p));
     const finalSearchString = newSearchParams.join('&');
     urlObj.search = finalSearchString ? '?' + finalSearchString : '';
     return urlObj.toString();
@@ -646,7 +663,7 @@ function appendFormData(options, formData = new FormData()) {
         }
         else {
             // Traverse object properties
-            Object.keys(data).forEach(key => {
+            Object.keys(data).forEach((key) => {
                 const value = data[key];
                 const formKey = parentKey ? `${parentKey}[${key}]` : key;
                 if (value !== null && typeof value === 'object') {
@@ -722,7 +739,10 @@ function bodyToURLParams(body) {
     else if (typeof body === 'object') {
         // Handle generic object by iterating over its keys
         Object.entries(body).forEach(([key, value]) => {
-            if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value === null) {
+            if (typeof value === 'string' ||
+                typeof value === 'number' ||
+                typeof value === 'boolean' ||
+                value === null) {
                 params[key] = value;
             }
             else {
@@ -790,7 +810,7 @@ async function doFetch(options) {
             if (typeof success === 'function') {
                 // Clone the response and parse the clone
                 const clonedResponse = response.clone();
-                const responseData = await clonedResponse.json();
+                const responseData = (await clonedResponse.json());
                 success?.(responseData);
             }
         }
@@ -815,7 +835,7 @@ async function sendData(options) {
         cache: cache,
         mode: mode,
         credentials: credentials,
-        body: (encode && method.toUpperCase() !== 'GET') ? encodeFormData(data) : data,
+        body: encode && method.toUpperCase() !== 'GET' ? encodeFormData(data) : data,
         beforeSend: beforeSend,
         success: success,
         error: error
@@ -933,6 +953,7 @@ exports.shallowClone = shallowClone;
 exports.shallowEqual = shallowEqual;
 exports.shallowMerge = shallowMerge;
 exports.storageUtils = storageUtils;
+exports.templateToHtml = templateToHtml;
 exports.throwError = throwError;
 exports.toggleClass = toggleClass;
 exports.version = version;

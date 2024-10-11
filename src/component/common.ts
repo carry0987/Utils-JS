@@ -65,7 +65,7 @@ export function deepMerge<T>(target: T, ...sources: Partial<T>[]): T {
                 const targetKey = key as keyof T;
                 if (isObject(value) || isArray(value)) {
                     if (!target[targetKey] || typeof target[targetKey] !== 'object') {
-                        target[targetKey] = isArray(value) ? [] : {} as any;
+                        target[targetKey] = isArray(value) ? [] : ({} as any);
                     }
                     deepMerge(target[targetKey] as any, value as any);
                 } else {
@@ -79,9 +79,9 @@ export function deepMerge<T>(target: T, ...sources: Partial<T>[]): T {
 }
 
 export function shallowMerge<T>(target: T, ...sources: Partial<T>[]): T {
-    sources.forEach(source => {
+    sources.forEach((source) => {
         if (source) {
-            Object.keys(source).forEach(key => {
+            Object.keys(source).forEach((key) => {
                 const targetKey = key as keyof T;
                 target[targetKey] = source[targetKey] as T[typeof targetKey];
             });
@@ -117,11 +117,7 @@ export function shallowClone<T>(obj: T): T {
         for (const key in obj) {
             if (obj.hasOwnProperty(key)) {
                 const value = (obj as any)[key];
-                clone[key] = isObject(value) 
-                    ? shallowClone(value) 
-                    : isArray(value) 
-                        ? [...value] 
-                        : value;
+                clone[key] = isObject(value) ? shallowClone(value) : isArray(value) ? [...value] : value;
             }
         }
 
@@ -243,7 +239,12 @@ export function buildRules(ruleObject: Record<string, string>): string {
     return ruleSet;
 }
 
-export function compatInsertRule(stylesheet: CSSStyleSheet, selector: string, cssText: string, id: string | null = null): void {
+export function compatInsertRule(
+    stylesheet: CSSStyleSheet,
+    selector: string,
+    cssText: string,
+    id: string | null = null
+): void {
     id = isEmpty(id) ? '' : id;
     let modifiedSelector = selector.replace(replaceRule.from, replaceRule.to + id);
     stylesheet.insertRule(modifiedSelector + '{' + cssText + '}', 0);
@@ -271,14 +272,11 @@ export function generateRandom(length: number = 8): string {
 }
 
 export function generateUUID(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-        /[xy]/g,
-        (c) => {
-            const r = (Math.random() * 16) | 0,
-                v = c === 'x' ? r : (r & 0x3) | 0x8;
-            return v.toString(16);
-        }
-    );
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        const r = (Math.random() * 16) | 0,
+            v = c === 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+    });
 }
 
 export function getUrlParam(sParam: string, url: string = window.location.href): string | null {
@@ -288,7 +286,9 @@ export function getUrlParam(sParam: string, url: string = window.location.href):
     if (isHashParam) {
         urlPart = url.substring(url.indexOf('#') + 1);
     } else {
-        const searchPart = url.includes('#') ? url.substring(url.indexOf('?'), url.indexOf('#')) : url.substring(url.indexOf('?'));
+        const searchPart = url.includes('#')
+            ? url.substring(url.indexOf('?'), url.indexOf('#'))
+            : url.substring(url.indexOf('?'));
         urlPart = searchPart;
     }
     const params = new URLSearchParams(urlPart);
@@ -306,7 +306,7 @@ export function setUrlParam(url: string | URLSource, params: URLParams, overwrit
     if (typeof url === 'object') {
         originalUrl = url.url; // Extract the URL string
         if (Array.isArray(url.ignore)) {
-            ignoreArray = url.ignore.map(part => {
+            ignoreArray = url.ignore.map((part) => {
                 return part.startsWith('?') || part.startsWith('&') ? part.substring(1) : part;
             });
         } else if (typeof url.ignore === 'string') {
@@ -350,7 +350,12 @@ export function setUrlParam(url: string | URLSource, params: URLParams, overwrit
         urlSearchParams.set(paramName, valueStr);
     }
 
-    const newSearchParams = ignoredParams.concat(urlSearchParams.toString().split('&').filter(p => p));
+    const newSearchParams = ignoredParams.concat(
+        urlSearchParams
+            .toString()
+            .split('&')
+            .filter((p) => p)
+    );
 
     const finalSearchString = newSearchParams.join('&');
 

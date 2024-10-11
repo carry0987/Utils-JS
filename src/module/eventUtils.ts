@@ -11,23 +11,49 @@ import {
     CombinedEventHandler
 } from '../type/types';
 
-export function addEventListener<K extends EventName>(element: ElementEventTarget, eventName: K, handler: EventHandler<K>, options?: EventOptions): void;
-export function addEventListener<K extends CustomEventName>(element: ElementEventTarget, eventName: K, handler: CustomEventHandler, options?: EventOptions): void;
-export function addEventListener(element: ElementEventTarget, eventName: CombinedEventName, handler: CombinedEventHandler, options?: EventOptions): void {
+export function addEventListener<K extends EventName>(
+    element: ElementEventTarget,
+    eventName: K,
+    handler: EventHandler<K>,
+    options?: EventOptions
+): void;
+export function addEventListener<K extends CustomEventName>(
+    element: ElementEventTarget,
+    eventName: K,
+    handler: CustomEventHandler,
+    options?: EventOptions
+): void;
+export function addEventListener(
+    element: ElementEventTarget,
+    eventName: CombinedEventName,
+    handler: CombinedEventHandler,
+    options?: EventOptions
+): void {
     element.addEventListener(eventName, handler as EventListener | EventListenerObject, options);
 }
 
-export function removeEventListener<K extends EventName>(element: ElementEventTarget, eventName: K, handler: EventHandler<K>, options?: RemoveEventOptions): void;
-export function removeEventListener<K extends CustomEventName>(element: ElementEventTarget, eventName: K, handler: CustomEventHandler, options?: RemoveEventOptions): void;
-export function removeEventListener(element: ElementEventTarget, eventName: CombinedEventName, handler: CombinedEventHandler, options?: RemoveEventOptions): void {
+export function removeEventListener<K extends EventName>(
+    element: ElementEventTarget,
+    eventName: K,
+    handler: EventHandler<K>,
+    options?: RemoveEventOptions
+): void;
+export function removeEventListener<K extends CustomEventName>(
+    element: ElementEventTarget,
+    eventName: K,
+    handler: CustomEventHandler,
+    options?: RemoveEventOptions
+): void;
+export function removeEventListener(
+    element: ElementEventTarget,
+    eventName: CombinedEventName,
+    handler: CombinedEventHandler,
+    options?: RemoveEventOptions
+): void {
     element.removeEventListener(eventName, handler as EventListener | EventListenerObject, options);
 }
 
-export function createEvent<T = unknown>(
-    eventName: string,
-    detail?: T,
-    options?: EventInit
-): CustomEvent<T> {
+export function createEvent<T = unknown>(eventName: string, detail?: T, options?: EventInit): CustomEvent<T> {
     return new CustomEvent(eventName, { detail, ...options });
 }
 

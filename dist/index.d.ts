@@ -165,6 +165,8 @@ declare function findParents<E extends Element = Element>(ele: E, selector: stri
 declare function hasChild<E extends Element = Element>(ele: E, selector: string): boolean;
 declare function findChild<E extends Element = Element>(ele: E, selector: string): E | null;
 declare function findChilds<E extends Element = Element>(ele: E, selector: string, maxDepth?: number): E[];
+declare function templateToHtml(templateElem: HTMLTemplateElement): string;
+declare function templateToHtml(templateElem: DocumentFragment): string;
 
 declare const domUtils_addClass: typeof addClass;
 declare const domUtils_createElem: typeof createElem;
@@ -179,9 +181,10 @@ declare const domUtils_hasParent: typeof hasParent;
 declare const domUtils_insertAfter: typeof insertAfter;
 declare const domUtils_insertBefore: typeof insertBefore;
 declare const domUtils_removeClass: typeof removeClass;
+declare const domUtils_templateToHtml: typeof templateToHtml;
 declare const domUtils_toggleClass: typeof toggleClass;
 declare namespace domUtils {
-  export { domUtils_addClass as addClass, domUtils_createElem as createElem, domUtils_findChild as findChild, domUtils_findChilds as findChilds, domUtils_findParent as findParent, domUtils_findParents as findParents, domUtils_getElem as getElem, domUtils_hasChild as hasChild, domUtils_hasClass as hasClass, domUtils_hasParent as hasParent, domUtils_insertAfter as insertAfter, domUtils_insertBefore as insertBefore, domUtils_removeClass as removeClass, domUtils_toggleClass as toggleClass };
+  export { domUtils_addClass as addClass, domUtils_createElem as createElem, domUtils_findChild as findChild, domUtils_findChilds as findChilds, domUtils_findParent as findParent, domUtils_findParents as findParents, domUtils_getElem as getElem, domUtils_hasChild as hasChild, domUtils_hasClass as hasClass, domUtils_hasParent as hasParent, domUtils_insertAfter as insertAfter, domUtils_insertBefore as insertBefore, domUtils_removeClass as removeClass, domUtils_templateToHtml as templateToHtml, domUtils_toggleClass as toggleClass };
 }
 
 declare function setLocalValue(key: string, value: any, stringify?: boolean): void;
@@ -252,4 +255,4 @@ declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_bodyToURLParams as bodyToURLParams, formUtils_decodeFormData as decodeFormData, formUtils_encodeFormData as encodeFormData, formUtils_formDataToURLParams as formDataToURLParams };
 }
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, templateToHtml, throwError, toggleClass, version };
