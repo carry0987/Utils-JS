@@ -7,7 +7,7 @@ export * as errorUtils from '@/module/errorUtils';
 export * as domUtils from '@/module/domUtils';
 export * as storageUtils from '@/module/storageUtils';
 export * as eventUtils from '@/module/eventUtils';
-export * as executionUtils from '@/module/executionUtils';
+export * as executionUtils from '@/module/executeUtils';
 export * as fetchUtils from '@/module/fetchUtils';
 export * as formUtils from '@/module/formUtils';
 
@@ -17,7 +17,7 @@ export * from '@/module/errorUtils';
 export * from '@/module/domUtils';
 export * from '@/module/storageUtils';
 export * from '@/module/eventUtils';
-export * from '@/module/executionUtils';
+export * from '@/module/executeUtils';
 export * from '@/module/fetchUtils';
 export * from '@/module/formUtils';
 

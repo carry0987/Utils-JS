@@ -1,4 +1,4 @@
-import { throttle, debounce } from '@/module/executionUtils';
+import { throttle, debounce } from '@/module/executeUtils';
 import { describe, expect, test, vi } from 'vitest';
 
 const sleep = (wait: number) => new Promise((r) => setTimeout(r, wait));

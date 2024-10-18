@@ -245,10 +245,10 @@ declare function throttle(fn: (...args: any[]) => void, wait?: number): (...args
  */
 declare function debounce<F extends (...args: any[]) => any>(func: F, waitFor: number): (...args: Parameters<F>) => Promise<ReturnType<F>>;
 
-declare const executionUtils_debounce: typeof debounce;
-declare const executionUtils_throttle: typeof throttle;
-declare namespace executionUtils {
-  export { executionUtils_debounce as debounce, executionUtils_throttle as throttle };
+declare const executeUtils_debounce: typeof debounce;
+declare const executeUtils_throttle: typeof throttle;
+declare namespace executeUtils {
+  export { executeUtils_debounce as debounce, executeUtils_throttle as throttle };
 }
 
 declare function doFetch<T>(options: FetchOptions<T>): Promise<Response>;
@@ -281,4 +281,4 @@ declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_bodyToURLParams as bodyToURLParams, formUtils_decodeFormData as decodeFormData, formUtils_encodeFormData as encodeFormData, formUtils_formDataToURLParams as formDataToURLParams };
 }
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, debounce, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, executionUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, templateToHtml, throttle, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, debounce, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, executeUtils as executionUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, templateToHtml, throttle, throwError, toggleClass, version };

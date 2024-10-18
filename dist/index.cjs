@@ -1,6 +1,6 @@
 'use strict';
 
-const version = '3.8.0';
+const version = '3.8.1';
 
 function reportError(...error) {
     console.error(...error);
@@ -703,7 +703,7 @@ function debounce(func, waitFor) {
     });
 }
 
-var executionUtils = /*#__PURE__*/Object.freeze({
+var executeUtils = /*#__PURE__*/Object.freeze({
     __proto__: null,
     debounce: debounce,
     throttle: throttle
@@ -967,7 +967,7 @@ exports.domUtils = domUtils;
 exports.encodeFormData = encodeFormData;
 exports.errorUtils = errorUtils;
 exports.eventUtils = eventUtils;
-exports.executionUtils = executionUtils;
+exports.executionUtils = executeUtils;
 exports.fetchData = fetchData;
 exports.fetchUtils = fetchUtils;
 exports.findChild = findChild;
