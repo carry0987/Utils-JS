@@ -1,5 +1,5 @@
+import { commonUtils } from '@/index';
 import { test, expect } from 'vitest';
-import { commonUtils } from '../src/index';
 
 test('shallowMerge retains instanceof', () => {
     class CustomClass {

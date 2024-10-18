@@ -1,5 +1,5 @@
+import { version } from '@/component/version';
 import { test, expect } from 'vitest';
-import { version } from '../src/component/version';
 
 test('version should be a string', () => {
     expect(typeof version).toBe('string');

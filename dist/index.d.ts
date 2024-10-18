@@ -225,6 +225,32 @@ declare namespace eventUtils {
   export { eventUtils_addEventListener as addEventListener, eventUtils_createEvent as createEvent, eventUtils_dispatchEvent as dispatchEvent, eventUtils_removeEventListener as removeEventListener };
 }
 
+/**
+ * Throttle a given function
+ *
+ * @param fn Function to be called
+ * @param wait Throttle timeout in milliseconds
+ *
+ * @returns Throttled function
+ */
+declare function throttle(fn: (...args: any[]) => void, wait?: number): (...args: any[]) => void;
+/**
+ * Creates a debounced function that delays the invocation of the provided function
+ * until after the specified wait time has elapsed since the last time it was called.
+ *
+ * @param func - The original function to debounce.
+ * @param waitFor - The number of milliseconds to delay the function call.
+ *
+ * @returns A debounced function that returns a Promise resolving to the result of the original function.
+ */
+declare function debounce<F extends (...args: any[]) => any>(func: F, waitFor: number): (...args: Parameters<F>) => Promise<ReturnType<F>>;
+
+declare const executionUtils_debounce: typeof debounce;
+declare const executionUtils_throttle: typeof throttle;
+declare namespace executionUtils {
+  export { executionUtils_debounce as debounce, executionUtils_throttle as throttle };
+}
+
 declare function doFetch<T>(options: FetchOptions<T>): Promise<Response>;
 declare function sendData<T>(options: SendFormDataOptions<T>): Promise<T>;
 declare function sendFormData<T>(options: SendFormDataOptions<T>): Promise<boolean>;
@@ -255,4 +281,4 @@ declare namespace formUtils {
   export { formUtils_appendFormData as appendFormData, formUtils_bodyToURLParams as bodyToURLParams, formUtils_decodeFormData as decodeFormData, formUtils_encodeFormData as encodeFormData, formUtils_formDataToURLParams as formDataToURLParams };
 }
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, templateToHtml, throwError, toggleClass, version };
+export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, debounce, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, executionUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, templateToHtml, throttle, throwError, toggleClass, version };

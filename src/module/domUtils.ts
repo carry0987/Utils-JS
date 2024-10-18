@@ -1,5 +1,5 @@
 import { throwError } from './errorUtils';
-import { QuerySelector, ElementAttributes } from '../type/types';
+import { QuerySelector, ElementAttributes } from '@/type/types';
 
 export function getElem<E extends Element = Element>(ele: string, mode: 'all', parent?: QuerySelector): NodeListOf<E>;
 export function getElem<E extends Element = Element>(

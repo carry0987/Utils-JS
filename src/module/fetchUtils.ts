@@ -1,6 +1,6 @@
 import { encodeFormData, bodyToURLParams } from './formUtils';
-import { setUrlParam } from '../component/common';
-import { FetchOptions, SendFormDataOptions } from '../interface/interfaces';
+import { setUrlParam } from '@/component/common';
+import { FetchOptions, SendFormDataOptions } from '@/interface/interfaces';
 
 // Fetch API
 export async function doFetch<T>(options: FetchOptions<T>): Promise<Response> {

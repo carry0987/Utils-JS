@@ -1,7 +1,7 @@
+import { storageUtils, reportError } from '@/index';
 import { describe, beforeEach, test, expect, vi } from 'vitest';
-import { storageUtils, reportError } from '../src/index';
 
-vi.mock('../src/module/errorUtils', () => ({
+vi.mock('@/module/errorUtils', () => ({
     reportError: vi.fn()
 }));
 

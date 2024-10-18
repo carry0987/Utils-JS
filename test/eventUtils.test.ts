@@ -1,5 +1,5 @@
+import { eventUtils } from '@/index';
 import { describe, beforeEach, test, expect, vi } from 'vitest';
-import { eventUtils } from '../src/index';
 
 describe('eventUtils', () => {
     let element: HTMLElement;

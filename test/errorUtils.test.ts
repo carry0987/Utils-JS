@@ -1,5 +1,5 @@
+import { errorUtils } from '@/index';
 import { describe, beforeEach, afterEach, test, expect, vi } from 'vitest';
-import { errorUtils } from '../src/index';
 
 describe('errorUtils', () => {
     beforeEach(() => {

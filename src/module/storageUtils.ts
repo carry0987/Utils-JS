@@ -1,6 +1,6 @@
-import { deepMerge } from '../component/common';
 import { reportError } from './errorUtils';
-import { CookieOptions } from '../interface/interfaces';
+import { deepMerge } from '@/component/common';
+import { CookieOptions } from '@/interface/interfaces';
 
 export function setLocalValue(key: string, value: any, stringify = true): void {
     if (stringify) {

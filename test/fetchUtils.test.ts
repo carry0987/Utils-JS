@@ -1,11 +1,11 @@
 /**
  * @vitest-environment node
  */
-import { describe, test, expect } from 'vitest';
 import { setupMsw } from './tool/msw.setup';
-import { fetchUtils } from '../src/index';
+import { fetchUtils } from '@/index';
 import { server } from './tool/server';
 import { http } from 'msw';
+import { describe, test, expect } from 'vitest';
 
 setupMsw();
 

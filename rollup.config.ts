@@ -1,15 +1,17 @@
+import { RollupOptions } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
+import tsConfigPaths from 'rollup-plugin-tsconfig-paths';
 import replace from '@rollup/plugin-replace';
 import { dts } from 'rollup-plugin-dts';
 import del from 'rollup-plugin-delete';
 import { createRequire } from 'module';
-const pkg = createRequire(import.meta.url)('./package.json');
 
+const pkg = createRequire(import.meta.url)('./package.json');
 const isDts = process.env.BUILD === 'dts';
 const sourceFile = 'src/index.ts';
 
 // CommonJS build configuration
-const cjsConfig = {
+const cjsConfig: RollupOptions = {
     input: sourceFile,
     output: [
         {
@@ -20,6 +22,7 @@ const cjsConfig = {
     ],
     plugins: [
         typescript(),
+        tsConfigPaths(),
         replace({
             preventAssignment: true,
             __version__: pkg.version
@@ -28,7 +31,7 @@ const cjsConfig = {
 };
 
 // ESM build configuration
-const esmConfig = {
+const esmConfig: RollupOptions = {
     input: sourceFile,
     output: [
         {
@@ -39,6 +42,7 @@ const esmConfig = {
     ],
     plugins: [
         typescript(),
+        tsConfigPaths(),
         replace({
             preventAssignment: true,
             __version__: pkg.version
@@ -47,15 +51,16 @@ const esmConfig = {
 };
 
 // TypeScript type definition configuration
-const dtsConfig = {
+const dtsConfig: RollupOptions = {
     input: sourceFile,
     output: {
         file: pkg.types,
         format: 'es'
     },
     plugins: [
+        tsConfigPaths(),
         dts(),
-        del({ hook: 'buildEnd', targets: ['dist/*.js', '!dist/index.js', 'dist/dts'] })
+        del({ hook: 'buildEnd', targets: ['dist/dts'] })
     ]
 };
 
