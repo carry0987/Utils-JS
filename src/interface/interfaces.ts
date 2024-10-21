@@ -40,3 +40,12 @@ export interface CookieOptions {
     secure?: boolean;
     sameSite?: 'Strict' | 'Lax' | 'None';
 }
+
+export interface ThrottleOptions {
+    leading?: boolean;
+    trailing?: boolean;
+}
+
+export interface DebounceOptions extends ThrottleOptions {
+    maxWait?: number;
+}
