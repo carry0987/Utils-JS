@@ -29,18 +29,15 @@ export function throttle(
         const elapsed = currentTime - lastTime;
 
         if (elapsed >= wait) {
-            // If enough time has passed since the last call, execute the function immediately
-            invokeFn(...args);
-        } else {
-            // If not enough time has passed, schedule the function call after the remaining delay
+            // Execute the function immediately, ensuring to clear any previous timer
             if (timeoutId !== undefined) {
                 clearTimeout(timeoutId);
+                timeoutId = undefined;
             }
-
+            invokeFn(...args);
+        } else if (trailing && timeoutId === undefined) {
             timeoutId = setTimeout(() => {
-                if (trailing) {
-                    invokeFn(...args);
-                }
+                invokeFn(...args);
                 timeoutId = undefined;
             }, wait - elapsed);
         }
