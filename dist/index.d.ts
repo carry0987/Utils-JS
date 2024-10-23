@@ -36,16 +36,25 @@ interface CookieOptions {
     secure?: boolean;
     sameSite?: 'Strict' | 'Lax' | 'None';
 }
+interface ThrottleOptions {
+    leading?: boolean;
+    trailing?: boolean;
+}
+interface DebounceOptions extends ThrottleOptions {
+    maxWait?: number;
+}
 
 type interfaces_CookieOptions = CookieOptions;
+type interfaces_DebounceOptions = DebounceOptions;
 type interfaces_FetchOptions<T = any> = FetchOptions<T>;
 type interfaces_FetchParams<T = any> = FetchParams<T>;
 type interfaces_FormDataOptions = FormDataOptions;
 type interfaces_SendFormDataOptions<T = any> = SendFormDataOptions<T>;
+type interfaces_ThrottleOptions = ThrottleOptions;
 type interfaces_URLParams = URLParams;
 type interfaces_URLSource = URLSource;
 declare namespace interfaces {
-  export type { interfaces_CookieOptions as CookieOptions, interfaces_FetchOptions as FetchOptions, interfaces_FetchParams as FetchParams, interfaces_FormDataOptions as FormDataOptions, interfaces_SendFormDataOptions as SendFormDataOptions, interfaces_URLParams as URLParams, interfaces_URLSource as URLSource };
+  export type { interfaces_CookieOptions as CookieOptions, interfaces_DebounceOptions as DebounceOptions, interfaces_FetchOptions as FetchOptions, interfaces_FetchParams as FetchParams, interfaces_FormDataOptions as FormDataOptions, interfaces_SendFormDataOptions as SendFormDataOptions, interfaces_ThrottleOptions as ThrottleOptions, interfaces_URLParams as URLParams, interfaces_URLSource as URLSource };
 }
 
 type Extension = Record<string, unknown>;
@@ -230,20 +239,22 @@ declare namespace eventUtils {
  *
  * @param fn Function to be called
  * @param wait Throttle timeout in milliseconds
+ * @param options Throttle options
  *
  * @returns Throttled function
  */
-declare function throttle(fn: (...args: any[]) => void, wait?: number): (...args: any[]) => void;
+declare function throttle(fn: (...args: any[]) => void, wait?: number, options?: ThrottleOptions): (...args: any[]) => void;
 /**
  * Creates a debounced function that delays the invocation of the provided function
  * until after the specified wait time has elapsed since the last time it was called.
  *
- * @param func - The original function to debounce.
- * @param waitFor - The number of milliseconds to delay the function call.
+ * @param fn - The original function to debounce.
+ * @param wait - The number of milliseconds to delay the function call.
+ * @param options - Debounce options.
  *
  * @returns A debounced function that returns a Promise resolving to the result of the original function.
  */
-declare function debounce<F extends (...args: any[]) => any>(func: F, waitFor: number): (...args: Parameters<F>) => Promise<ReturnType<F>>;
+declare function debounce<F extends (...args: any[]) => any>(fn: F, wait: number, options?: DebounceOptions): (...args: Parameters<F>) => Promise<ReturnType<F>>;
 
 declare const executeUtils_debounce: typeof debounce;
 declare const executeUtils_throttle: typeof throttle;

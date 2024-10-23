@@ -1,4 +1,4 @@
-const version = '3.8.2';
+const version = '3.8.3';
 
 function reportError(...error) {
     console.error(...error);
@@ -650,13 +650,15 @@ var eventUtils = /*#__PURE__*/Object.freeze({
  *
  * @param fn Function to be called
  * @param wait Throttle timeout in milliseconds
+ * @param options Throttle options
  *
  * @returns Throttled function
  */
-function throttle(fn, wait = 100) {
+function throttle(fn, wait = 100, options = { leading: false, trailing: true }) {
+    const { leading = false, trailing = true } = options;
     let timeoutId;
-    let lastTime = Date.now();
-    const execute = (...args) => {
+    let lastTime = leading ? -Infinity : Date.now();
+    const invokeFn = (...args) => {
         lastTime = Date.now();
         fn(...args);
     };
@@ -664,16 +666,16 @@ function throttle(fn, wait = 100) {
         const currentTime = Date.now();
         const elapsed = currentTime - lastTime;
         if (elapsed >= wait) {
-            // If enough time has passed since the last call, execute the function immediately
-            execute(...args);
-        }
-        else {
-            // If not enough time has passed, schedule the function call after the remaining delay
+            // Execute the function immediately, ensuring to clear any previous timer
             if (timeoutId !== undefined) {
                 clearTimeout(timeoutId);
+                timeoutId = undefined;
             }
+            invokeFn(...args);
+        }
+        else if (trailing && timeoutId === undefined) {
             timeoutId = setTimeout(() => {
-                execute(...args);
+                invokeFn(...args);
                 timeoutId = undefined;
             }, wait - elapsed);
         }
@@ -683,21 +685,40 @@ function throttle(fn, wait = 100) {
  * Creates a debounced function that delays the invocation of the provided function
  * until after the specified wait time has elapsed since the last time it was called.
  *
- * @param func - The original function to debounce.
- * @param waitFor - The number of milliseconds to delay the function call.
+ * @param fn - The original function to debounce.
+ * @param wait - The number of milliseconds to delay the function call.
+ * @param options - Debounce options.
  *
  * @returns A debounced function that returns a Promise resolving to the result of the original function.
  */
-function debounce(func, waitFor) {
+function debounce(fn, wait, options = { leading: false, trailing: true }) {
+    const { leading = false, trailing = true, maxWait } = options;
     let timeoutId;
+    let lastInvokeTime = 0;
+    let result;
+    const invokeFn = (args) => {
+        lastInvokeTime = Date.now();
+        result = fn(...args);
+        return result;
+    };
     return (...args) => new Promise((resolve) => {
+        const currentTime = Date.now();
+        const elapsed = currentTime - lastInvokeTime;
         if (timeoutId !== undefined) {
             clearTimeout(timeoutId);
         }
+        if (maxWait !== undefined && elapsed >= maxWait) {
+            resolve(invokeFn(args));
+        }
+        else if (leading && elapsed > wait) {
+            resolve(invokeFn(args));
+        }
         timeoutId = setTimeout(() => {
-            resolve(func(...args));
+            if (trailing && !leading) {
+                resolve(invokeFn(args));
+            }
             timeoutId = undefined; // Clear timeout after it's been executed
-        }, waitFor);
+        }, wait);
     });
 }
 
