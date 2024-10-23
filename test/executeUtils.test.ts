@@ -4,36 +4,40 @@ import { describe, expect, test, vi } from 'vitest';
 const sleep = (wait: number) => new Promise((r) => setTimeout(r, wait));
 
 describe('throttle', () => {
-    test('should throttle calls', async () => {
+    test('should throttle calls and respect trailing', async () => {
         const wait = 100;
         const fn = vi.fn();
         const throttled = throttle(fn, wait);
 
         throttled('a', 'b', 'c');
-        sleep(wait - 5);
+        await sleep(wait - 5);
         throttled('b', 'a', 'c');
-        sleep(wait - 10);
+        await sleep(wait - 10);
         throttled('c', 'b', 'a');
 
-        await sleep(wait);
+        await sleep(wait + 10); // Ensure we've waited long enough for it to be called twice
 
-        expect(fn).toBeCalledTimes(1);
+        // The function should be called twice due to trailing
+        expect(fn).toBeCalledTimes(2);
+        // The last call to the throttled function should use the last set of arguments
         expect(fn).toBeCalledWith('c', 'b', 'a');
     });
 
-    test('should execute the first call', async () => {
+    test('should execute the first call immediately if leading is set', async () => {
         const wait = 100;
         const fn = vi.fn();
-        const throttled = throttle(fn, wait);
+        const throttled = throttle(fn, wait, { leading: true });
 
         throttled();
+
+        expect(fn).toBeCalledTimes(1);
 
         await sleep(wait);
 
         expect(fn).toBeCalledTimes(1);
     });
 
-    test('should call at trailing edge of the timeout', async () => {
+    test('should execute at trailing edge of the timeout', async () => {
         const wait = 100;
         const fn = vi.fn();
         const throttled = throttle(fn, wait);
@@ -42,28 +46,28 @@ describe('throttle', () => {
 
         expect(fn).toBeCalledTimes(0);
 
-        await sleep(wait);
+        await sleep(wait + 10);
 
         expect(fn).toBeCalledTimes(1);
     });
 
-    test('should call after the timer', async () => {
+    test('should call after successive calls with delay', async () => {
         const wait = 100;
         const fn = vi.fn();
         const throttled = throttle(fn, wait);
 
         throttled();
-        await sleep(wait);
+        await sleep(wait + 10);
 
         expect(fn).toBeCalledTimes(1);
 
         throttled();
-        await sleep(wait);
+        await sleep(wait + 10);
 
         expect(fn).toBeCalledTimes(2);
 
         throttled();
-        await sleep(wait);
+        await sleep(wait + 10);
 
         expect(fn).toBeCalledTimes(3);
     });

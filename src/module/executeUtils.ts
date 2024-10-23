@@ -1,3 +1,5 @@
+import { ThrottleOptions } from '@/interface/interfaces';
+
 /**
  * Throttle a given function
  *
@@ -6,11 +8,17 @@
  *
  * @returns Throttled function
  */
-export function throttle(fn: (...args: any[]) => void, wait = 100) {
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
-    let lastTime = Date.now();
+export function throttle(
+    fn: (...args: any[]) => void,
+    wait = 100,
+    options: ThrottleOptions = { leading: false, trailing: true }
+) {
+    const { leading = false, trailing = true } = options;
 
-    const execute = (...args: any[]) => {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    let lastTime = leading ? -Infinity : Date.now();
+
+    const invokeFn = (...args: any[]) => {
         lastTime = Date.now();
         fn(...args);
     };
@@ -21,7 +29,7 @@ export function throttle(fn: (...args: any[]) => void, wait = 100) {
 
         if (elapsed >= wait) {
             // If enough time has passed since the last call, execute the function immediately
-            execute(...args);
+            invokeFn(...args);
         } else {
             // If not enough time has passed, schedule the function call after the remaining delay
             if (timeoutId !== undefined) {
@@ -29,7 +37,9 @@ export function throttle(fn: (...args: any[]) => void, wait = 100) {
             }
 
             timeoutId = setTimeout(() => {
-                execute(...args);
+                if (trailing) {
+                    invokeFn(...args);
+                }
                 timeoutId = undefined;
             }, wait - elapsed);
         }
