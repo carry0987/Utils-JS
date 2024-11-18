@@ -201,7 +201,7 @@ test('setUrlParam maintains existing params when not overwriting', () => {
 });
 
 test('setUrlParam replaces parameter when overwriting', () => {
-    const url = 'http://example.com?page=1';
+    const url = 'http://example.com?&page=1';
     const params = { page: '2' };
     const result = commonUtils.setUrlParam(url, params);
 
