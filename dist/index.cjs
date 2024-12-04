@@ -1,6 +1,6 @@
 'use strict';
 
-const version = '3.8.3';
+const version = '3.8.4';
 
 function reportError(...error) {
     console.error(...error);
@@ -410,6 +410,15 @@ function generateUUID() {
         return v.toString(16);
     });
 }
+function isValidURL(url) {
+    try {
+        new URL(url); // Try to create a URL object
+        return true;
+    }
+    catch (_) {
+        return false; // If error, the URL is invalid
+    }
+}
 function getUrlParam(sParam, url = window.location.href) {
     const isHashParam = sParam.startsWith('#');
     let urlPart;
@@ -500,6 +509,7 @@ var common = /*#__PURE__*/Object.freeze({
     isNumber: isNumber,
     isObject: isObject,
     isString: isString,
+    isValidURL: isValidURL,
     removeStylesheet: removeStylesheet,
     replaceRule: replaceRule,
     setReplaceRule: setReplaceRule,
@@ -1017,6 +1027,7 @@ exports.isFunction = isFunction;
 exports.isNumber = isNumber;
 exports.isObject = isObject;
 exports.isString = isString;
+exports.isValidURL = isValidURL;
 exports.removeClass = removeClass;
 exports.removeCookie = removeCookie;
 exports.removeEventListener = removeEventListener;
