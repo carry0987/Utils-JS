@@ -1,5 +1,5 @@
 import { errorUtils } from '@/index';
-import { describe, beforeEach, afterEach, test, expect, vi } from 'vitest';
+import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 describe('errorUtils', () => {
     beforeEach(() => {
@@ -10,14 +10,14 @@ describe('errorUtils', () => {
         vi.restoreAllMocks();
     });
 
-    test('reportError should call console.error with the provided arguments', () => {
+    it('reportError should call console.error with the provided arguments', () => {
         const errorArgs = ['Test error message', { code: 500 }];
         errorUtils.reportError(...errorArgs);
 
         expect(console.error).toHaveBeenCalledWith(...errorArgs);
     });
 
-    test('throwError should throw an error with the provided message', () => {
+    it('throwError should throw an error with the provided message', () => {
         const errorMessage = 'Test error';
 
         expect(() => {

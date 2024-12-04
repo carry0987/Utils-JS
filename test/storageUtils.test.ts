@@ -1,5 +1,5 @@
 import { storageUtils, reportError } from '@/index';
-import { describe, beforeEach, test, expect, vi } from 'vitest';
+import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 vi.mock('@/module/errorUtils', () => ({
     reportError: vi.fn()
@@ -13,24 +13,24 @@ describe('storageUtils', () => {
     });
 
     describe('LocalStorage', () => {
-        test('setLocalValue stores a stringified value', () => {
+        it('setLocalValue stores a stringified value', () => {
             storageUtils.setLocalValue('testKey', { a: 1 });
             expect(localStorage.getItem('testKey')).toBe(JSON.stringify({ a: 1 }));
         });
 
-        test('getLocalValue retrieves and parses a value', () => {
+        it('getLocalValue retrieves and parses a value', () => {
             localStorage.setItem('testKey', JSON.stringify({ a: 1 }));
             const value = storageUtils.getLocalValue('testKey');
             expect(value).toEqual({ a: 1 });
         });
 
-        test('removeLocalValue removes the value', () => {
+        it('removeLocalValue removes the value', () => {
             localStorage.setItem('testKey', 'value');
             storageUtils.removeLocalValue('testKey');
             expect(localStorage.getItem('testKey')).toBeNull();
         });
 
-        test('getLocalValue handles invalid JSON gracefully', () => {
+        it('getLocalValue handles invalid JSON gracefully', () => {
             localStorage.setItem('testKey', 'invalid json');
             const value = storageUtils.getLocalValue('testKey');
             expect(value).toBe('invalid json');
@@ -39,24 +39,24 @@ describe('storageUtils', () => {
     });
 
     describe('SessionStorage', () => {
-        test('setSessionValue stores a stringified value', () => {
+        it('setSessionValue stores a stringified value', () => {
             storageUtils.setSessionValue('testKey', { a: 1 });
             expect(sessionStorage.getItem('testKey')).toBe(JSON.stringify({ a: 1 }));
         });
 
-        test('getSessionValue retrieves and parses a value', () => {
+        it('getSessionValue retrieves and parses a value', () => {
             sessionStorage.setItem('testKey', JSON.stringify({ a: 1 }));
             const value = storageUtils.getSessionValue('testKey');
             expect(value).toEqual({ a: 1 });
         });
 
-        test('removeSessionValue removes the value', () => {
+        it('removeSessionValue removes the value', () => {
             sessionStorage.setItem('testKey', 'value');
             storageUtils.removeSessionValue('testKey');
             expect(sessionStorage.getItem('testKey')).toBeNull();
         });
 
-        test('getSessionValue handles invalid JSON gracefully', () => {
+        it('getSessionValue handles invalid JSON gracefully', () => {
             sessionStorage.setItem('testKey', 'invalid json');
             const value = storageUtils.getSessionValue('testKey');
             expect(value).toBe('invalid json');
@@ -65,16 +65,16 @@ describe('storageUtils', () => {
     });
 
     describe('Cookies', () => {
-        test('setCookie sets a cookie', () => {
+        it('setCookie sets a cookie', () => {
             storageUtils.setCookie('testCookie', 'testValue');
             expect(document.cookie).toContain('testCookie=testValue');
         });
 
-        test('getCookie retrieves a cookie value', () => {
+        it('getCookie retrieves a cookie value', () => {
             expect(storageUtils.getCookie('testCookie')).toBe('testValue');
         });
 
-        test('removeCookie removes the cookie', () => {
+        it('removeCookie removes the cookie', () => {
             storageUtils.removeCookie('testCookie');
             expect(document.cookie).not.toContain('testCookie=testValue');
         });

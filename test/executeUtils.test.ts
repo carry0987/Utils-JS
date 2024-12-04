@@ -1,10 +1,10 @@
 import { throttle, debounce } from '@/module/executeUtils';
-import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 const sleep = (wait: number) => new Promise((r) => setTimeout(r, wait));
 
 describe('throttle', () => {
-    test('should throttle calls and respect trailing', async () => {
+    it('should throttle calls and respect trailing', async () => {
         const wait = 100;
         const fn = vi.fn();
         const throttled = throttle(fn, wait);
@@ -23,7 +23,7 @@ describe('throttle', () => {
         expect(fn).toBeCalledWith('c', 'b', 'a');
     });
 
-    test('should execute the first call immediately if leading is set', async () => {
+    it('should execute the first call immediately if leading is set', async () => {
         const wait = 100;
         const fn = vi.fn();
         const throttled = throttle(fn, wait, { leading: true });
@@ -37,7 +37,7 @@ describe('throttle', () => {
         expect(fn).toBeCalledTimes(1);
     });
 
-    test('should execute at trailing edge of the timeout', async () => {
+    it('should execute at trailing edge of the timeout', async () => {
         const wait = 100;
         const fn = vi.fn();
         const throttled = throttle(fn, wait);
@@ -51,7 +51,7 @@ describe('throttle', () => {
         expect(fn).toBeCalledTimes(1);
     });
 
-    test('should call after successive calls with delay', async () => {
+    it('should call after successive calls with delay', async () => {
         const wait = 100;
         const fn = vi.fn();
         const throttled = throttle(fn, wait);
@@ -74,7 +74,7 @@ describe('throttle', () => {
 });
 
 describe('debounce', () => {
-    test('should debounce a function', async () => {
+    it('should debounce a function', async () => {
         const fn = vi.fn();
         const debouncedFn = debounce(fn, 100);
 
@@ -88,7 +88,7 @@ describe('debounce', () => {
         expect(fn).toHaveBeenCalledTimes(1);
     });
 
-    test('should resolve with the correct value', async () => {
+    it('should resolve with the correct value', async () => {
         const fn = vi.fn((x: number) => x * 2);
         const debouncedFn = debounce(fn, 100);
         const promise = debouncedFn(21);
@@ -98,7 +98,7 @@ describe('debounce', () => {
         await expect(promise).resolves.toBe(42);
     });
 
-    test('should call the debounced function once after the wait period', async () => {
+    it('should call the debounced function once after the wait period', async () => {
         const fn = vi.fn((x) => x * 2);
         const waitFor = 100;
         const debouncedFn = debounce(fn, waitFor);
@@ -118,7 +118,7 @@ describe('debounce', () => {
         expect(fn).toHaveBeenCalledWith(3);
     });
 
-    test('should resolve with the result of the original function', async () => {
+    it('should resolve with the result of the original function', async () => {
         const fn = vi.fn((x) => x + 1);
         const waitFor = 100;
         const debouncedFn = debounce(fn, waitFor);
@@ -131,7 +131,7 @@ describe('debounce', () => {
         expect(fn).toHaveBeenCalledOnce();
     });
 
-    test('should clear the timeout on successive calls within the wait period', async () => {
+    it('should clear the timeout on successive calls within the wait period', async () => {
         const fn = vi.fn((x) => x * 10);
         const waitFor = 100;
         const debouncedFn = debounce(fn, waitFor);

@@ -1,12 +1,12 @@
 import { domUtils } from '@/index';
-import { describe, beforeEach, test, expect } from 'vitest';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('domUtils', () => {
     beforeEach(() => {
         document.body.innerHTML = '';
     });
 
-    test('getElem retrieves an element by id', () => {
+    it('getElem retrieves an element by id', () => {
         const div = document.createElement('div');
         div.id = 'test';
         document.body.appendChild(div);
@@ -15,7 +15,7 @@ describe('domUtils', () => {
         expect(element).toBe(div);
     });
 
-    test('getElem retrieves all elements by class', () => {
+    it('getElem retrieves all elements by class', () => {
         const div1 = document.createElement('div');
         div1.className = 'test';
         const div2 = document.createElement('div');
@@ -29,7 +29,7 @@ describe('domUtils', () => {
         expect(elements[1]).toBe(div2);
     });
 
-    test('createElem creates an element with attributes and text', () => {
+    it('createElem creates an element with attributes and text', () => {
         const elem = domUtils.createElem('div', { id: 'test', class: 'test-class' }, 'Hello World');
         expect(elem.tagName).toBe('DIV');
         expect(elem.id).toBe('test');
@@ -37,7 +37,7 @@ describe('domUtils', () => {
         expect(elem.textContent).toBe('Hello World');
     });
 
-    test('insertAfter inserts a new node after the reference node', () => {
+    it('insertAfter inserts a new node after the reference node', () => {
         const referenceNode = document.createElement('div');
         referenceNode.id = 'ref';
         const newNode = document.createElement('div');
@@ -48,7 +48,7 @@ describe('domUtils', () => {
         expect(referenceNode.nextSibling).toBe(newNode);
     });
 
-    test('insertBefore inserts a new node before the reference node', () => {
+    it('insertBefore inserts a new node before the reference node', () => {
         const referenceNode = document.createElement('div');
         referenceNode.id = 'ref';
         const newNode = document.createElement('div');
@@ -59,20 +59,20 @@ describe('domUtils', () => {
         expect(referenceNode.previousSibling).toBe(newNode);
     });
 
-    test('addClass adds a class to an element', () => {
+    it('addClass adds a class to an element', () => {
         const elem = document.createElement('div');
         domUtils.addClass(elem, 'test-class');
         expect(elem.classList.contains('test-class')).toBe(true);
     });
 
-    test('removeClass removes a class from an element', () => {
+    it('removeClass removes a class from an element', () => {
         const elem = document.createElement('div');
         elem.classList.add('test-class');
         domUtils.removeClass(elem, 'test-class');
         expect(elem.classList.contains('test-class')).toBe(false);
     });
 
-    test('toggleClass toggles a class on an element', () => {
+    it('toggleClass toggles a class on an element', () => {
         const elem = document.createElement('div');
         domUtils.toggleClass(elem, 'test-class');
         expect(elem.classList.contains('test-class')).toBe(true);
@@ -80,13 +80,13 @@ describe('domUtils', () => {
         expect(elem.classList.contains('test-class')).toBe(false);
     });
 
-    test('hasClass checks if an element has a class', () => {
+    it('hasClass checks if an element has a class', () => {
         const elem = document.createElement('div');
         elem.classList.add('test-class');
         expect(domUtils.hasClass(elem, 'test-class')).toBe(true);
     });
 
-    test('hasParent checks if an element has a parent matching the selector', () => {
+    it('hasParent checks if an element has a parent matching the selector', () => {
         const parent = document.createElement('div');
         parent.className = 'parent';
         const child = document.createElement('div');
@@ -96,7 +96,7 @@ describe('domUtils', () => {
         expect(domUtils.hasParent(child, '.parent')).toBe(true);
     });
 
-    test('findParent finds the closest parent matching the selector', () => {
+    it('findParent finds the closest parent matching the selector', () => {
         const parent = document.createElement('div');
         parent.className = 'parent';
         const child = document.createElement('div');
@@ -107,7 +107,7 @@ describe('domUtils', () => {
         expect(foundParent).toBe(parent);
     });
 
-    test('findParents finds all parents matching the selector', () => {
+    it('findParents finds all parents matching the selector', () => {
         const parent1 = document.createElement('div');
         parent1.className = 'parent';
         const parent2 = document.createElement('div');
@@ -122,7 +122,7 @@ describe('domUtils', () => {
         expect(foundParents).toContain(parent2);
     });
 
-    test('hasChild checks if an element has a child matching the selector', () => {
+    it('hasChild checks if an element has a child matching the selector', () => {
         const parent = document.createElement('div');
         const child = document.createElement('div');
         child.className = 'child';
@@ -132,7 +132,7 @@ describe('domUtils', () => {
         expect(domUtils.hasChild(parent, '.child')).toBe(true);
     });
 
-    test('findChild finds a child matching the selector', () => {
+    it('findChild finds a child matching the selector', () => {
         const parent = document.createElement('div');
         const child = document.createElement('div');
         child.className = 'child';
@@ -143,7 +143,7 @@ describe('domUtils', () => {
         expect(foundChild).toBe(child);
     });
 
-    test('findChilds finds all children matching the selector', () => {
+    it('findChilds finds all children matching the selector', () => {
         const parent = document.createElement('div');
         const child1 = document.createElement('div');
         child1.className = 'child';
@@ -158,7 +158,7 @@ describe('domUtils', () => {
         expect(foundChildren).toContain(child2);
     });
 
-    test('templateToHtml converts template content to HTML string', () => {
+    it('templateToHtml converts template content to HTML string', () => {
         const template = document.createElement('template');
         template.innerHTML = '<div class="card"><p>Card content</p></div>';
         const content = template.content.cloneNode(true) as DocumentFragment;

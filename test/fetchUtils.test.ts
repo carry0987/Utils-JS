@@ -5,7 +5,7 @@ import { setupMsw } from './tool/msw.setup';
 import { fetchUtils } from '@/index';
 import { server } from './tool/server';
 import { http } from 'msw';
-import { describe, test, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 setupMsw();
 
@@ -13,13 +13,13 @@ describe('fetchUtils', () => {
     const testHost = 'http://localhost';
     const testUrl = testHost + '/api/test';
 
-    test('doFetch makes a successful GET request', async () => {
+    it('doFetch makes a successful GET request', async () => {
         const response = await fetchUtils.doFetch<{ message: string }>({ url: testUrl });
         const responseData = await response.json();
         expect(responseData.message).toBe('GET request successful');
     });
 
-    test('sendData makes a successful POST request', async () => {
+    it('sendData makes a successful POST request', async () => {
         const response = await fetchUtils.sendData<{ message: string }>({
             url: testUrl,
             data: { key: 'value' }
@@ -27,7 +27,7 @@ describe('fetchUtils', () => {
         expect(response.message).toBe('POST request successful');
     });
 
-    test('sendFormData makes a successful POST request and returns true', async () => {
+    it('sendFormData makes a successful POST request and returns true', async () => {
         const response = await fetchUtils.sendFormData<{ message: string }>({
             url: testUrl,
             data: new FormData()
@@ -35,7 +35,7 @@ describe('fetchUtils', () => {
         expect(response).toBe(true);
     });
 
-    test('doFetch handles error properly', async () => {
+    it('doFetch handles error properly', async () => {
         server.use(
             http.get(testHost + '/api/error', () => {
                 return new Response('Internal Server Error', {

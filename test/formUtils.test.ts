@@ -1,8 +1,8 @@
 import { formUtils } from '@/index';
-import { describe, test, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 describe('formUtils', () => {
-    test('appendFormData appends simple key-value pairs', () => {
+    it('appendFormData appends simple key-value pairs', () => {
         const data = {
             key1: 'value1',
             key2: 'value2'
@@ -13,7 +13,7 @@ describe('formUtils', () => {
         expect(formData.get('key2')).toBe('value2');
     });
 
-    test('appendFormData appends nested objects', () => {
+    it('appendFormData appends nested objects', () => {
         const data = {
             key1: {
                 subKey1: 'subValue1',
@@ -28,7 +28,7 @@ describe('formUtils', () => {
         expect(formData.get('key2')).toBe('value2');
     });
 
-    test('appendFormData appends Blobs correctly', () => {
+    it('appendFormData appends Blobs correctly', () => {
         const blob = new Blob(['test'], { type: 'text/plain' });
         const data = { file: blob };
         const formData = formUtils.appendFormData({ data });
@@ -39,7 +39,7 @@ describe('formUtils', () => {
         expect(appendedBlob.type).toBe(blob.type);
     });
 
-    test('appendFormData appends Files correctly', () => {
+    it('appendFormData appends Files correctly', () => {
         const file = new File(['content'], 'test.txt', { type: 'text/plain' });
         const data = { file: file };
         const formData = formUtils.appendFormData({ data });
@@ -51,7 +51,7 @@ describe('formUtils', () => {
         expect(appendedFile.name).toBe(file.name);
     });
 
-    test('appendFormData correctly handles non-object and non-null values', () => {
+    it('appendFormData correctly handles non-object and non-null values', () => {
         let formData = formUtils.appendFormData({ data: { value: 'Hello World' }, parentKey: 'key' });
         expect(formData.get('key[value]')).toBe('Hello World');
 
@@ -59,7 +59,7 @@ describe('formUtils', () => {
         expect(formData.get('key[value]')).toBe('123');
     });
 
-    test('encodeFormData encodes objects to FormData correctly', () => {
+    it('encodeFormData encodes objects to FormData correctly', () => {
         const data = {
             key1: 'value1',
             key2: {
@@ -74,7 +74,7 @@ describe('formUtils', () => {
         expect(formData.get('key2[subKey2]')).toBe('subValue2');
     });
 
-    test('encodeFormData returns FormData as is if presented as input', () => {
+    it('encodeFormData returns FormData as is if presented as input', () => {
         const data = new FormData();
         data.append('key', 'value');
         const formData = formUtils.encodeFormData(data);
@@ -83,7 +83,7 @@ describe('formUtils', () => {
     });
 });
 
-test('decodeFormData decodes FormData to an object correctly', () => {
+it('decodeFormData decodes FormData to an object correctly', () => {
     const formData = new FormData();
     formData.append('key1', 'value1');
     formData.append('key2', 'value2');
@@ -95,7 +95,7 @@ test('decodeFormData decodes FormData to an object correctly', () => {
     expect(result.key2).toBe('value2');
 });
 
-test('formDataToURLParams converts FormData to URLParams correctly', () => {
+it('formDataToURLParams converts FormData to URLParams correctly', () => {
     const formData = new FormData();
     formData.append('key1', 'value1');
     formData.append('key2', 'value2');
@@ -106,7 +106,7 @@ test('formDataToURLParams converts FormData to URLParams correctly', () => {
     expect(urlParams.key2).toBe('value2');
 });
 
-test('convertBodyToURLParams converts FormData, BodyInit and objects to URLParams correctly', () => {
+it('convertBodyToURLParams converts FormData, BodyInit and objects to URLParams correctly', () => {
     // Test for FormData
     const formData = new FormData();
     formData.append('formKey', 'formValue');

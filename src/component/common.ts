@@ -279,6 +279,15 @@ export function generateUUID(): string {
     });
 }
 
+export function isValidURL(url: string): boolean {
+    try {
+        new URL(url); // Try to create a URL object
+        return true;
+    } catch (_) {
+        return false; // If error, the URL is invalid
+    }
+}
+
 export function getUrlParam(sParam: string, url: string = window.location.href): string | null {
     const isHashParam = sParam.startsWith('#');
     let urlPart: string;
