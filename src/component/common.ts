@@ -307,7 +307,7 @@ export function getUrlParam(sParam: string, url: string = window.location.href):
     return paramValue === null ? null : decodeURIComponent(paramValue);
 }
 
-export function setUrlParam(url: string | URLSource, params: URLParams, overwrite: boolean = true): string {
+export function setUrlParam(url: string | URLSource, params: URLParams | null, overwrite: boolean = true): string {
     let originalUrl: string;
     let ignoreArray: string[] = [];
 
@@ -330,6 +330,12 @@ export function setUrlParam(url: string | URLSource, params: URLParams, overwrit
     }
 
     const urlObj = new URL(originalUrl);
+
+    // If params is null, remove all
+    if (params === null) {
+        urlObj.search = ''; // Remove all search params
+        return urlObj.toString();
+    }
 
     // Extract search string
     let searchString = urlObj.search.substring(1); // Remove the leading '?'

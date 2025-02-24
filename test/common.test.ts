@@ -225,6 +225,23 @@ describe('setUrlParam', () => {
 
         expect(result).toBe('http://example.com/?page=2');
     });
+
+    it('setUrlParam removes all parameters when params is null', () => {
+        const url = 'http://localhost:5173?page=1&sort=asc';
+        const result = commonUtils.setUrlParam(url, null);
+
+        expect(result).toBe('http://localhost:5173/');
+    });
+
+    it('setUrlParam removes all parameters when params is null with ignored parameters', () => {
+        const urlSource = {
+            url: 'http://example.com?page=1&token=123',
+            ignore: ['token=123']
+        };
+        const result = commonUtils.setUrlParam(urlSource, null);
+
+        expect(result).toBe('http://example.com/');
+    });
 });
 
 it('setStylesheetId sets stylesheet ID correctly', () => {

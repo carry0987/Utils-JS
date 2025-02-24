@@ -1,6 +1,6 @@
 'use strict';
 
-const version = '3.8.4';
+const version = '3.8.5';
 
 function reportError(...error) {
     console.error(...error);
@@ -459,6 +459,11 @@ function setUrlParam(url, params, overwrite = true) {
         originalUrl = url;
     }
     const urlObj = new URL(originalUrl);
+    // If params is null, remove all
+    if (params === null) {
+        urlObj.search = ''; // Remove all search params
+        return urlObj.toString();
+    }
     // Extract search string
     let searchString = urlObj.search.substring(1); // Remove the leading '?'
     // Split the search string into parameters

@@ -1,6 +1,6 @@
 {
   "name": "@carry0987/utils",
-  "version": "3.8.4",
+  "version": "3.8.5",
   "description": "A library for using common tools and alias methods",
   "type": "module",
   "main": "dist/index.cjs",
@@ -8,9 +8,9 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     }
   },
   "sideEffects": false,
@@ -43,15 +43,22 @@
   },
   "homepage": "https://github.com/carry0987/Utils-JS#readme",
   "devDependencies": {
-    "@rollup/plugin-replace": "^6.0.1",
-    "@rollup/plugin-typescript": "^12.1.1",
-    "happy-dom": "^15.11.7",
-    "msw": "^2.6.6",
-    "prettier": "^3.4.2",
-    "rollup": "^4.28.0",
+    "@rollup/plugin-replace": "^6.0.2",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/node": "^22.13.5",
+    "happy-dom": "^17.1.4",
+    "msw": "^2.7.1",
+    "prettier": "^3.5.2",
+    "rollup": "^4.34.8",
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-tsconfig-paths": "^1.5.2",
     "tslib": "^2.8.1",
-    "vitest": "^2.1.8"
+    "vitest": "^3.0.6"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "msw"
+    ]
   }
 }
