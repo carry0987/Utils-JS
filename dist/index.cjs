@@ -1,6 +1,6 @@
 'use strict';
 
-const version = '3.8.5';
+const version = '3.8.6';
 
 function reportError(...error) {
     console.error(...error);
