@@ -1,0 +1,43 @@
+name: Publish package to GitHub Packages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        node-version: [24]
+    steps:
+      - name: Check commit message version format
+        run: |
+          if [[ ! "${{ github.event.head_commit.message }}" =~ ^Bump\ to\ v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo 'Commit message not match pattern'
+            exit 0
+          fi
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      # Setup .npmrc file to publish to GitHub Packages
+      - name: Set up Node.js v${{ matrix.node-version }}
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://npm.pkg.github.com'
+          # Defaults to the user or organization that owns the workflow file
+          scope: '@${{ github.repository_owner }}'
+      - name: Set up PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+      - name: Publish package
+        run: pnpm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
