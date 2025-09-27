@@ -6,7 +6,21 @@ on:
       - master
 
 jobs:
+  check-commit:
+    runs-on: ubuntu-latest
+    outputs:
+      status: ${{ steps.check.outputs.status }}
+    steps:
+      - name: Check commit message version format
+        id: check
+        run: |
+          echo "status=false" >> $GITHUB_OUTPUT
+          if [[ "${{ github.event.head_commit.message }}" =~ ^Bump\ to\ v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "status=true" >> $GITHUB_OUTPUT
+          fi
   build:
+    needs: check-commit
+    if: needs.check-commit.outputs.status == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -15,12 +29,6 @@ jobs:
       matrix:
         node-version: [24]
     steps:
-      - name: Check commit message version format
-        run: |
-          if [[ ! "${{ github.event.head_commit.message }}" =~ ^Bump\ to\ v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo 'Commit message not match pattern'
-            exit 0
-          fi
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
@@ -39,5 +47,9 @@ jobs:
           version: latest
       - name: Publish package
         run: pnpm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verify package was published
+        run: npm info @${{ github.repository_owner }}/$(node -p "require('./package.json').name")
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
