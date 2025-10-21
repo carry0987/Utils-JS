@@ -1,4 +1,4 @@
-import { ThrottleOptions, DebounceOptions } from '@/interface/interfaces';
+import { ThrottleOptions, DebounceOptions } from '@/interfaces/internal';
 
 /**
  * Throttle a given function

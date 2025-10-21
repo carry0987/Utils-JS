@@ -8,6 +8,7 @@ import { createRequire } from 'module';
 const pkg = createRequire(import.meta.url)('./package.json');
 const isDts = process.env.BUILD === 'dts';
 const sourceFile = 'src/index.ts';
+const typeSourceFile = 'src/types/index.ts';
 
 // CommonJS build configuration
 const cjsConfig: RollupOptions = {
@@ -62,4 +63,17 @@ const dtsConfig: RollupOptions = {
     ]
 };
 
-export default isDts ? dtsConfig : [esmConfig, cjsConfig];
+// DTS config for types
+const typeDtsConfig: RollupOptions = {
+    input: typeSourceFile,
+    output: {
+        file: pkg.exports['./types'],
+        format: 'es'
+    },
+    plugins: [
+        tsConfigPaths(),
+        dts()
+    ]
+};
+
+export default isDts ? [dtsConfig, typeDtsConfig] : [esmConfig, cjsConfig];

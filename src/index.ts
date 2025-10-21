@@ -20,9 +20,3 @@ export * from '@/module/eventUtils';
 export * from '@/module/executeUtils';
 export * from '@/module/fetchUtils';
 export * from '@/module/formUtils';
-
-// Export types
-export * as Types from '@/type/types';
-
-// Export interfaces
-export * as Interfaces from '@/interface/interfaces';

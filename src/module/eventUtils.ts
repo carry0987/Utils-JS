@@ -9,7 +9,7 @@ import {
     CustomEventHandler,
     CombinedEventName,
     CombinedEventHandler
-} from '@/type/types';
+} from '@/types/internal';
 
 export function addEventListener<K extends EventName>(
     element: ElementEventTarget,

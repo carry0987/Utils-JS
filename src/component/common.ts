@@ -1,12 +1,17 @@
 import { getElem, createElem } from '@/module/domUtils';
-import { URLSource, URLParams } from '@/interface/interfaces';
-import { ReplaceRule, StylesObject } from '@/type/types';
+import { URLSource, URLParams } from '@/interfaces/internal';
+import { ReplaceRule, StylesObject } from '@/types/internal';
 
 export let stylesheetId: string = 'utils-style';
 export const replaceRule: ReplaceRule = {
     from: '.utils',
     to: '.utils-'
 };
+
+// Narrow nullish values
+export function isDefined<T>(v: T): v is Exclude<T, null | undefined> {
+    return v !== null && v !== undefined;
+}
 
 export function isObject(item: unknown): item is Record<string, unknown> {
     return typeof item === 'object' && item !== null && !isArray(item);
@@ -52,6 +57,11 @@ export function isEmpty(value: unknown): boolean {
 
     // Check for any falsy values
     return !value;
+}
+
+// Assert never for exhaustive checks (helps switch statements)
+export function assertNever(x: never, msg = 'Unexpected value'): never {
+    throw new Error(`${msg}: ${x}`);
 }
 
 export function deepMerge<T>(target: T, ...sources: Partial<T>[]): T {
