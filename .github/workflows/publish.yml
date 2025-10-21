@@ -50,6 +50,6 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Verify package was published
-        run: npm info @${{ github.repository_owner }}/$(node -p "require('./package.json').name")
+        run: npm info $(node -p "require('./package.json').name")
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
