@@ -1,4 +1,4 @@
-const version = '3.8.6';
+const version = '3.9.0';
 
 function reportError(...error) {
     console.error(...error);
@@ -174,6 +174,10 @@ const replaceRule = {
     from: '.utils',
     to: '.utils-'
 };
+// Narrow nullish values
+function isDefined(v) {
+    return v !== null && v !== undefined;
+}
 function isObject(item) {
     return typeof item === 'object' && item !== null && !isArray(item);
 }
@@ -211,6 +215,10 @@ function isEmpty(value) {
     }
     // Check for any falsy values
     return !value;
+}
+// Assert never for exhaustive checks (helps switch statements)
+function assertNever(x, msg = 'Unexpected value') {
+    throw new Error(`${msg}: ${x}`);
 }
 function deepMerge(target, ...sources) {
     if (!sources.length)
@@ -496,6 +504,7 @@ function setUrlParam(url, params, overwrite = true) {
 
 var common = /*#__PURE__*/Object.freeze({
     __proto__: null,
+    assertNever: assertNever,
     buildRules: buildRules,
     compatInsertRule: compatInsertRule,
     deepClone: deepClone,
@@ -507,6 +516,7 @@ var common = /*#__PURE__*/Object.freeze({
     injectStylesheet: injectStylesheet,
     isArray: isArray,
     isBoolean: isBoolean,
+    isDefined: isDefined,
     isEmpty: isEmpty,
     isFunction: isFunction,
     isNumber: isNumber,
@@ -971,12 +981,4 @@ var fetchUtils = /*#__PURE__*/Object.freeze({
     sendFormData: sendFormData
 });
 
-var types = /*#__PURE__*/Object.freeze({
-    __proto__: null
-});
-
-var interfaces = /*#__PURE__*/Object.freeze({
-    __proto__: null
-});
-
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, debounce, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, executeUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, isValidURL, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, templateToHtml, throttle, throwError, toggleClass, version };
+export { addClass, addEventListener, appendFormData, assertNever, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, debounce, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, executeUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isDefined, isEmpty, isFunction, isNumber, isObject, isString, isValidURL, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, templateToHtml, throttle, throwError, toggleClass, version };

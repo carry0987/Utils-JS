@@ -1,6 +1,6 @@
 'use strict';
 
-const version = '3.8.6';
+const version = '3.9.0';
 
 function reportError(...error) {
     console.error(...error);
@@ -176,6 +176,10 @@ const replaceRule = {
     from: '.utils',
     to: '.utils-'
 };
+// Narrow nullish values
+function isDefined(v) {
+    return v !== null && v !== undefined;
+}
 function isObject(item) {
     return typeof item === 'object' && item !== null && !isArray(item);
 }
@@ -213,6 +217,10 @@ function isEmpty(value) {
     }
     // Check for any falsy values
     return !value;
+}
+// Assert never for exhaustive checks (helps switch statements)
+function assertNever(x, msg = 'Unexpected value') {
+    throw new Error(`${msg}: ${x}`);
 }
 function deepMerge(target, ...sources) {
     if (!sources.length)
@@ -498,6 +506,7 @@ function setUrlParam(url, params, overwrite = true) {
 
 var common = /*#__PURE__*/Object.freeze({
     __proto__: null,
+    assertNever: assertNever,
     buildRules: buildRules,
     compatInsertRule: compatInsertRule,
     deepClone: deepClone,
@@ -509,6 +518,7 @@ var common = /*#__PURE__*/Object.freeze({
     injectStylesheet: injectStylesheet,
     isArray: isArray,
     isBoolean: isBoolean,
+    isDefined: isDefined,
     isEmpty: isEmpty,
     isFunction: isFunction,
     isNumber: isNumber,
@@ -973,19 +983,10 @@ var fetchUtils = /*#__PURE__*/Object.freeze({
     sendFormData: sendFormData
 });
 
-var types = /*#__PURE__*/Object.freeze({
-    __proto__: null
-});
-
-var interfaces = /*#__PURE__*/Object.freeze({
-    __proto__: null
-});
-
-exports.Interfaces = interfaces;
-exports.Types = types;
 exports.addClass = addClass;
 exports.addEventListener = addEventListener;
 exports.appendFormData = appendFormData;
+exports.assertNever = assertNever;
 exports.bodyToURLParams = bodyToURLParams;
 exports.buildRules = buildRules;
 exports.commonUtils = common;
@@ -1027,6 +1028,7 @@ exports.insertAfter = insertAfter;
 exports.insertBefore = insertBefore;
 exports.isArray = isArray;
 exports.isBoolean = isBoolean;
+exports.isDefined = isDefined;
 exports.isEmpty = isEmpty;
 exports.isFunction = isFunction;
 exports.isNumber = isNumber;

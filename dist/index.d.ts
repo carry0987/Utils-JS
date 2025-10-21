@@ -44,20 +44,6 @@ interface DebounceOptions extends ThrottleOptions {
     maxWait?: number;
 }
 
-type interfaces_CookieOptions = CookieOptions;
-type interfaces_DebounceOptions = DebounceOptions;
-type interfaces_FetchOptions<T = any> = FetchOptions<T>;
-type interfaces_FetchParams<T = any> = FetchParams<T>;
-type interfaces_FormDataOptions = FormDataOptions;
-type interfaces_SendFormDataOptions<T = any> = SendFormDataOptions<T>;
-type interfaces_ThrottleOptions = ThrottleOptions;
-type interfaces_URLParams = URLParams;
-type interfaces_URLSource = URLSource;
-declare namespace interfaces {
-  export type { interfaces_CookieOptions as CookieOptions, interfaces_DebounceOptions as DebounceOptions, interfaces_FetchOptions as FetchOptions, interfaces_FetchParams as FetchParams, interfaces_FormDataOptions as FormDataOptions, interfaces_SendFormDataOptions as SendFormDataOptions, interfaces_ThrottleOptions as ThrottleOptions, interfaces_URLParams as URLParams, interfaces_URLSource as URLSource };
-}
-
-type Extension = Record<string, unknown>;
 type ReplaceRule = {
     from: string;
     to: string;
@@ -72,29 +58,10 @@ type EventName = keyof HTMLElementEventMap;
 type EventHandler<K extends EventName> = (this: ElementEventTarget, ev: HTMLElementEventMap[K]) => any;
 type CustomEventName = string;
 type CustomEventHandler<T = unknown> = (this: ElementEventTarget, ev: CustomEvent<T>) => any;
-type CombinedEventName = EventName | CustomEventName;
-type CombinedEventHandler = EventHandler<EventName> | CustomEventHandler;
-
-type types_CombinedEventHandler = CombinedEventHandler;
-type types_CombinedEventName = CombinedEventName;
-type types_CustomEventHandler<T = unknown> = CustomEventHandler<T>;
-type types_CustomEventName = CustomEventName;
-type types_ElementAttributes = ElementAttributes;
-type types_ElementEventTarget = ElementEventTarget;
-type types_EventHandler<K extends EventName> = EventHandler<K>;
-type types_EventName = EventName;
-type types_EventOptions = EventOptions;
-type types_Extension = Extension;
-type types_QuerySelector = QuerySelector;
-type types_RemoveEventOptions = RemoveEventOptions;
-type types_ReplaceRule = ReplaceRule;
-type types_StylesObject = StylesObject;
-declare namespace types {
-  export type { types_CombinedEventHandler as CombinedEventHandler, types_CombinedEventName as CombinedEventName, types_CustomEventHandler as CustomEventHandler, types_CustomEventName as CustomEventName, types_ElementAttributes as ElementAttributes, types_ElementEventTarget as ElementEventTarget, types_EventHandler as EventHandler, types_EventName as EventName, types_EventOptions as EventOptions, types_Extension as Extension, types_QuerySelector as QuerySelector, types_RemoveEventOptions as RemoveEventOptions, types_ReplaceRule as ReplaceRule, types_StylesObject as StylesObject };
-}
 
 declare let stylesheetId: string;
 declare const replaceRule: ReplaceRule;
+declare function isDefined<T>(v: T): v is Exclude<T, null | undefined>;
 declare function isObject(item: unknown): item is Record<string, unknown>;
 declare function isFunction(item: unknown): item is Function;
 declare function isString(item: unknown): item is string;
@@ -102,6 +69,7 @@ declare function isNumber(item: unknown): item is number;
 declare function isBoolean(item: unknown): item is boolean;
 declare function isArray(item: unknown): item is unknown[];
 declare function isEmpty(value: unknown): boolean;
+declare function assertNever(x: never, msg?: string): never;
 declare function deepMerge<T>(target: T, ...sources: Partial<T>[]): T;
 declare function shallowMerge<T>(target: T, ...sources: Partial<T>[]): T;
 declare function deepClone<T>(obj: T): T;
@@ -120,6 +88,7 @@ declare function isValidURL(url: string): boolean;
 declare function getUrlParam(sParam: string, url?: string): string | null;
 declare function setUrlParam(url: string | URLSource, params: URLParams | null, overwrite?: boolean): string;
 
+declare const common_assertNever: typeof assertNever;
 declare const common_buildRules: typeof buildRules;
 declare const common_compatInsertRule: typeof compatInsertRule;
 declare const common_deepClone: typeof deepClone;
@@ -131,6 +100,7 @@ declare const common_getUrlParam: typeof getUrlParam;
 declare const common_injectStylesheet: typeof injectStylesheet;
 declare const common_isArray: typeof isArray;
 declare const common_isBoolean: typeof isBoolean;
+declare const common_isDefined: typeof isDefined;
 declare const common_isEmpty: typeof isEmpty;
 declare const common_isFunction: typeof isFunction;
 declare const common_isNumber: typeof isNumber;
@@ -148,6 +118,7 @@ declare const common_shallowMerge: typeof shallowMerge;
 declare const common_stylesheetId: typeof stylesheetId;
 declare namespace common {
   export {
+    common_assertNever as assertNever,
     common_buildRules as buildRules,
     common_compatInsertRule as compatInsertRule,
     common_deepClone as deepClone,
@@ -159,6 +130,7 @@ declare namespace common {
     common_injectStylesheet as injectStylesheet,
     common_isArray as isArray,
     common_isBoolean as isBoolean,
+    common_isDefined as isDefined,
     common_isEmpty as isEmpty,
     common_isFunction as isFunction,
     common_isNumber as isNumber,
@@ -370,4 +342,4 @@ declare namespace formUtils {
   };
 }
 
-export { interfaces as Interfaces, types as Types, addClass, addEventListener, appendFormData, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, debounce, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, executeUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isEmpty, isFunction, isNumber, isObject, isString, isValidURL, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, templateToHtml, throttle, throwError, toggleClass, version };
+export { addClass, addEventListener, appendFormData, assertNever, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, debounce, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, executeUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isDefined, isEmpty, isFunction, isNumber, isObject, isString, isValidURL, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, templateToHtml, throttle, throwError, toggleClass, version };
