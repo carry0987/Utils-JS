@@ -9,6 +9,7 @@ const pkg = createRequire(import.meta.url)('./package.json');
 const isDts = process.env.BUILD === 'dts';
 const sourceFile = 'src/index.ts';
 const typeSourceFile = 'src/types/index.ts';
+const interfaceSourceFile = 'src/interfaces/index.ts';
 
 // CommonJS build configuration
 const cjsConfig: RollupOptions = {
@@ -76,4 +77,17 @@ const typeDtsConfig: RollupOptions = {
     ]
 };
 
-export default isDts ? [dtsConfig, typeDtsConfig] : [esmConfig, cjsConfig];
+// DTS config for interfaces
+const interfaceDtsConfig: RollupOptions = {
+    input: interfaceSourceFile,
+    output: {
+        file: pkg.exports['./interfaces'],
+        format: 'es'
+    },
+    plugins: [
+        tsConfigPaths(),
+        dts()
+    ]
+};
+
+export default isDts ? [dtsConfig, typeDtsConfig, interfaceDtsConfig] : [esmConfig, cjsConfig];
