@@ -36,6 +36,17 @@ describe('storageUtils', () => {
             expect(value).toBe('invalid json');
             expect(reportError).toHaveBeenCalled();
         });
+
+        it('getLocalValue returns raw string when parseJson is false', () => {
+            localStorage.setItem('testKey', JSON.stringify({ a: 1 }));
+            const value = storageUtils.getLocalValue('testKey', false);
+            expect(value).toBe('{"a":1}');
+        });
+
+        it('getLocalValue returns null for non-existent key', () => {
+            const value = storageUtils.getLocalValue('nonExistentKey');
+            expect(value).toBeNull();
+        });
     });
 
     describe('SessionStorage', () => {
@@ -61,6 +72,17 @@ describe('storageUtils', () => {
             const value = storageUtils.getSessionValue('testKey');
             expect(value).toBe('invalid json');
             expect(reportError).toHaveBeenCalled();
+        });
+
+        it('getSessionValue returns raw string when parseJson is false', () => {
+            sessionStorage.setItem('testKey', JSON.stringify({ a: 1 }));
+            const value = storageUtils.getSessionValue('testKey', false);
+            expect(value).toBe('{"a":1}');
+        });
+
+        it('getSessionValue returns null for non-existent key', () => {
+            const value = storageUtils.getSessionValue('nonExistentKey');
+            expect(value).toBeNull();
         });
     });
 

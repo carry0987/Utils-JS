@@ -9,11 +9,14 @@ export function setLocalValue(key: string, value: any, stringify = true): void {
     window.localStorage.setItem(key, value);
 }
 
-export function getLocalValue(key: string, parseJson: boolean = true): string | null {
-    let value = window.localStorage.getItem(key);
+export function getLocalValue<T = any>(key: string, parseJson?: true): T | null;
+export function getLocalValue(key: string, parseJson: false): string | null;
+export function getLocalValue<T = any>(key: string, parseJson: boolean = true): T | string | null {
+    const value = window.localStorage.getItem(key);
+    if (value === null) return null;
     if (parseJson) {
         try {
-            value = JSON.parse(value!);
+            return JSON.parse(value) as T;
         } catch (e) {
             reportError('Error while parsing stored json value: ', e);
         }
@@ -33,11 +36,14 @@ export function setSessionValue(key: string, value: any, stringify: boolean = tr
     window.sessionStorage.setItem(key, value);
 }
 
-export function getSessionValue(key: string, parseJson: boolean = true): string | null {
-    let value = window.sessionStorage.getItem(key);
+export function getSessionValue<T = any>(key: string, parseJson?: true): T | null;
+export function getSessionValue(key: string, parseJson: false): string | null;
+export function getSessionValue<T = any>(key: string, parseJson: boolean = true): T | string | null {
+    const value = window.sessionStorage.getItem(key);
+    if (value === null) return null;
     if (parseJson) {
         try {
-            value = JSON.parse(value!);
+            return JSON.parse(value) as T;
         } catch (e) {
             reportError('Error while parsing stored json value: ', e);
         }
