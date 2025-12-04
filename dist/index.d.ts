@@ -217,10 +217,10 @@ declare namespace domUtils {
 }
 
 declare function setLocalValue(key: string, value: any, stringify?: boolean): void;
-declare function getLocalValue(key: string, parseJson?: boolean): any;
+declare function getLocalValue(key: string, parseJson?: boolean): string | null;
 declare function removeLocalValue(key: string): void;
 declare function setSessionValue(key: string, value: any, stringify?: boolean): void;
-declare function getSessionValue(key: string, parseJson?: boolean): any;
+declare function getSessionValue(key: string, parseJson?: boolean): string | null;
 declare function removeSessionValue(key: string): void;
 declare function setCookie(name: string, value: string, options?: CookieOptions): void;
 declare function getCookie(name: string): string | null;

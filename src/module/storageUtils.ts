@@ -9,7 +9,7 @@ export function setLocalValue(key: string, value: any, stringify = true): void {
     window.localStorage.setItem(key, value);
 }
 
-export function getLocalValue(key: string, parseJson: boolean = true): any {
+export function getLocalValue(key: string, parseJson: boolean = true): string | null {
     let value = window.localStorage.getItem(key);
     if (parseJson) {
         try {
@@ -33,7 +33,7 @@ export function setSessionValue(key: string, value: any, stringify: boolean = tr
     window.sessionStorage.setItem(key, value);
 }
 
-export function getSessionValue(key: string, parseJson: boolean = true): any {
+export function getSessionValue(key: string, parseJson: boolean = true): string | null {
     let value = window.sessionStorage.getItem(key);
     if (parseJson) {
         try {
