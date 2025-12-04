@@ -1,4 +1,5 @@
 import { defineConfig, coverageConfigDefaults } from 'vitest/config';
+import os from 'node:os';
 import path from 'path';
 
 export default defineConfig({
@@ -9,6 +10,7 @@ export default defineConfig({
     },
     test: {
         environment: 'happy-dom',
+        execArgv: ['--localstorage-file', path.resolve(os.tmpdir(), `vitest-${process.pid}.localstorage`)],
         coverage: {
             // Test coverage options
             enabled: false,
