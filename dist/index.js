@@ -1,4 +1,4 @@
-const version = '3.10.0';
+const version = '3.10.1';
 
 function reportError(...error) {
     console.error(...error);
@@ -433,11 +433,20 @@ function getUrlParam(sParam, url = window.location.href) {
     const paramValue = params.get(sParam);
     return paramValue === null ? null : decodeURIComponent(paramValue);
 }
-function getHashParam(sParam, url = window.location.href) {
+function getHashParam(sParam = null, url = window.location.href) {
     const hashIndex = url.indexOf('#');
     if (hashIndex === -1)
         return null;
     const hashPart = url.substring(hashIndex + 1);
+    // If sParam is null, return the plain hash fragment (first part before any '&' or '=')
+    if (sParam === null) {
+        // Check if it's a plain hash (no '=' in the first segment)
+        const firstSegment = hashPart.split('&')[0];
+        if (!firstSegment.includes('=')) {
+            return decodeURIComponent(firstSegment);
+        }
+        return null;
+    }
     const params = new URLSearchParams(hashPart);
     const paramValue = params.get(sParam);
     return paramValue === null ? null : decodeURIComponent(paramValue);
