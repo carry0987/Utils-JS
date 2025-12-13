@@ -1,4 +1,4 @@
-const version = '3.9.3';
+const version = '3.10.0';
 
 function reportError(...error) {
     console.error(...error);
@@ -426,20 +426,20 @@ function isValidURL(url) {
     }
 }
 function getUrlParam(sParam, url = window.location.href) {
-    const isHashParam = sParam.startsWith('#');
-    let urlPart;
-    if (isHashParam) {
-        urlPart = url.substring(url.indexOf('#') + 1);
-    }
-    else {
-        const searchPart = url.includes('#')
-            ? url.substring(url.indexOf('?'), url.indexOf('#'))
-            : url.substring(url.indexOf('?'));
-        urlPart = searchPart;
-    }
-    const params = new URLSearchParams(urlPart);
-    const paramName = isHashParam ? sParam.substring(1) : sParam;
-    const paramValue = params.get(paramName);
+    const searchPart = url.includes('#')
+        ? url.substring(url.indexOf('?'), url.indexOf('#'))
+        : url.substring(url.indexOf('?'));
+    const params = new URLSearchParams(searchPart);
+    const paramValue = params.get(sParam);
+    return paramValue === null ? null : decodeURIComponent(paramValue);
+}
+function getHashParam(sParam, url = window.location.href) {
+    const hashIndex = url.indexOf('#');
+    if (hashIndex === -1)
+        return null;
+    const hashPart = url.substring(hashIndex + 1);
+    const params = new URLSearchParams(hashPart);
+    const paramValue = params.get(sParam);
     return paramValue === null ? null : decodeURIComponent(paramValue);
 }
 function setUrlParam(url, params, overwrite = true) {
@@ -501,6 +501,65 @@ function setUrlParam(url, params, overwrite = true) {
     urlObj.search = finalSearchString ? '?' + finalSearchString : '';
     return urlObj.toString();
 }
+function setHashParam(url, params, overwrite = true) {
+    let originalUrl;
+    let ignoreArray = [];
+    // Determine if URLSource object is being used
+    if (typeof url === 'object') {
+        originalUrl = url.url;
+        if (Array.isArray(url.ignore)) {
+            ignoreArray = url.ignore.map((part) => {
+                return part.startsWith('#') || part.startsWith('&') ? part.substring(1) : part;
+            });
+        }
+        else if (typeof url.ignore === 'string') {
+            let part = url.ignore;
+            if (part.startsWith('#') || part.startsWith('&')) {
+                part = part.substring(1);
+            }
+            ignoreArray.push(part);
+        }
+    }
+    else {
+        originalUrl = url;
+    }
+    const urlObj = new URL(originalUrl);
+    // If params is null, remove all hash params
+    if (params === null) {
+        urlObj.hash = '';
+        return urlObj.toString();
+    }
+    // Extract hash string (remove leading '#')
+    let hashString = urlObj.hash.substring(1);
+    // Split the hash string into parameters
+    const paramsList = hashString.length > 0 ? hashString.split('&') : [];
+    const ignoredParams = [];
+    const otherParams = [];
+    for (const param of paramsList) {
+        if (ignoreArray.includes(param)) {
+            ignoredParams.push(param);
+        }
+        else {
+            otherParams.push(param);
+        }
+    }
+    const urlSearchParams = new URLSearchParams(otherParams.join('&'));
+    // Process remaining logic to set params
+    for (const [paramName, paramValue] of Object.entries(params)) {
+        const valueStr = paramValue === null ? '' : String(paramValue);
+        if (!overwrite && urlSearchParams.has(paramName)) {
+            continue;
+        }
+        urlSearchParams.set(paramName, valueStr);
+    }
+    const newHashParams = ignoredParams.concat(urlSearchParams
+        .toString()
+        .split('&')
+        .filter((p) => p));
+    const finalHashString = newHashParams.join('&');
+    urlObj.hash = finalHashString ? '#' + finalHashString : '';
+    return urlObj.toString();
+}
 
 var common = /*#__PURE__*/Object.freeze({
     __proto__: null,
@@ -512,6 +571,7 @@ var common = /*#__PURE__*/Object.freeze({
     deepMerge: deepMerge,
     generateRandom: generateRandom,
     generateUUID: generateUUID,
+    getHashParam: getHashParam,
     getUrlParam: getUrlParam,
     injectStylesheet: injectStylesheet,
     isArray: isArray,
@@ -525,6 +585,7 @@ var common = /*#__PURE__*/Object.freeze({
     isValidURL: isValidURL,
     removeStylesheet: removeStylesheet,
     replaceRule: replaceRule,
+    setHashParam: setHashParam,
     setReplaceRule: setReplaceRule,
     setStylesheetId: setStylesheetId,
     setUrlParam: setUrlParam,
@@ -985,4 +1046,4 @@ var fetchUtils = /*#__PURE__*/Object.freeze({
     sendFormData: sendFormData
 });
 
-export { addClass, addEventListener, appendFormData, assertNever, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, debounce, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, executeUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isDefined, isEmpty, isFunction, isNumber, isObject, isString, isValidURL, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, templateToHtml, throttle, throwError, toggleClass, version };
+export { addClass, addEventListener, appendFormData, assertNever, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, debounce, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, executeUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getHashParam, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isDefined, isEmpty, isFunction, isNumber, isObject, isString, isValidURL, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setHashParam, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, templateToHtml, throttle, throwError, toggleClass, version };

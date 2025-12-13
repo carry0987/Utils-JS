@@ -86,7 +86,9 @@ declare function generateRandom(length?: number): string;
 declare function generateUUID(): string;
 declare function isValidURL(url: string): boolean;
 declare function getUrlParam(sParam: string, url?: string): string | null;
+declare function getHashParam(sParam: string, url?: string): string | null;
 declare function setUrlParam(url: string | URLSource, params: URLParams | null, overwrite?: boolean): string;
+declare function setHashParam(url: string | URLSource, params: URLParams | null, overwrite?: boolean): string;
 
 declare const common_assertNever: typeof assertNever;
 declare const common_buildRules: typeof buildRules;
@@ -96,6 +98,7 @@ declare const common_deepEqual: typeof deepEqual;
 declare const common_deepMerge: typeof deepMerge;
 declare const common_generateRandom: typeof generateRandom;
 declare const common_generateUUID: typeof generateUUID;
+declare const common_getHashParam: typeof getHashParam;
 declare const common_getUrlParam: typeof getUrlParam;
 declare const common_injectStylesheet: typeof injectStylesheet;
 declare const common_isArray: typeof isArray;
@@ -109,6 +112,7 @@ declare const common_isString: typeof isString;
 declare const common_isValidURL: typeof isValidURL;
 declare const common_removeStylesheet: typeof removeStylesheet;
 declare const common_replaceRule: typeof replaceRule;
+declare const common_setHashParam: typeof setHashParam;
 declare const common_setReplaceRule: typeof setReplaceRule;
 declare const common_setStylesheetId: typeof setStylesheetId;
 declare const common_setUrlParam: typeof setUrlParam;
@@ -126,6 +130,7 @@ declare namespace common {
     common_deepMerge as deepMerge,
     common_generateRandom as generateRandom,
     common_generateUUID as generateUUID,
+    common_getHashParam as getHashParam,
     common_getUrlParam as getUrlParam,
     common_injectStylesheet as injectStylesheet,
     common_isArray as isArray,
@@ -139,6 +144,7 @@ declare namespace common {
     common_isValidURL as isValidURL,
     common_removeStylesheet as removeStylesheet,
     common_replaceRule as replaceRule,
+    common_setHashParam as setHashParam,
     common_setReplaceRule as setReplaceRule,
     common_setStylesheetId as setStylesheetId,
     common_setUrlParam as setUrlParam,
@@ -344,4 +350,4 @@ declare namespace formUtils {
   };
 }
 
-export { addClass, addEventListener, appendFormData, assertNever, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, debounce, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, executeUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isDefined, isEmpty, isFunction, isNumber, isObject, isString, isValidURL, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, templateToHtml, throttle, throwError, toggleClass, version };
+export { addClass, addEventListener, appendFormData, assertNever, bodyToURLParams, buildRules, common as commonUtils, compatInsertRule, createElem, createEvent, debounce, decodeFormData, deepClone, deepEqual, deepMerge, dispatchEvent, doFetch, domUtils, encodeFormData, errorUtils, eventUtils, executeUtils, fetchData, fetchUtils, findChild, findChilds, findParent, findParents, formDataToURLParams, formUtils, generateRandom, generateUUID, getCookie, getElem, getHashParam, getLocalValue, getSessionValue, getUrlParam, hasChild, hasClass, hasParent, injectStylesheet, insertAfter, insertBefore, isArray, isBoolean, isDefined, isEmpty, isFunction, isNumber, isObject, isString, isValidURL, removeClass, removeCookie, removeEventListener, removeLocalValue, removeSessionValue, removeStylesheet, replaceRule, reportError, sendData, sendForm, sendFormData, setCookie, setHashParam, setLocalValue, setReplaceRule, setSessionValue, setStylesheetId, setUrlParam, shallowClone, shallowEqual, shallowMerge, storageUtils, stylesheetId, templateToHtml, throttle, throwError, toggleClass, version };
