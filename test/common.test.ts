@@ -329,6 +329,30 @@ describe('setUrlParam', () => {
 });
 
 describe('setHashParam', () => {
+    it('sets plain hash with string param', () => {
+        const url = 'http://example.com';
+        const result = commonUtils.setHashParam(url, 'ikkonzome');
+
+        expect(result).toBe('http://example.com/#ikkonzome');
+    });
+
+    it('replaces existing hash with plain hash string', () => {
+        const url = 'http://example.com#tab=info';
+        const result = commonUtils.setHashParam(url, 'ikkonzome');
+
+        expect(result).toBe('http://example.com/#ikkonzome');
+    });
+
+    it('sets plain hash while preserving ignored params', () => {
+        const urlSource = {
+            url: 'http://example.com#/route&tab=info',
+            ignore: '/route'
+        };
+        const result = commonUtils.setHashParam(urlSource, 'newSection');
+
+        expect(result).toBe('http://example.com/#/route&newSection');
+    });
+
     it('sets hash parameters correctly', () => {
         const url = 'http://example.com';
         const params = { tab: 'info', section: 'details' };

@@ -402,7 +402,11 @@ export function setUrlParam(url: string | URLSource, params: URLParams | null, o
     return urlObj.toString();
 }
 
-export function setHashParam(url: string | URLSource, params: URLParams | null, overwrite: boolean = true): string {
+export function setHashParam(
+    url: string | URLSource,
+    params: URLParams | string | null = null,
+    overwrite: boolean = true
+): string {
     let originalUrl: string;
     let ignoreArray: string[] = [];
 
@@ -429,6 +433,26 @@ export function setHashParam(url: string | URLSource, params: URLParams | null, 
     // If params is null, remove all hash params
     if (params === null) {
         urlObj.hash = '';
+        return urlObj.toString();
+    }
+
+    // If params is a string, set it as plain hash
+    if (typeof params === 'string') {
+        // Get existing ignored params if any
+        const hashString = urlObj.hash.substring(1);
+        const paramsList = hashString.length > 0 ? hashString.split('&') : [];
+        const ignoredParams: string[] = [];
+
+        for (const param of paramsList) {
+            if (ignoreArray.includes(param)) {
+                ignoredParams.push(param);
+            }
+        }
+
+        // Build final hash: ignored params + plain hash
+        const finalParts = ignoredParams.length > 0 ? [...ignoredParams, params] : [params];
+        urlObj.hash = '#' + finalParts.join('&');
+
         return urlObj.toString();
     }
 
