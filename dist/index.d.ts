@@ -88,7 +88,7 @@ declare function isValidURL(url: string): boolean;
 declare function getUrlParam(sParam: string, url?: string): string | null;
 declare function getHashParam(sParam?: string | null, url?: string): string | null;
 declare function setUrlParam(url: string | URLSource, params: URLParams | null, overwrite?: boolean): string;
-declare function setHashParam(url: string | URLSource, params: URLParams | null, overwrite?: boolean): string;
+declare function setHashParam(url: string | URLSource, params?: URLParams | string | null, overwrite?: boolean): string;
 
 declare const common_assertNever: typeof assertNever;
 declare const common_buildRules: typeof buildRules;

@@ -1,4 +1,4 @@
-const version = '3.10.1';
+const version = '3.10.2';
 
 function reportError(...error) {
     console.error(...error);
@@ -510,7 +510,7 @@ function setUrlParam(url, params, overwrite = true) {
     urlObj.search = finalSearchString ? '?' + finalSearchString : '';
     return urlObj.toString();
 }
-function setHashParam(url, params, overwrite = true) {
+function setHashParam(url, params = null, overwrite = true) {
     let originalUrl;
     let ignoreArray = [];
     // Determine if URLSource object is being used
@@ -536,6 +536,22 @@ function setHashParam(url, params, overwrite = true) {
     // If params is null, remove all hash params
     if (params === null) {
         urlObj.hash = '';
+        return urlObj.toString();
+    }
+    // If params is a string, set it as plain hash
+    if (typeof params === 'string') {
+        // Get existing ignored params if any
+        const hashString = urlObj.hash.substring(1);
+        const paramsList = hashString.length > 0 ? hashString.split('&') : [];
+        const ignoredParams = [];
+        for (const param of paramsList) {
+            if (ignoreArray.includes(param)) {
+                ignoredParams.push(param);
+            }
+        }
+        // Build final hash: ignored params + plain hash
+        const finalParts = ignoredParams.length > 0 ? [...ignoredParams, params] : [params];
+        urlObj.hash = '#' + finalParts.join('&');
         return urlObj.toString();
     }
     // Extract hash string (remove leading '#')
