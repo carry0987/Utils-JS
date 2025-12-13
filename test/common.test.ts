@@ -228,6 +228,39 @@ describe('getHashParam', () => {
         const url = 'http://example.com#name=hello%20world';
         expect(commonUtils.getHashParam('name', url)).toBe('hello world');
     });
+
+    it('handles plain hash fragment (anchor)', () => {
+        const url = 'https://nipponcolors.com/#ikkonzome';
+        // Plain hash fragment is treated as a key with empty value
+        expect(commonUtils.getHashParam('ikkonzome', url)).toBe('');
+        expect(commonUtils.getHashParam('other', url)).toBe(null);
+    });
+
+    it('gets plain hash fragment with null sParam', () => {
+        const url = 'https://nipponcolors.com/#ikkonzome';
+        expect(commonUtils.getHashParam(null, url)).toBe('ikkonzome');
+    });
+
+    it('gets plain hash fragment with default sParam (null)', () => {
+        const url = 'https://nipponcolors.com/#ikkonzome';
+        expect(commonUtils.getHashParam(undefined, url)).toBe('ikkonzome');
+    });
+
+    it('returns null for null sParam when hash has key=value format', () => {
+        const url = 'http://example.com#tab=info';
+        expect(commonUtils.getHashParam(null, url)).toBe(null);
+    });
+
+    it('gets plain hash fragment when mixed with params', () => {
+        const url = 'http://example.com#section&tab=info';
+        expect(commonUtils.getHashParam(null, url)).toBe('section');
+    });
+
+    it('handles mixed plain hash and params', () => {
+        const url = 'http://example.com#section&tab=info';
+        expect(commonUtils.getHashParam('section', url)).toBe('');
+        expect(commonUtils.getHashParam('tab', url)).toBe('info');
+    });
 });
 
 describe('setUrlParam', () => {
@@ -365,6 +398,37 @@ describe('setHashParam', () => {
         const result = commonUtils.setHashParam(urlSource, null);
 
         expect(result).toBe('http://example.com/');
+    });
+
+    it('preserves plain hash fragment when using ignore', () => {
+        const urlSource = {
+            url: 'https://nipponcolors.com/#ikkonzome',
+            ignore: 'ikkonzome'
+        };
+        const params = { tab: 'info' };
+        const result = commonUtils.setHashParam(urlSource, params);
+
+        expect(result).toBe('https://nipponcolors.com/#ikkonzome&tab=info');
+    });
+
+    it('adds params to URL with plain hash fragment', () => {
+        const url = 'https://nipponcolors.com/#ikkonzome';
+        const params = { tab: 'info' };
+        const result = commonUtils.setHashParam(url, params);
+
+        // Plain hash 'ikkonzome' is treated as key with empty value, will be overwritten/merged
+        expect(result).toBe('https://nipponcolors.com/#ikkonzome=&tab=info');
+    });
+
+    it('handles mixed plain hash and params with ignore', () => {
+        const urlSource = {
+            url: 'http://example.com#section&tab=info',
+            ignore: 'section'
+        };
+        const params = { tab: 'settings', page: '1' };
+        const result = commonUtils.setHashParam(urlSource, params);
+
+        expect(result).toBe('http://example.com/#section&tab=settings&page=1');
     });
 });
 

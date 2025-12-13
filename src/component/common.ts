@@ -308,11 +308,22 @@ export function getUrlParam(sParam: string, url: string = window.location.href):
     return paramValue === null ? null : decodeURIComponent(paramValue);
 }
 
-export function getHashParam(sParam: string, url: string = window.location.href): string | null {
+export function getHashParam(sParam: string | null = null, url: string = window.location.href): string | null {
     const hashIndex = url.indexOf('#');
     if (hashIndex === -1) return null;
 
     const hashPart = url.substring(hashIndex + 1);
+
+    // If sParam is null, return the plain hash fragment (first part before any '&' or '=')
+    if (sParam === null) {
+        // Check if it's a plain hash (no '=' in the first segment)
+        const firstSegment = hashPart.split('&')[0];
+        if (!firstSegment.includes('=')) {
+            return decodeURIComponent(firstSegment);
+        }
+        return null;
+    }
+
     const params = new URLSearchParams(hashPart);
     const paramValue = params.get(sParam);
 
