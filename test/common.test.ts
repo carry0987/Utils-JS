@@ -173,10 +173,61 @@ describe('isValidURL', () => {
     });
 });
 
-it('getUrlParam gets URL parameter correctly', () => {
-    const url = 'http://example.com?page=1&size=20';
-    expect(commonUtils.getUrlParam('page', url)).toBe('1');
-    expect(commonUtils.getUrlParam('size', url)).toBe('20');
+describe('getUrlParam', () => {
+    it('gets URL parameter correctly', () => {
+        const url = 'http://example.com?page=1&size=20';
+        expect(commonUtils.getUrlParam('page', url)).toBe('1');
+        expect(commonUtils.getUrlParam('size', url)).toBe('20');
+    });
+
+    it('returns null for non-existent parameter', () => {
+        const url = 'http://example.com?page=1';
+        expect(commonUtils.getUrlParam('size', url)).toBe(null);
+    });
+
+    it('gets search param when URL has both search and hash', () => {
+        const url = 'http://example.com?page=1&size=20#tab=info&section=details';
+        expect(commonUtils.getUrlParam('page', url)).toBe('1');
+        expect(commonUtils.getUrlParam('size', url)).toBe('20');
+        // Should not get hash params
+        expect(commonUtils.getUrlParam('tab', url)).toBe(null);
+    });
+
+    it('returns null when URL has no search params', () => {
+        const url = 'http://example.com#tab=info';
+        expect(commonUtils.getUrlParam('tab', url)).toBe(null);
+    });
+});
+
+describe('getHashParam', () => {
+    it('gets hash parameter correctly', () => {
+        const url = 'http://example.com#tab=info&section=details';
+        expect(commonUtils.getHashParam('tab', url)).toBe('info');
+        expect(commonUtils.getHashParam('section', url)).toBe('details');
+    });
+
+    it('returns null for non-existent hash parameter', () => {
+        const url = 'http://example.com#tab=info';
+        expect(commonUtils.getHashParam('section', url)).toBe(null);
+    });
+
+    it('gets hash param when URL has both search and hash', () => {
+        const url = 'http://example.com?page=1&size=20#tab=info&section=details';
+        expect(commonUtils.getHashParam('tab', url)).toBe('info');
+        expect(commonUtils.getHashParam('section', url)).toBe('details');
+        // Should not get search params
+        expect(commonUtils.getHashParam('page', url)).toBe(null);
+    });
+
+    it('returns null when URL has no hash', () => {
+        const url = 'http://example.com?page=1';
+        expect(commonUtils.getHashParam('tab', url)).toBe(null);
+    });
+
+    it('decodes URL-encoded hash parameters', () => {
+        const url = 'http://example.com#name=hello%20world';
+        expect(commonUtils.getHashParam('name', url)).toBe('hello world');
+    });
 });
 
 describe('setUrlParam', () => {
@@ -239,6 +290,79 @@ describe('setUrlParam', () => {
             ignore: ['token=123']
         };
         const result = commonUtils.setUrlParam(urlSource, null);
+
+        expect(result).toBe('http://example.com/');
+    });
+});
+
+describe('setHashParam', () => {
+    it('sets hash parameters correctly', () => {
+        const url = 'http://example.com';
+        const params = { tab: 'info', section: 'details' };
+        const result = commonUtils.setHashParam(url, params);
+
+        expect(result).toBe('http://example.com/#tab=info&section=details');
+    });
+
+    it('updates existing hash parameters', () => {
+        const url = 'http://example.com#tab=info';
+        const params = { tab: 'settings', section: 'profile' };
+        const result = commonUtils.setHashParam(url, params);
+
+        expect(result).toBe('http://example.com/#tab=settings&section=profile');
+    });
+
+    it('maintains existing hash params when not overwriting', () => {
+        const url = 'http://example.com#tab=info';
+        const params = { tab: 'settings', section: 'profile' };
+        const result = commonUtils.setHashParam(url, params, false);
+
+        expect(result).toBe('http://example.com/#tab=info&section=profile');
+    });
+
+    it('removes all hash parameters when params is null', () => {
+        const url = 'http://example.com#tab=info&section=details';
+        const result = commonUtils.setHashParam(url, null);
+
+        expect(result).toBe('http://example.com/');
+    });
+
+    it('sets hash parameters with single ignore', () => {
+        const urlSource = {
+            url: 'http://example.com#/route&tab=info',
+            ignore: '#/route'
+        };
+        const params = { section: 'details' };
+        const result = commonUtils.setHashParam(urlSource, params);
+
+        expect(result).toBe('http://example.com/#/route&tab=info&section=details');
+    });
+
+    it('sets hash parameters with multiple ignores', () => {
+        const urlSource = {
+            url: 'http://example.com#/route&token=123',
+            ignore: ['#/route', '&token=123']
+        };
+        const params = { tab: 'info' };
+        const result = commonUtils.setHashParam(urlSource, params);
+
+        expect(result).toBe('http://example.com/#/route&token=123&tab=info');
+    });
+
+    it('preserves search params when setting hash params', () => {
+        const url = 'http://example.com?page=1&size=20';
+        const params = { tab: 'info' };
+        const result = commonUtils.setHashParam(url, params);
+
+        expect(result).toBe('http://example.com/?page=1&size=20#tab=info');
+    });
+
+    it('removes all hash params when params is null with ignored parameters', () => {
+        const urlSource = {
+            url: 'http://example.com#tab=info&token=123',
+            ignore: ['token=123']
+        };
+        const result = commonUtils.setHashParam(urlSource, null);
 
         expect(result).toBe('http://example.com/');
     });
