@@ -48,16 +48,16 @@
   "devDependencies": {
     "@rollup/plugin-replace": "^6.0.3",
     "@rollup/plugin-typescript": "^12.3.0",
-    "@types/node": "^25.0.1",
-    "@vitest/coverage-v8": "4.0.15",
-    "happy-dom": "^20.0.11",
-    "msw": "^2.12.4",
-    "prettier": "^3.7.4",
-    "rollup": "^4.53.3",
+    "@types/node": "^25.0.10",
+    "@vitest/coverage-v8": "4.0.18",
+    "happy-dom": "^20.3.7",
+    "msw": "^2.12.7",
+    "prettier": "^3.8.1",
+    "rollup": "^4.56.0",
     "rollup-plugin-dts": "^6.3.0",
     "rollup-plugin-tsconfig-paths": "^1.5.2",
     "tslib": "^2.8.1",
-    "vitest": "^4.0.15"
+    "vitest": "^4.0.18"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
