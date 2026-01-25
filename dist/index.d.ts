@@ -37,10 +37,13 @@ interface CookieOptions {
     sameSite?: 'Strict' | 'Lax' | 'None';
 }
 interface ThrottleOptions {
+    /** Whether to invoke on the leading edge of the timeout */
     leading?: boolean;
+    /** Whether to invoke on the trailing edge of the timeout */
     trailing?: boolean;
 }
 interface DebounceOptions extends ThrottleOptions {
+    /** The maximum time the function is allowed to be delayed before it is invoked */
     maxWait?: number;
 }
 
@@ -278,21 +281,22 @@ declare namespace eventUtils {
 }
 
 /**
- * Throttle a given function
+ * Creates a throttled function that only invokes the provided function at most once
+ * per every wait milliseconds.
  *
- * @param fn Function to be called
- * @param wait Throttle timeout in milliseconds
- * @param options Throttle options
+ * @param fn - The function to throttle.
+ * @param wait - The number of milliseconds to throttle invocations to.
+ * @param options - Throttle options.
  *
- * @returns Throttled function
+ * @returns The new throttled function.
  */
-declare function throttle(fn: (...args: any[]) => void, wait?: number, options?: ThrottleOptions): (...args: any[]) => void;
+declare function throttle<F extends (...args: any[]) => void>(fn: F, wait?: number, options?: ThrottleOptions): (...args: Parameters<F>) => void;
 /**
- * Creates a debounced function that delays the invocation of the provided function
- * until after the specified wait time has elapsed since the last time it was called.
+ * Creates a debounced function that delays invocation until after wait milliseconds
+ * have elapsed since the last time the debounced function was invoked.
  *
- * @param fn - The original function to debounce.
- * @param wait - The number of milliseconds to delay the function call.
+ * @param fn - The function to debounce.
+ * @param wait - The number of milliseconds to delay.
  * @param options - Debounce options.
  *
  * @returns A debounced function that returns a Promise resolving to the result of the original function.

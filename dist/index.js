@@ -1,4 +1,4 @@
-const version = '3.10.2';
+const version = '3.10.3';
 
 function reportError(...error) {
     console.error(...error);
@@ -761,47 +761,52 @@ var eventUtils = /*#__PURE__*/Object.freeze({
 });
 
 /**
- * Throttle a given function
+ * Creates a throttled function that only invokes the provided function at most once
+ * per every wait milliseconds.
  *
- * @param fn Function to be called
- * @param wait Throttle timeout in milliseconds
- * @param options Throttle options
+ * @param fn - The function to throttle.
+ * @param wait - The number of milliseconds to throttle invocations to.
+ * @param options - Throttle options.
  *
- * @returns Throttled function
+ * @returns The new throttled function.
  */
 function throttle(fn, wait = 100, options = { leading: false, trailing: true }) {
     const { leading = false, trailing = true } = options;
     let timeoutId;
-    let lastTime = leading ? -Infinity : Date.now();
-    const invokeFn = (...args) => {
-        lastTime = Date.now();
-        fn(...args);
+    let lastTime = leading ? 0 : performance.now();
+    let lastArgs;
+    const invokeFn = () => {
+        if (lastArgs) {
+            lastTime = performance.now();
+            fn(...lastArgs);
+            lastArgs = undefined;
+        }
     };
     return (...args) => {
-        const currentTime = Date.now();
+        const currentTime = performance.now();
+        lastArgs = args; // Always store the latest arguments
         const elapsed = currentTime - lastTime;
         if (elapsed >= wait) {
-            // Execute the function immediately, ensuring to clear any previous timer
             if (timeoutId !== undefined) {
                 clearTimeout(timeoutId);
                 timeoutId = undefined;
             }
-            invokeFn(...args);
+            invokeFn();
         }
         else if (trailing && timeoutId === undefined) {
             timeoutId = setTimeout(() => {
-                invokeFn(...args);
+                invokeFn();
                 timeoutId = undefined;
             }, wait - elapsed);
         }
     };
 }
 /**
- * Creates a debounced function that delays the invocation of the provided function
- * until after the specified wait time has elapsed since the last time it was called.
+ * Creates a debounced function that delays invocation until after wait milliseconds
+ * have elapsed since the last time the debounced function was invoked.
  *
- * @param fn - The original function to debounce.
- * @param wait - The number of milliseconds to delay the function call.
+ * @param fn - The function to debounce.
+ * @param wait - The number of milliseconds to delay.
  * @param options - Debounce options.
  *
  * @returns A debounced function that returns a Promise resolving to the result of the original function.
@@ -810,31 +815,54 @@ function debounce(fn, wait, options = { leading: false, trailing: true }) {
     const { leading = false, trailing = true, maxWait } = options;
     let timeoutId;
     let lastInvokeTime = 0;
-    let result;
-    const invokeFn = (args) => {
-        lastInvokeTime = Date.now();
-        result = fn(...args);
+    let lastCallTime = 0;
+    let lastArgs;
+    /** Collection of resolvers to prevent Promise hanging for cancelled calls */
+    let pendingResolvers = [];
+    const invokeFn = () => {
+        if (!lastArgs) {
+            // This should ideally never happen given the logic,
+            // but added for type safety and rigor.
+            throw new Error('Debounce invoked without arguments');
+        }
+        const result = fn(...lastArgs);
+        lastInvokeTime = performance.now();
+        // Resolve all pending promises with the latest result
+        const resolvers = [...pendingResolvers];
+        pendingResolvers = [];
+        for (const resolve of resolvers) {
+            resolve(result);
+        }
         return result;
     };
-    return (...args) => new Promise((resolve) => {
-        const currentTime = Date.now();
-        const elapsed = currentTime - lastInvokeTime;
-        if (timeoutId !== undefined) {
-            clearTimeout(timeoutId);
-        }
-        if (maxWait !== undefined && elapsed >= maxWait) {
-            resolve(invokeFn(args));
-        }
-        else if (leading && elapsed > wait) {
-            resolve(invokeFn(args));
-        }
-        timeoutId = setTimeout(() => {
-            if (trailing && !leading) {
-                resolve(invokeFn(args));
+    return (...args) => {
+        return new Promise((resolve) => {
+            const currentTime = performance.now();
+            const isFirstCallInBurst = timeoutId === undefined;
+            lastArgs = args;
+            pendingResolvers.push(resolve);
+            if (isFirstCallInBurst) {
+                lastCallTime = currentTime;
             }
-            timeoutId = undefined; // Clear timeout after it's been executed
-        }, wait);
-    });
+            if (timeoutId !== undefined) {
+                clearTimeout(timeoutId);
+            }
+            // Execute immediately if leading and wait time has passed
+            if (leading && isFirstCallInBurst && (currentTime - lastInvokeTime > wait || lastInvokeTime === 0)) {
+                return invokeFn();
+            }
+            // Execute if maxWait is reached
+            if (maxWait !== undefined && currentTime - lastCallTime >= maxWait) {
+                return invokeFn();
+            }
+            timeoutId = setTimeout(() => {
+                timeoutId = undefined;
+                if (trailing) {
+                    invokeFn();
+                }
+            }, wait);
+        });
+    };
 }
 
 var executeUtils = /*#__PURE__*/Object.freeze({

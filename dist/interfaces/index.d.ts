@@ -35,10 +35,13 @@ interface CookieOptions {
     sameSite?: 'Strict' | 'Lax' | 'None';
 }
 interface ThrottleOptions {
+    /** Whether to invoke on the leading edge of the timeout */
     leading?: boolean;
+    /** Whether to invoke on the trailing edge of the timeout */
     trailing?: boolean;
 }
 interface DebounceOptions extends ThrottleOptions {
+    /** The maximum time the function is allowed to be delayed before it is invoked */
     maxWait?: number;
 }
 
