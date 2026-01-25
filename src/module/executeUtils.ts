@@ -74,7 +74,12 @@ export function debounce<F extends (...args: any[]) => any>(
     let pendingResolvers: ((value: ReturnType<F>) => void)[] = [];
 
     const invokeFn = (): ReturnType<F> => {
-        const result = fn(...(lastArgs as Parameters<F>));
+        if (!lastArgs) {
+            // This should ideally never happen given the logic,
+            // but added for type safety and rigor.
+            throw new Error('Debounce invoked without arguments');
+        }
+        const result = fn(...lastArgs);
         lastInvokeTime = Date.now();
 
         // Resolve all pending promises with the latest result
