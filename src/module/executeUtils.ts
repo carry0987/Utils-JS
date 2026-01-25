@@ -1,43 +1,48 @@
 import { ThrottleOptions, DebounceOptions } from '@/interfaces/internal';
 
 /**
- * Throttle a given function
+ * Creates a throttled function that only invokes the provided function at most once
+ * per every wait milliseconds.
  *
- * @param fn Function to be called
- * @param wait Throttle timeout in milliseconds
- * @param options Throttle options
+ * @param fn - The function to throttle.
+ * @param wait - The number of milliseconds to throttle invocations to.
+ * @param options - Throttle options.
  *
- * @returns Throttled function
+ * @returns The new throttled function.
  */
-export function throttle(
-    fn: (...args: any[]) => void,
+export function throttle<F extends (...args: any[]) => void>(
+    fn: F,
     wait = 100,
     options: ThrottleOptions = { leading: false, trailing: true }
 ) {
     const { leading = false, trailing = true } = options;
-
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
-    let lastTime = leading ? -Infinity : Date.now();
+    let lastTime = leading ? 0 : Date.now();
+    let lastArgs: Parameters<F> | undefined;
 
-    const invokeFn = (...args: any[]) => {
-        lastTime = Date.now();
-        fn(...args);
+    const invokeFn = () => {
+        if (lastArgs) {
+            lastTime = Date.now();
+            fn(...lastArgs);
+            lastArgs = undefined;
+        }
     };
 
-    return (...args: any[]) => {
+    return (...args: Parameters<F>) => {
         const currentTime = Date.now();
+        lastArgs = args; // Always store the latest arguments
+
         const elapsed = currentTime - lastTime;
 
         if (elapsed >= wait) {
-            // Execute the function immediately, ensuring to clear any previous timer
             if (timeoutId !== undefined) {
                 clearTimeout(timeoutId);
                 timeoutId = undefined;
             }
-            invokeFn(...args);
+            invokeFn();
         } else if (trailing && timeoutId === undefined) {
             timeoutId = setTimeout(() => {
-                invokeFn(...args);
+                invokeFn();
                 timeoutId = undefined;
             }, wait - elapsed);
         }
@@ -45,11 +50,11 @@ export function throttle(
 }
 
 /**
- * Creates a debounced function that delays the invocation of the provided function
- * until after the specified wait time has elapsed since the last time it was called.
+ * Creates a debounced function that delays invocation until after wait milliseconds
+ * have elapsed since the last time the debounced function was invoked.
  *
- * @param fn - The original function to debounce.
- * @param wait - The number of milliseconds to delay the function call.
+ * @param fn - The function to debounce.
+ * @param wait - The number of milliseconds to delay.
  * @param options - Debounce options.
  *
  * @returns A debounced function that returns a Promise resolving to the result of the original function.
@@ -63,35 +68,53 @@ export function debounce<F extends (...args: any[]) => any>(
 
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
     let lastInvokeTime = 0;
-    let result: ReturnType<F>;
+    let lastArgs: Parameters<F> | undefined;
 
-    const invokeFn = (args: Parameters<F>): ReturnType<F> => {
+    /** Collection of resolvers to prevent Promise hanging for cancelled calls */
+    let pendingResolvers: ((value: ReturnType<F>) => void)[] = [];
+
+    const invokeFn = (): ReturnType<F> => {
+        const result = fn(...(lastArgs as Parameters<F>));
         lastInvokeTime = Date.now();
-        result = fn(...args);
+
+        // Resolve all pending promises with the latest result
+        const resolvers = [...pendingResolvers];
+        pendingResolvers = [];
+        for (const resolve of resolvers) {
+            resolve(result);
+        }
 
         return result;
     };
 
-    return (...args: Parameters<F>): Promise<ReturnType<F>> =>
-        new Promise((resolve) => {
+    return (...args: Parameters<F>): Promise<ReturnType<F>> => {
+        return new Promise((resolve) => {
             const currentTime = Date.now();
-            const elapsed = currentTime - lastInvokeTime;
+            lastArgs = args;
+            pendingResolvers.push(resolve);
+
+            const elapsedSinceLastInvoke = currentTime - lastInvokeTime;
 
             if (timeoutId !== undefined) {
                 clearTimeout(timeoutId);
             }
 
-            if (maxWait !== undefined && elapsed >= maxWait) {
-                resolve(invokeFn(args));
-            } else if (leading && elapsed > wait) {
-                resolve(invokeFn(args));
+            // Execute immediately if leading and wait time has passed
+            if (leading && currentTime - lastInvokeTime > wait) {
+                return invokeFn();
+            }
+
+            // Execute if maxWait is reached
+            if (maxWait !== undefined && elapsedSinceLastInvoke >= maxWait) {
+                return invokeFn();
             }
 
             timeoutId = setTimeout(() => {
-                if (trailing && !leading) {
-                    resolve(invokeFn(args));
+                if (trailing) {
+                    invokeFn();
                 }
-                timeoutId = undefined; // Clear timeout after it's been executed
+                timeoutId = undefined;
             }, wait);
         });
+    };
 }
