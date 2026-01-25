@@ -147,4 +147,47 @@ describe('debounce', () => {
         // The original function should be called with the last argument
         expect(fn).toHaveBeenCalledWith(3);
     });
+
+    it('should resolve all pending promises with the same final result', async () => {
+        const fn = vi.fn((x: number) => x * 2);
+        const wait = 100;
+        const debouncedFn = debounce(fn, wait);
+
+        const p1 = debouncedFn(1);
+        const p2 = debouncedFn(2);
+        const p3 = debouncedFn(3);
+
+        await sleep(wait + 50);
+
+        const results = await Promise.all([p1, p2, p3]);
+        expect(results).toEqual([6, 6, 6]);
+        expect(fn).toHaveBeenCalledTimes(1);
+        expect(fn).toHaveBeenCalledWith(3);
+    });
+
+    it('should respect maxWait option', async () => {
+        const fn = vi.fn((x: number) => x);
+        const wait = 100;
+        const maxWait = 150;
+        const debouncedFn = debounce(fn, wait, { maxWait });
+
+        // First call
+        debouncedFn(1);
+
+        // Call again at 80ms (less than wait=100)
+        await sleep(80);
+        debouncedFn(2);
+
+        // Call again at 160ms (Total time since first call is 160ms, which is > maxWait=150)
+        // This should trigger the invoke immediately because of maxWait
+        await sleep(80);
+        debouncedFn(3);
+
+        expect(fn).toHaveBeenCalledTimes(1);
+        expect(fn).toHaveBeenCalledWith(3);
+
+        // Final wait to ensure no extra calls
+        await sleep(wait + 50);
+        expect(fn).toHaveBeenCalledTimes(1);
+    });
 });

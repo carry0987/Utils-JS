@@ -17,19 +17,19 @@ export function throttle<F extends (...args: any[]) => void>(
 ) {
     const { leading = false, trailing = true } = options;
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
-    let lastTime = leading ? 0 : Date.now();
+    let lastTime = leading ? 0 : performance.now();
     let lastArgs: Parameters<F> | undefined;
 
     const invokeFn = () => {
         if (lastArgs) {
-            lastTime = Date.now();
+            lastTime = performance.now();
             fn(...lastArgs);
             lastArgs = undefined;
         }
     };
 
     return (...args: Parameters<F>) => {
-        const currentTime = Date.now();
+        const currentTime = performance.now();
         lastArgs = args; // Always store the latest arguments
 
         const elapsed = currentTime - lastTime;
@@ -68,6 +68,7 @@ export function debounce<F extends (...args: any[]) => any>(
 
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
     let lastInvokeTime = 0;
+    let lastCallTime = 0;
     let lastArgs: Parameters<F> | undefined;
 
     /** Collection of resolvers to prevent Promise hanging for cancelled calls */
@@ -80,7 +81,7 @@ export function debounce<F extends (...args: any[]) => any>(
             throw new Error('Debounce invoked without arguments');
         }
         const result = fn(...lastArgs);
-        lastInvokeTime = Date.now();
+        lastInvokeTime = performance.now();
 
         // Resolve all pending promises with the latest result
         const resolvers = [...pendingResolvers];
@@ -94,31 +95,34 @@ export function debounce<F extends (...args: any[]) => any>(
 
     return (...args: Parameters<F>): Promise<ReturnType<F>> => {
         return new Promise((resolve) => {
-            const currentTime = Date.now();
+            const currentTime = performance.now();
+            const isFirstCallInBurst = timeoutId === undefined;
             lastArgs = args;
             pendingResolvers.push(resolve);
 
-            const elapsedSinceLastInvoke = currentTime - lastInvokeTime;
+            if (isFirstCallInBurst) {
+                lastCallTime = currentTime;
+            }
 
             if (timeoutId !== undefined) {
                 clearTimeout(timeoutId);
             }
 
             // Execute immediately if leading and wait time has passed
-            if (leading && currentTime - lastInvokeTime > wait) {
+            if (leading && isFirstCallInBurst && (currentTime - lastInvokeTime > wait || lastInvokeTime === 0)) {
                 return invokeFn();
             }
 
             // Execute if maxWait is reached
-            if (maxWait !== undefined && elapsedSinceLastInvoke >= maxWait) {
+            if (maxWait !== undefined && currentTime - lastCallTime >= maxWait) {
                 return invokeFn();
             }
 
             timeoutId = setTimeout(() => {
+                timeoutId = undefined;
                 if (trailing) {
                     invokeFn();
                 }
-                timeoutId = undefined;
             }, wait);
         });
     };
