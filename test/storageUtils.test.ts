@@ -100,10 +100,12 @@ describe('storageUtils', () => {
         });
 
         it('getCookie retrieves a cookie value', () => {
+            storageUtils.setCookie('testCookie', 'testValue');
             expect(storageUtils.getCookie('testCookie')).toBe('testValue');
         });
 
         it('removeCookie removes the cookie', () => {
+            storageUtils.setCookie('testCookie', 'testValue');
             storageUtils.removeCookie('testCookie');
             expect(document.cookie).not.toContain('testCookie=testValue');
         });
