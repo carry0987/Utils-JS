@@ -1,12 +1,5 @@
-import { getElem, createElem } from '@/module/domUtils';
-import { URLSource, URLParams } from '@/interfaces/internal';
-import { ReplaceRule, StylesObject } from '@/types/internal';
-
-export let stylesheetId: string = 'utils-style';
-export const replaceRule: ReplaceRule = {
-    from: '.utils',
-    to: '.utils-'
-};
+import type { URLParams, URLSource } from '@/interfaces/internal';
+import { createUrl, getLocationHrefSafe } from '@/module/runtimeUtils';
 
 // Narrow nullish values
 export function isDefined<T>(v: T): v is Exclude<T, null | undefined> {
@@ -17,7 +10,7 @@ export function isObject(item: unknown): item is Record<string, unknown> {
     return typeof item === 'object' && item !== null && !isArray(item);
 }
 
-export function isFunction(item: unknown): item is Function {
+export function isFunction(item: unknown): item is (...args: never[]) => unknown {
     return typeof item === 'function';
 }
 
@@ -38,28 +31,22 @@ export function isArray(item: unknown): item is unknown[] {
 }
 
 export function isEmpty(value: unknown): boolean {
-    // Check for number
     if (typeof value === 'number') {
         return false;
     }
-    // Check for string
     if (typeof value === 'string' && value.length === 0) {
         return true;
     }
-    // Check for array
     if (isArray(value) && value.length === 0) {
         return true;
     }
-    // Check for object
     if (isObject(value) && Object.keys(value).length === 0) {
         return true;
     }
 
-    // Check for any falsy values
     return !value;
 }
 
-// Assert never for exhaustive checks (helps switch statements)
 export function assertNever(x: never, msg = 'Unexpected value'): never {
     throw new Error(`${msg}: ${x}`);
 }
@@ -69,17 +56,20 @@ export function deepMerge<T>(target: T, ...sources: Partial<T>[]): T {
     const source = sources.shift() as Partial<T>;
     if (source) {
         for (const key in source) {
-            if (Object.prototype.hasOwnProperty.call(source, key)) {
+            if (Object.hasOwn(source, key)) {
                 const sourceKey = key as keyof Partial<T>;
                 const value = source[sourceKey];
                 const targetKey = key as keyof T;
                 if (isObject(value) || isArray(value)) {
                     if (!target[targetKey] || typeof target[targetKey] !== 'object') {
-                        target[targetKey] = isArray(value) ? [] : ({} as any);
+                        target[targetKey] = (isArray(value) ? [] : {}) as T[typeof targetKey];
                     }
-                    deepMerge(target[targetKey] as any, value as any);
+                    deepMerge(
+                        target[targetKey] as Record<string, unknown> | unknown[],
+                        value as Partial<Record<string, unknown> | unknown[]>
+                    );
                 } else {
-                    target[targetKey] = value as any;
+                    target[targetKey] = value as T[typeof targetKey];
                 }
             }
         }
@@ -102,36 +92,38 @@ export function shallowMerge<T>(target: T, ...sources: Partial<T>[]): T {
 }
 
 export function deepClone<T>(obj: T): T {
-    let clone: any;
+    let clone: unknown;
     if (isArray(obj)) {
         clone = obj.map((item) => deepClone(item));
     } else if (isObject(obj)) {
-        clone = { ...obj };
-        for (let key in clone) {
-            if (clone.hasOwnProperty(key)) {
-                clone[key] = deepClone(clone[key]);
+        const sourceObject = obj as Record<string, unknown>;
+        const objectClone: Record<string, unknown> = { ...sourceObject };
+        for (const key in objectClone) {
+            if (Object.hasOwn(objectClone, key)) {
+                objectClone[key] = deepClone(objectClone[key]);
             }
         }
+        clone = objectClone;
     } else {
         clone = obj;
     }
 
-    return clone;
+    return clone as T;
 }
 
 export function shallowClone<T>(obj: T): T {
     if (isObject(obj) || isArray(obj)) {
-        // Recursively clone properties
-        const clone = isArray(obj) ? [] : Object.create(Object.getPrototypeOf(obj));
+        const sourceObject = obj as Record<string, unknown>;
+        const clone = (isArray(obj) ? [] : Object.create(Object.getPrototypeOf(obj))) as Record<string, unknown>;
 
-        for (const key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                const value = (obj as any)[key];
+        for (const key in sourceObject) {
+            if (Object.hasOwn(sourceObject, key)) {
+                const value = sourceObject[key];
                 clone[key] = isObject(value) ? shallowClone(value) : isArray(value) ? [...value] : value;
             }
         }
 
-        return clone;
+        return clone as T;
     }
 
     return obj;
@@ -191,7 +183,6 @@ export function shallowEqual<T>(obj1: T, obj2: T): boolean {
 
     if (obj1 === null || obj2 === null) return obj1 === obj2;
 
-    // If both are the same reference, they are equal
     if (obj1 === obj2) return true;
 
     if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
@@ -208,64 +199,6 @@ export function shallowEqual<T>(obj1: T, obj2: T): boolean {
     }
 
     return true;
-}
-
-export function setStylesheetId(id: string): void {
-    stylesheetId = id;
-}
-
-export function setReplaceRule(from: string, to: string): void {
-    replaceRule.from = from;
-    replaceRule.to = to;
-}
-
-// CSS Injection
-export function injectStylesheet(stylesObject: StylesObject, id: string | null = null): void {
-    id = isEmpty(id) ? '' : id;
-    // Create a style element
-    let style = createElem('style') as HTMLStyleElement;
-    // WebKit hack
-    style.id = stylesheetId + id;
-    style.textContent = '';
-    // Add the style element to the document head
-    document.head.append(style);
-
-    let stylesheet = style.sheet as CSSStyleSheet;
-
-    for (let selector in stylesObject) {
-        if (stylesObject.hasOwnProperty(selector)) {
-            compatInsertRule(stylesheet, selector, buildRules(stylesObject[selector]), id);
-        }
-    }
-}
-
-export function buildRules(ruleObject: Record<string, string>): string {
-    let ruleSet = '';
-    for (let [property, value] of Object.entries(ruleObject)) {
-        property = property.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`);
-        ruleSet += `${property}:${value};`;
-    }
-
-    return ruleSet;
-}
-
-export function compatInsertRule(
-    stylesheet: CSSStyleSheet,
-    selector: string,
-    cssText: string,
-    id: string | null = null
-): void {
-    id = isEmpty(id) ? '' : id;
-    let modifiedSelector = selector.replace(replaceRule.from, replaceRule.to + id);
-    stylesheet.insertRule(modifiedSelector + '{' + cssText + '}', 0);
-}
-
-export function removeStylesheet(id: string | null = null): void {
-    const styleId = isEmpty(id) ? '' : id;
-    let styleElement = getElem('#' + stylesheetId + styleId);
-    if (styleElement && styleElement.parentNode) {
-        styleElement.parentNode.removeChild(styleElement);
-    }
 }
 
 export function generateRandom(length: number = 8): string {
@@ -291,32 +224,47 @@ export function generateUUID(): string {
 
 export function isValidURL(url: string): boolean {
     try {
-        new URL(url); // Try to create a URL object
+        new URL(url);
         return true;
     } catch (_) {
-        return false; // If error, the URL is invalid
+        return false;
     }
 }
 
-export function getUrlParam(sParam: string, url: string = window.location.href): string | null {
-    const searchPart = url.includes('#')
-        ? url.substring(url.indexOf('?'), url.indexOf('#'))
-        : url.substring(url.indexOf('?'));
+export function getUrlParam(sParam: string, url?: string): string | null {
+    const sourceUrl = url ?? getLocationHrefSafe();
+    if (!sourceUrl) {
+        return null;
+    }
+
+    const searchIndex = sourceUrl.indexOf('?');
+    if (searchIndex === -1) {
+        return null;
+    }
+
+    const hashIndex = sourceUrl.indexOf('#');
+    const searchPart =
+        hashIndex !== -1 && hashIndex > searchIndex
+            ? sourceUrl.substring(searchIndex, hashIndex)
+            : sourceUrl.substring(searchIndex);
     const params = new URLSearchParams(searchPart);
     const paramValue = params.get(sParam);
 
     return paramValue === null ? null : decodeURIComponent(paramValue);
 }
 
-export function getHashParam(sParam: string | null = null, url: string = window.location.href): string | null {
-    const hashIndex = url.indexOf('#');
+export function getHashParam(sParam: string | null = null, url?: string): string | null {
+    const sourceUrl = url ?? getLocationHrefSafe();
+    if (!sourceUrl) {
+        return null;
+    }
+
+    const hashIndex = sourceUrl.indexOf('#');
     if (hashIndex === -1) return null;
 
-    const hashPart = url.substring(hashIndex + 1);
+    const hashPart = sourceUrl.substring(hashIndex + 1);
 
-    // If sParam is null, return the plain hash fragment (first part before any '&' or '=')
     if (sParam === null) {
-        // Check if it's a plain hash (no '=' in the first segment)
         const firstSegment = hashPart.split('&')[0];
         if (!firstSegment.includes('=')) {
             return decodeURIComponent(firstSegment);
@@ -334,9 +282,8 @@ export function setUrlParam(url: string | URLSource, params: URLParams | null, o
     let originalUrl: string;
     let ignoreArray: string[] = [];
 
-    // Determine if URLSource object is being used
     if (typeof url === 'object') {
-        originalUrl = url.url; // Extract the URL string
+        originalUrl = url.url;
         if (Array.isArray(url.ignore)) {
             ignoreArray = url.ignore.map((part) => {
                 return part.startsWith('?') || part.startsWith('&') ? part.substring(1) : part;
@@ -352,18 +299,14 @@ export function setUrlParam(url: string | URLSource, params: URLParams | null, o
         originalUrl = url;
     }
 
-    const urlObj = new URL(originalUrl);
+    const urlObj = createUrl(originalUrl);
 
-    // If params is null, remove all
     if (params === null) {
-        urlObj.search = ''; // Remove all search params
+        urlObj.search = '';
         return urlObj.toString();
     }
 
-    // Extract search string
-    let searchString = urlObj.search.substring(1); // Remove the leading '?'
-
-    // Split the search string into parameters
+    const searchString = urlObj.search.substring(1);
     const paramsList = searchString.length > 0 ? searchString.split('&') : [];
 
     const ignoredParams: string[] = [];
@@ -379,7 +322,6 @@ export function setUrlParam(url: string | URLSource, params: URLParams | null, o
 
     const urlSearchParams = new URLSearchParams(otherParams.join('&'));
 
-    // Process remaining logic to set params
     for (const [paramName, paramValue] of Object.entries(params)) {
         const valueStr = paramValue === null ? '' : String(paramValue);
         if (!overwrite && urlSearchParams.has(paramName)) {
@@ -397,7 +339,7 @@ export function setUrlParam(url: string | URLSource, params: URLParams | null, o
 
     const finalSearchString = newSearchParams.join('&');
 
-    urlObj.search = finalSearchString ? '?' + finalSearchString : '';
+    urlObj.search = finalSearchString ? `?${finalSearchString}` : '';
 
     return urlObj.toString();
 }
@@ -410,7 +352,6 @@ export function setHashParam(
     let originalUrl: string;
     let ignoreArray: string[] = [];
 
-    // Determine if URLSource object is being used
     if (typeof url === 'object') {
         originalUrl = url.url;
         if (Array.isArray(url.ignore)) {
@@ -428,17 +369,14 @@ export function setHashParam(
         originalUrl = url;
     }
 
-    const urlObj = new URL(originalUrl);
+    const urlObj = createUrl(originalUrl);
 
-    // If params is null, remove all hash params
     if (params === null) {
         urlObj.hash = '';
         return urlObj.toString();
     }
 
-    // If params is a string, set it as plain hash
     if (typeof params === 'string') {
-        // Get existing ignored params if any
         const hashString = urlObj.hash.substring(1);
         const paramsList = hashString.length > 0 ? hashString.split('&') : [];
         const ignoredParams: string[] = [];
@@ -449,17 +387,13 @@ export function setHashParam(
             }
         }
 
-        // Build final hash: ignored params + plain hash
         const finalParts = ignoredParams.length > 0 ? [...ignoredParams, params] : [params];
-        urlObj.hash = '#' + finalParts.join('&');
+        urlObj.hash = `#${finalParts.join('&')}`;
 
         return urlObj.toString();
     }
 
-    // Extract hash string (remove leading '#')
-    let hashString = urlObj.hash.substring(1);
-
-    // Split the hash string into parameters
+    const hashString = urlObj.hash.substring(1);
     const paramsList = hashString.length > 0 ? hashString.split('&') : [];
 
     const ignoredParams: string[] = [];
@@ -475,7 +409,6 @@ export function setHashParam(
 
     const urlSearchParams = new URLSearchParams(otherParams.join('&'));
 
-    // Process remaining logic to set params
     for (const [paramName, paramValue] of Object.entries(params)) {
         const valueStr = paramValue === null ? '' : String(paramValue);
         if (!overwrite && urlSearchParams.has(paramName)) {
@@ -493,7 +426,7 @@ export function setHashParam(
 
     const finalHashString = newHashParams.join('&');
 
-    urlObj.hash = finalHashString ? '#' + finalHashString : '';
+    urlObj.hash = finalHashString ? `#${finalHashString}` : '';
 
     return urlObj.toString();
 }

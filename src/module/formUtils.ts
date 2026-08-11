@@ -1,4 +1,4 @@
-import { FormDataOptions, URLParams } from '@/interfaces/internal';
+import type { FormDataOptions, URLParams } from '@/interfaces/internal';
 
 // Append form data
 export function appendFormData(options: FormDataOptions, formData: FormData = new FormData()): FormData {
@@ -37,7 +37,7 @@ export function appendFormData(options: FormDataOptions, formData: FormData = ne
 }
 
 // Encode form data before send
-export function encodeFormData(data: any, parentKey: string = ''): FormData {
+export function encodeFormData(data: FormDataOptions['data'], parentKey: string = ''): FormData {
     if (data instanceof FormData) {
         return data;
     }
@@ -50,8 +50,8 @@ export function encodeFormData(data: any, parentKey: string = ''): FormData {
 }
 
 // Decode FormData back to an object
-export function decodeFormData(formData: FormData): Record<string, any> {
-    const data: Record<string, any> = {};
+export function decodeFormData(formData: FormData): Record<string, FormDataEntryValue | FormDataEntryValue[]> {
+    const data: Record<string, FormDataEntryValue | FormDataEntryValue[]> = {};
 
     formData.forEach((value, key) => {
         // If a key already exists, convert to an array or push to existing array

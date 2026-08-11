@@ -1,5 +1,6 @@
-import { storageUtils, reportError } from '@/index';
-import { describe, beforeEach, it, expect, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { storageUtils } from '@/browser';
+import { reportError } from '@/index';
 
 vi.mock('@/module/errorUtils', () => ({
     reportError: vi.fn()
@@ -9,7 +10,13 @@ describe('storageUtils', () => {
     beforeEach(() => {
         localStorage.clear();
         sessionStorage.clear();
-        document.cookie = '';
+        document.cookie.split(';').forEach((cookie) => {
+            const separatorIndex = cookie.indexOf('=');
+            const name = separatorIndex === -1 ? cookie.trim() : cookie.slice(0, separatorIndex).trim();
+            if (name) {
+                storageUtils.removeCookie(decodeURIComponent(name));
+            }
+        });
     });
 
     describe('LocalStorage', () => {

@@ -2,15 +2,17 @@
  * Type Utilities
  * ------------------------------------------------------------------------ */
 
+type UnknownFunction = (...args: never[]) => unknown;
+
 /** DeepPartial: make all nested fields optional. */
-export type DeepPartial<T> = T extends Function
+export type DeepPartial<T> = T extends UnknownFunction
     ? T
     : T extends object
       ? { [K in keyof T]?: DeepPartial<T[K]> }
       : T | undefined;
 
 /** DeepReadonly: recursively make an object immutable. */
-export type DeepReadonly<T> = T extends (...args: any[]) => any
+export type DeepReadonly<T> = T extends UnknownFunction
     ? T
     : T extends object
       ? { readonly [K in keyof T]: DeepReadonly<T[K]> }

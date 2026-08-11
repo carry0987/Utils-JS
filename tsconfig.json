@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "ESNext",
     "target": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "esModuleInterop": true,
     "importHelpers": true,
     "strict": true,
@@ -10,11 +10,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "types": ["node"]
   },
-  "include": [
-    "src/**/*",
-    "test/**/*",
-    "rollup.config.ts"
-  ],
+  "include": ["src/**/*", "test/**/*", "rollup.config.ts"],
   "exclude": ["node_modules", "dist", "**/__tests__/**/*"]
 }

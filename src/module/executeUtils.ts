@@ -1,4 +1,4 @@
-import { ThrottleOptions, DebounceOptions } from '@/interfaces/internal';
+import type { DebounceOptions, ThrottleOptions } from '@/interfaces/internal';
 
 /**
  * Creates a throttled function that only invokes the provided function at most once
@@ -10,7 +10,7 @@ import { ThrottleOptions, DebounceOptions } from '@/interfaces/internal';
  *
  * @returns The new throttled function.
  */
-export function throttle<F extends (...args: any[]) => void>(
+export function throttle<F extends (...args: never[]) => void>(
     fn: F,
     wait = 100,
     options: ThrottleOptions = { leading: false, trailing: true }
@@ -59,7 +59,7 @@ export function throttle<F extends (...args: any[]) => void>(
  *
  * @returns A debounced function that returns a Promise resolving to the result of the original function.
  */
-export function debounce<F extends (...args: any[]) => any>(
+export function debounce<F extends (...args: never[]) => unknown>(
     fn: F,
     wait: number,
     options: DebounceOptions = { leading: false, trailing: true }

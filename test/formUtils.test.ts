@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'vitest';
 import { formUtils } from '@/index';
-import { describe, it, expect } from 'vitest';
 
 describe('formUtils', () => {
     it('appendFormData appends simple key-value pairs', () => {

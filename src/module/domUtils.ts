@@ -1,5 +1,15 @@
+import type { ElementAttributes, QuerySelector } from '@/types/internal';
 import { throwError } from './errorUtils';
-import { QuerySelector, ElementAttributes } from '@/types/internal';
+import { getDocumentSafe, getHtmlTemplateElementSafe, getNodeSafe } from './runtimeUtils';
+
+function requireDocument(): Document {
+    const currentDocument = getDocumentSafe();
+    if (!currentDocument) {
+        throwError('DOM utilities require a browser document');
+    }
+
+    return currentDocument;
+}
 
 export function getElem<E extends Element = Element>(ele: string, mode: 'all', parent?: QuerySelector): NodeListOf<E>;
 export function getElem<E extends Element = Element>(
@@ -21,13 +31,15 @@ export function getElem<E extends Element = Element>(
     if (typeof ele !== 'string') {
         return ele;
     }
-    let searchContext: QuerySelector = document;
+    const currentDocument = requireDocument();
+    const NodeCtor = getNodeSafe();
+    let searchContext: QuerySelector = currentDocument;
 
     if (mode === null && parent) {
         searchContext = parent;
-    } else if (mode && mode instanceof Node && 'querySelector' in mode) {
+    } else if (mode && NodeCtor && mode instanceof NodeCtor && 'querySelector' in mode) {
         searchContext = mode;
-    } else if (parent && parent instanceof Node && 'querySelector' in parent) {
+    } else if (parent && NodeCtor && parent instanceof NodeCtor && 'querySelector' in parent) {
         searchContext = parent;
     }
 
@@ -41,9 +53,9 @@ export function createElem<K extends keyof HTMLElementTagNameMap>(
     attrs: ElementAttributes = {},
     text: string = ''
 ): HTMLElementTagNameMap[K] {
-    let elem = document.createElement(tagName);
-    for (let attr in attrs) {
-        if (Object.prototype.hasOwnProperty.call(attrs, attr)) {
+    const elem = requireDocument().createElement(tagName);
+    for (const attr in attrs) {
+        if (Object.hasOwn(attrs, attr)) {
             if (attr === 'textContent' || attr === 'innerText') {
                 elem.textContent = attrs[attr] as string;
             } else {
@@ -58,26 +70,34 @@ export function createElem<K extends keyof HTMLElementTagNameMap>(
 
 export function insertAfter(referenceNode: Node, newNode: Node | string): void {
     if (typeof newNode === 'string') {
-        let elem = createElem('div');
+        const elem = createElem('div');
         elem.innerHTML = newNode;
         newNode = elem.firstChild as Node;
         if (!newNode) {
             throwError('The new node (string) provided did not produce a valid DOM element.');
         }
     }
-    referenceNode.parentNode!.insertBefore(newNode, referenceNode.nextSibling);
+    const parentNode = referenceNode.parentNode;
+    if (!parentNode) {
+        throwError('The reference node must have a parent node.');
+    }
+    parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
 export function insertBefore(referenceNode: Node, newNode: Node | string): void {
     if (typeof newNode === 'string') {
-        let elem = createElem('div');
+        const elem = createElem('div');
         elem.innerHTML = newNode;
         newNode = elem.firstChild as Node;
         if (!newNode) {
             throwError('The new node (string) provided did not produce a valid DOM element.');
         }
     }
-    referenceNode.parentNode!.insertBefore(newNode, referenceNode);
+    const parentNode = referenceNode.parentNode;
+    if (!parentNode) {
+        throwError('The reference node must have a parent node.');
+    }
+    parentNode.insertBefore(newNode, referenceNode);
 }
 
 export function addClass(ele: Element, className: string): Element {
@@ -178,9 +198,11 @@ export function findChilds<E extends Element = Element>(ele: E, selector: string
 export function templateToHtml(templateElem: HTMLTemplateElement): string;
 export function templateToHtml(templateElem: DocumentFragment): string;
 export function templateToHtml(templateElem: HTMLTemplateElement | DocumentFragment): string {
+    const currentDocument = requireDocument();
+    const HtmlTemplateElementCtor = getHtmlTemplateElementSafe();
     let sourceElem: DocumentFragment | HTMLTemplateElement;
     // Check the type of templateElem
-    if (templateElem instanceof HTMLTemplateElement) {
+    if (HtmlTemplateElementCtor && templateElem instanceof HtmlTemplateElementCtor) {
         // If it's a HTMLTemplateElement, proceed with cloning content
         sourceElem = templateElem.content.cloneNode(true) as DocumentFragment;
     } else {
@@ -188,7 +210,7 @@ export function templateToHtml(templateElem: HTMLTemplateElement | DocumentFragm
         sourceElem = templateElem;
     }
 
-    const tempDiv = document.createElement('div');
+    const tempDiv = currentDocument.createElement('div');
     tempDiv.appendChild(sourceElem);
 
     return tempDiv.innerHTML;

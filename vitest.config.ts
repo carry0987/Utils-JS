@@ -1,11 +1,13 @@
-import { defineConfig, coverageConfigDefaults } from 'vitest/config';
 import os from 'node:os';
-import path from 'path';
+import path from 'node:path';
+import { coverageConfigDefaults, defineConfig } from 'vitest/config';
+
+const projectRoot = import.meta.dirname;
 
 export default defineConfig({
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'src')
+            '@': path.resolve(projectRoot, 'src')
         }
     },
     test: {

@@ -1,5 +1,5 @@
+import { afterAll, afterEach, beforeAll } from 'vitest';
 import { server } from './server';
-import { afterEach, beforeAll, afterAll } from 'vitest';
 
 export const setupMsw = () => {
     // Establish API mocking before all tests.

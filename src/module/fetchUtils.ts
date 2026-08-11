@@ -1,6 +1,37 @@
-import { encodeFormData, bodyToURLParams } from './formUtils';
-import { setUrlParam } from '@/component/common';
-import { FetchOptions, SendFormDataOptions } from '@/interfaces/internal';
+import { setUrlParam } from '@/component/universalCommon';
+import type { FetchOptions, SendFormDataOptions } from '@/interfaces/internal';
+import { bodyToURLParams, encodeFormData } from './formUtils';
+
+function hasResponseBody(response: Response): boolean {
+    if ([204, 205, 304].includes(response.status)) {
+        return false;
+    }
+
+    return response.headers.get('content-length') !== '0';
+}
+
+function isJsonResponse(response: Response): boolean {
+    const contentType = response.headers.get('content-type') ?? '';
+
+    return contentType.includes('application/json') || contentType.includes('+json');
+}
+
+async function parseResponseData<T>(response: Response): Promise<T | string | null> {
+    if (!hasResponseBody(response)) {
+        return null;
+    }
+
+    const responseText = await response.text();
+    if (responseText.length === 0) {
+        return null;
+    }
+
+    if (isJsonResponse(response)) {
+        return JSON.parse(responseText) as T;
+    }
+
+    return responseText;
+}
 
 // Fetch API
 export async function doFetch<T>(options: FetchOptions<T>): Promise<Response> {
@@ -60,10 +91,8 @@ export async function doFetch<T>(options: FetchOptions<T>): Promise<Response> {
         const response = await fetch(createRequest);
         if (response.ok) {
             if (typeof success === 'function') {
-                // Clone the response and parse the clone
-                const clonedResponse = response.clone();
-                const responseData = (await clonedResponse.json()) as T;
-                success?.(responseData);
+                const responseData = await parseResponseData<T>(response.clone());
+                success(responseData as T);
             }
         } else {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -105,7 +134,9 @@ export async function sendData<T>(options: SendFormDataOptions<T>): Promise<T> {
         error: error
     };
 
-    return (await doFetch<T>(fetchOptions)).json();
+    const response = await doFetch<T>(fetchOptions);
+
+    return (await parseResponseData<T>(response)) as T;
 }
 
 // Send form data

@@ -1,15 +1,16 @@
-import { throwError, reportError } from './errorUtils';
-import {
-    ElementEventTarget,
-    EventOptions,
-    RemoveEventOptions,
-    EventName,
-    EventHandler,
-    CustomEventName,
-    CustomEventHandler,
+import type {
+    CombinedEventHandler,
     CombinedEventName,
-    CombinedEventHandler
+    CustomEventHandler,
+    CustomEventName,
+    ElementEventTarget,
+    EventHandler,
+    EventName,
+    EventOptions,
+    RemoveEventOptions
 } from '@/types/internal';
+import { reportError, throwError } from './errorUtils';
+import { getCustomEventSafe, getDocumentSafe } from './runtimeUtils';
 
 export function addEventListener<K extends EventName>(
     element: ElementEventTarget,
@@ -54,21 +55,31 @@ export function removeEventListener(
 }
 
 export function createEvent<T = unknown>(eventName: string, detail?: T, options?: EventInit): CustomEvent<T> {
-    return new CustomEvent(eventName, { detail, ...options });
+    const CustomEventCtor = getCustomEventSafe();
+    if (!CustomEventCtor) {
+        throwError('CustomEvent is not available in the current runtime');
+    }
+
+    return new CustomEventCtor<T>(eventName, { detail, ...options });
 }
 
 export function dispatchEvent<T = unknown>(
     eventOrName: string | Event,
-    element: Document | Element = document,
+    element?: Document | Element,
     detail?: T,
     options?: EventInit
 ): boolean {
     try {
+        const target = element ?? getDocumentSafe();
+        if (!target) {
+            throwError('Dispatch target is not available in the current runtime');
+        }
+
         if (typeof eventOrName === 'string') {
-            let event = createEvent<T>(eventOrName, detail, options);
-            return element.dispatchEvent(event);
-        } else if (eventOrName instanceof Event) {
-            return element.dispatchEvent(eventOrName);
+            const event = createEvent<T>(eventOrName, detail, options);
+            return target.dispatchEvent(event);
+        } else if (typeof Event !== 'undefined' && eventOrName instanceof Event) {
+            return target.dispatchEvent(eventOrName);
         } else {
             throwError('Invalid event type');
         }

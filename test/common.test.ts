@@ -1,5 +1,6 @@
+import { describe, expect, it } from 'vitest';
+import { commonUtils as browserCommonUtils } from '@/browser';
 import { commonUtils } from '@/index';
-import { describe, it, expect } from 'vitest';
 
 it('shallowMerge retains instanceof', () => {
     class CustomClass {
@@ -457,11 +458,11 @@ describe('setHashParam', () => {
 });
 
 it('setStylesheetId sets stylesheet ID correctly', () => {
-    commonUtils.setStylesheetId('new-id');
-    expect(commonUtils.stylesheetId).toBe('new-id');
+    browserCommonUtils.setStylesheetId('new-id');
+    expect(browserCommonUtils.stylesheetId).toBe('new-id');
 });
 
 it('setReplaceRule sets replace rule correctly', () => {
-    commonUtils.setReplaceRule('.old', '.new');
-    expect(commonUtils.replaceRule).toEqual({ from: '.old', to: '.new' });
+    browserCommonUtils.setReplaceRule('.old', '.new');
+    expect(browserCommonUtils.replaceRule).toEqual({ from: '.old', to: '.new' });
 });

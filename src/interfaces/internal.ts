@@ -7,7 +7,9 @@ export interface URLParams {
     [key: string]: string | number | boolean | null;
 }
 
-export interface FetchParams<T = any> {
+export type FormDataInput = Record<string, unknown> | Blob | File | FormData | null;
+
+export interface FetchParams<T = unknown> {
     url: string | Request | URL;
     method?: string;
     headers?: HeadersInit;
@@ -19,17 +21,17 @@ export interface FetchParams<T = any> {
     error?: (error: Error) => void;
 }
 
-export interface FetchOptions<T = any> extends FetchParams<T> {
+export interface FetchOptions<T = unknown> extends FetchParams<T> {
     body?: BodyInit | Record<string, unknown> | FormData | null;
 }
 
-export interface SendFormDataOptions<T = any> extends FetchParams<T> {
-    data?: Record<string, any> | Blob | File | FormData | null;
+export interface SendFormDataOptions<T = unknown> extends FetchParams<T> {
+    data?: FormDataInput;
     encode?: boolean;
 }
 
 export interface FormDataOptions {
-    data: Record<string, any> | Blob | File | FormData | null;
+    data: FormDataInput;
     parentKey?: string;
 }
 

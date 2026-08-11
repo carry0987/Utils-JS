@@ -10,11 +10,22 @@ pnpm add @carry0987/utils -D
 
 ## Usage
 
+### Runtime Boundaries
+The package now exposes explicit subpath entrypoints so SSR and browser code can depend on the right surface area.
+
+```javascript
+import { generateUUID, getUrlParam } from '@carry0987/utils';
+import { storageUtils, injectStylesheet } from '@carry0987/utils/browser';
+```
+
+Use `@carry0987/utils/browser` for DOM, storage, event, and stylesheet helpers.
+Use the root entrypoint `@carry0987/utils` as the default universal-safe surface.
+
 ### Importing Entire Modules
 You can import the entire set of utilities if you prefer, like this:
 
 ```javascript
-import { storageUtils } from '@carry0987/utils';
+import { storageUtils } from '@carry0987/utils/browser';
 
 // Usage
 storageUtils.setLocalValue('key', 'value');
@@ -26,7 +37,7 @@ To help with optimizing your bundle size, you can import only the functions you 
 
 ```javascript
 // Import specific utilities
-import { setLocalValue, getLocalValue, removeLocalValue } from '@carry0987/utils';
+import { setLocalValue, getLocalValue, removeLocalValue } from '@carry0987/utils/browser';
 
 // Usage
 setLocalValue('key', 'value');
