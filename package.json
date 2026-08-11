@@ -22,11 +22,8 @@
   },
   "sideEffects": false,
   "scripts": {
-    "clean": "node --eval \"import { rmSync } from 'node:fs'; rmSync('dist', { recursive: true, force: true });\"",
     "lint": "biome check --write .",
-    "build:js": "rollup --config rollup.config.ts --configPlugin typescript --environment BUILD:js",
-    "build:dts": "rollup --config rollup.config.ts --configPlugin typescript --environment BUILD:dts",
-    "build": "npm run clean && npm run build:js && npm run build:dts",
+    "build": "rolldown -c",
     "test": "vitest run",
     "test:cov": "vitest run --coverage",
     "test:watch": "vitest"
@@ -53,16 +50,14 @@
   "homepage": "https://github.com/carry0987/Utils-JS#readme",
   "devDependencies": {
     "@biomejs/biome": "^2.5.8",
-    "@rollup/plugin-replace": "^6.0.3",
-    "@rollup/plugin-typescript": "^12.3.0",
     "@types/node": "^26.2.0",
     "@vitest/coverage-v8": "4.1.10",
     "happy-dom": "^20.11.2",
     "msw": "^2.15.0",
-    "rollup": "^4.62.4",
-    "rollup-plugin-dts": "^6.5.1",
-    "rollup-plugin-tsconfig-paths": "^1.5.2",
+    "rolldown": "^1.2.3",
+    "rolldown-plugin-dts": "^0.28.1",
     "tslib": "^2.8.1",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.10"
   }
 }

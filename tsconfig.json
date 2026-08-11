@@ -12,6 +12,6 @@
     },
     "types": ["node"]
   },
-  "include": ["src/**/*", "test/**/*", "rollup.config.ts"],
+  "include": ["src/**/*", "test/**/*", "rolldown.config.ts"],
   "exclude": ["node_modules", "dist", "**/__tests__/**/*"]
 }
