@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/carry0987/Utils-JS/compare/v4.0.0...v4.0.1) (2026-08-14)
+
+
+### Bug Fixes
+
+* **build:** Update Rolldown ([0bb4e3f](https://github.com/carry0987/Utils-JS/commit/0bb4e3f32a85710835f49111737787c739c32cbb))
+
 ## 4.0.0 (2026-08-11)
 
 
