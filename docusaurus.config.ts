@@ -144,9 +144,9 @@ const config: Config = {
             playgroundPosition: 'bottom',
         },
         algolia: {
-            appId: 'ZHUA2R5S5W',
-            apiKey: 'df568554b456b3e921934fb9f9bf20d7',
-            indexName: 'Utils-JS Index',
+            appId: 'NADDTPATP0',
+            apiKey: '9944616331c0b2fa80d6e9856be96797',
+            indexName: 'Utils-JS DocSearch Crawler',
             contextualSearch: true,
             externalUrlRegex: 'external\\.com|domain\\.com',
             searchParameters: {},
