@@ -29,6 +29,17 @@ const config: Config = {
         },
     },
 
+    // Add custom tags to the HTML head
+    headTags: [
+        {
+            tagName: 'meta',
+            attributes: {
+                name: 'algolia-site-verification',
+                content: '657B95F77F96C774',
+            },
+        },
+    ],
+
     // Even if you don't use internationalization, you can use this field to set
     // useful metadata like html lang. For example, if your site is Chinese, you
     // may want to replace "en" with "zh-Hans".
