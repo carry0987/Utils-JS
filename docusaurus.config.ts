@@ -153,6 +153,16 @@ const config: Config = {
              */
             playgroundPosition: 'bottom',
         },
+        algolia: {
+            appId: 'ZHUA2R5S5W',
+            apiKey: 'df568554b456b3e921934fb9f9bf20d7',
+            indexName: 'Utils-JS Index',
+            contextualSearch: true,
+            externalUrlRegex: 'external\\.com|domain\\.com',
+            searchParameters: {},
+            searchPagePath: 'search',
+            insights: false,
+        }
     } satisfies Preset.ThemeConfig,
     themes: ['@docusaurus/theme-live-codeblock'],
 };
