@@ -1,0 +1,58 @@
+.wrapper {
+    background: linear-gradient(180deg, #112039 0%, #0b162b 100%);
+    border-radius: 24px;
+    box-shadow: 0 24px 60px rgba(11, 22, 43, 0.2);
+    overflow: hidden;
+    width: 100%;
+}
+
+:global([data-theme="dark"]) .wrapper {
+    border: 1px solid rgba(79, 221, 191, 0.12);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.36);
+}
+
+.header {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.9rem 1rem;
+}
+
+.dot {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: inline-block;
+    height: 0.7rem;
+    width: 0.7rem;
+}
+
+.filename {
+    color: rgba(232, 240, 255, 0.74);
+    font-size: 0.9rem;
+    margin-left: 0.35rem;
+}
+
+.pre {
+    margin: 0;
+    overflow-x: auto;
+    padding: 1rem 0;
+}
+
+.line {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    min-height: 1.7rem;
+    padding: 0 1rem;
+}
+
+.lineNumber {
+    color: rgba(232, 240, 255, 0.35);
+    text-align: right;
+    user-select: none;
+}
+
+.lineContent {
+    min-width: 0;
+}
