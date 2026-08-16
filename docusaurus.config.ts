@@ -157,7 +157,7 @@ const config: Config = {
         algolia: {
             appId: 'NADDTPATP0',
             apiKey: '9944616331c0b2fa80d6e9856be96797',
-            indexName: 'Utils-JS DocSearch Crawler',
+            indexName: 'Utils-JS Index',
             contextualSearch: true,
             externalUrlRegex: 'external\\.com|domain\\.com',
             searchParameters: {},
