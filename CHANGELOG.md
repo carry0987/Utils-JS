@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.0](https://github.com/carry0987/Utils-JS/compare/v4.0.1...v4.1.0) (2026-08-17)
+
+
+### Features
+
+* **types:** reorganize public type exports into domain-based modules ([2c2eaab](https://github.com/carry0987/Utils-JS/commit/2c2eaabd6462d711a33b6eaa8e92bad394b55417))
+
 ## [4.0.1](https://github.com/carry0987/Utils-JS/compare/v4.0.0...v4.0.1) (2026-08-14)
 
 
