@@ -42,10 +42,20 @@ pre > code span[class*="codeLineContent"] {
 }
 
 .navbar {
-    backdrop-filter: blur(14px);
     background: rgba(255, 255, 255, 0.9);
     border-bottom: 1px solid rgba(18, 38, 63, 0.08);
     box-shadow: 0 10px 30px rgba(18, 38, 63, 0.04);
+    isolation: isolate;
+}
+
+.navbar::before {
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    content: '';
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
 }
 
 [data-theme="dark"] .navbar {

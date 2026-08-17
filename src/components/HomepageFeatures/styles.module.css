@@ -1,7 +1,7 @@
 .features {
     display: flex;
     align-items: center;
-    padding: 0 0 4rem;
+    padding: 2.5rem 0 4rem;
     width: 100%;
 }
 
@@ -58,4 +58,51 @@
 
 :global([data-theme="dark"]) .features :global(.text--center.padding-horiz--md p) {
     color: rgba(217, 228, 247, 0.8);
+}
+
+@media screen and (max-width: 996px) {
+    .features {
+        padding: 2rem 0 3rem;
+    }
+
+    .sectionHeading {
+        margin-bottom: 1.5rem;
+        max-width: 22rem;
+        padding: 0 0.75rem;
+    }
+
+    .sectionHeading h2 {
+        font-size: 1.75rem;
+        line-height: 1.15;
+    }
+
+    .sectionHeading p {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .features :global(.row) {
+        gap: 1rem;
+    }
+
+    .features :global(.col) {
+        margin-bottom: 0;
+    }
+
+    .features :global(.text--center.padding-horiz--md) {
+        border-radius: 18px;
+        padding: 1.25rem;
+    }
+
+    .features :global(.text--center.padding-horiz--md h3) {
+        font-size: 1.35rem;
+        line-height: 1.2;
+        margin-bottom: 0.9rem;
+    }
+
+    .features :global(.text--center.padding-horiz--md p) {
+        font-size: 1rem;
+        line-height: 1.65;
+        margin-bottom: 0;
+    }
 }
