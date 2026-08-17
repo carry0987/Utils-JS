@@ -1,5 +1,5 @@
 import { setUrlParam } from '@/component/universalCommon';
-import type { FetchOptions, SendFormDataOptions } from '@/interfaces/internal';
+import type { FetchOptions, SendFormDataOptions } from '@/types/fetch';
 import { bodyToURLParams, encodeFormData } from './formUtils';
 
 function hasResponseBody(response: Response): boolean {

@@ -8,7 +8,7 @@ import type {
     EventName,
     EventOptions,
     RemoveEventOptions
-} from '@/types/internal';
+} from '@/types/event';
 import { reportError, throwError } from './errorUtils';
 import { getCustomEventSafe, getDocumentSafe } from './runtimeUtils';
 

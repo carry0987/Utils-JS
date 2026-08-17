@@ -1,4 +1,4 @@
-import type { ElementAttributes, QuerySelector } from '@/types/internal';
+import type { ElementAttributes, QuerySelector } from '@/types/dom';
 import { throwError } from './errorUtils';
 import { getDocumentSafe, getHtmlTemplateElementSafe, getNodeSafe } from './runtimeUtils';
 

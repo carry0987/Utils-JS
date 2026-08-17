@@ -1,4 +1,5 @@
-import type { FormDataOptions, URLParams } from '@/interfaces/internal';
+import type { URLParams } from '@/types/common';
+import type { FormDataOptions } from '@/types/form';
 
 // Append form data
 export function appendFormData(options: FormDataOptions, formData: FormData = new FormData()): FormData {

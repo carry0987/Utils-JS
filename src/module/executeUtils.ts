@@ -1,4 +1,4 @@
-import type { DebounceOptions, ThrottleOptions } from '@/interfaces/internal';
+import type { DebounceOptions, ThrottleOptions } from '@/types/execute';
 
 /**
  * Creates a throttled function that only invokes the provided function at most once

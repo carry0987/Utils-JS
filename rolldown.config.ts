@@ -22,8 +22,7 @@ const runtimeEntries = [
 const dtsEntries = {
     index: 'src/index.ts',
     browser: 'src/browser.ts',
-    'types/index': 'src/types/index.ts',
-    'interfaces/index': 'src/interfaces/index.ts'
+    'types/index': 'src/types/index.ts'
 };
 
 const basePlugins = [

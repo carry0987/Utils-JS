@@ -1,5 +1,5 @@
 import { deepMerge } from '@/component/universalCommon';
-import type { CookieOptions } from '@/interfaces/internal';
+import type { CookieOptions } from '@/types/storage';
 import { reportError } from './errorUtils';
 import { getDocumentSafe, getLocalStorageSafe, getSessionStorageSafe } from './runtimeUtils';
 

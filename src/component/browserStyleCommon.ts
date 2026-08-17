@@ -1,5 +1,5 @@
 import { getDocumentSafe } from '@/module/runtimeUtils';
-import type { ReplaceRule, StylesObject } from '@/types/internal';
+import type { ReplaceRule, StylesObject } from '@/types/style';
 import { isEmpty } from './universalCommon';
 
 export let stylesheetId: string = 'utils-style';

@@ -26,5 +26,24 @@ injectStylesheet('/styles/app.css');
 
 Use `@carry0987/utils` for universal-safe helpers and `@carry0987/utils/browser` for DOM, storage, event, and stylesheet utilities.
 
+## Type Imports
+```typescript
+import type { CookieOptions, FetchOptions, URLParams } from '@carry0987/utils/types';
+
+const query: URLParams = { page: 1, search: 'utils' };
+
+const requestOptions: FetchOptions = {
+	url: '/api/items',
+	method: 'GET'
+};
+
+const cookieOptions: CookieOptions = {
+	path: '/',
+	sameSite: 'Lax'
+};
+```
+
+Import public library types from `@carry0987/utils/types`. The package no longer exposes a separate `interfaces` entrypoint.
+
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

@@ -1,5 +1,5 @@
-import type { URLParams, URLSource } from '@/interfaces/internal';
 import { createUrl, getLocationHrefSafe } from '@/module/runtimeUtils';
+import type { URLParams, URLSource } from '@/types/common';
 
 // Narrow nullish values
 export function isDefined<T>(v: T): v is Exclude<T, null | undefined> {
