@@ -43,5 +43,5 @@ import { storageUtils, injectStylesheet } from '@carry0987/utils/browser';
 
 ## Versioning note
 
-Version `4.x` removed the old server-specific entrypoint. If you are migrating older code, move universal helpers to `@carry0987/utils` and browser-only calls to `@carry0987/utils/browser`.
+Version `4.x` removed the old server-specific entrypoint and consolidates published declaration access under `@carry0987/utils/types`. If you are migrating older code, move universal helpers to `@carry0987/utils`, browser-only calls to `@carry0987/utils/browser`, and type-only imports to `@carry0987/utils/types`.
 

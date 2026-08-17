@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Entrypoints
 
-Utils-JS publishes two runtime entrypoints and two declaration-only subpaths.
+Utils-JS publishes two runtime entrypoints and one declaration-only subpath.
 
 ## `@carry0987/utils`
 
@@ -70,11 +70,10 @@ Some browser helpers intentionally throw when a DOM is required, for example DOM
 
 Tests in this repository verify that the root entrypoint does not expose browser-only namespaces. That keeps SSR-safe imports explicit and reduces accidental coupling to DOM APIs.
 
-## Type and interface subpaths
+## Type subpath
 
-Two extra exports are available for declaration access:
+One extra export is available for declaration access:
 
 - `@carry0987/utils/types`
-- `@carry0987/utils/interfaces`
 
-These paths are useful when you want to reference published declaration files directly from tooling or advanced type-only integrations.
+This path is useful when you want to reference published declaration files directly from tooling or advanced type-only integrations. The package no longer publishes a separate `interfaces` subpath.

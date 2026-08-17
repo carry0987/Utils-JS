@@ -12,6 +12,8 @@ Install the package with your preferred package manager:
 pnpm add @carry0987/utils
 ```
 
+For Node.js-based workflows, the published package currently targets Node.js 22 or newer.
+
 ## Choose the right entrypoint
 
 Use the root entrypoint when your code must remain safe in SSR, Node.js, or mixed runtimes:
@@ -111,16 +113,15 @@ const mountedCard = getElem('.utils-card');
 console.log(mountedCard?.textContent);
 ```
 
-## Type-only entrypoints
+## Type-only entrypoint
 
-The package also exposes type declaration entrypoints:
+The package also exposes a type declaration entrypoint:
 
 ```ts
 import type {} from '@carry0987/utils/types';
-import type {} from '@carry0987/utils/interfaces';
 ```
 
-These paths are useful when you want to reference the library's published declaration structure explicitly.
+This path is useful when you want to reference the library's published declaration structure explicitly.
 
 ## Next steps
 
