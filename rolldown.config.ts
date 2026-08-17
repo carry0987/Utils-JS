@@ -1,19 +1,28 @@
 import { createRequire } from 'node:module';
-import { defineConfig, type RolldownOptions } from 'rolldown';
+import { defineConfig, type RolldownOptions, type RolldownPluginOption } from 'rolldown';
 import { replacePlugin } from 'rolldown/plugins';
 import { dts } from 'rolldown-plugin-dts';
 
 const pkg = createRequire(import.meta.url)('./package.json');
 const tsconfig = './tsconfig.json';
 
-const runtimeEntries = [
+type RuntimeEntry = {
+    input: string;
+    platform: NonNullable<RolldownOptions['platform']>;
+    importFile: string;
+    requireFile: string;
+};
+
+const runtimeEntries: RuntimeEntry[] = [
     {
         input: 'src/index.ts',
+        platform: 'neutral',
         importFile: pkg.exports['.'].import,
         requireFile: pkg.exports['.'].require
     },
     {
         input: 'src/browser.ts',
+        platform: 'browser',
         importFile: pkg.exports['./browser'].import,
         requireFile: pkg.exports['./browser'].require
     }
@@ -25,7 +34,7 @@ const dtsEntries = {
     'types/index': 'src/types/index.ts'
 };
 
-const basePlugins = [
+const basePlugins: RolldownPluginOption[] = [
     replacePlugin(
         {
             __version__: pkg.version
@@ -36,34 +45,25 @@ const basePlugins = [
     )
 ];
 
-const jsConfigs: RolldownOptions[] = runtimeEntries.flatMap((entry) => {
-    return [
-        {
-            input: entry.input,
-            platform: 'node',
-            tsconfig,
-            output: {
-                codeSplitting: false,
-                file: entry.importFile,
-                format: 'es' as const,
-                sourcemap: false
-            },
-            plugins: basePlugins
+function createRuntimeConfig(entry: RuntimeEntry, file: string, format: 'es' | 'cjs'): RolldownOptions {
+    return {
+        input: entry.input,
+        platform: entry.platform,
+        tsconfig,
+        output: {
+            codeSplitting: false,
+            file: file,
+            format: format,
+            sourcemap: false
         },
-        {
-            input: entry.input,
-            platform: 'node',
-            tsconfig,
-            output: {
-                codeSplitting: false,
-                file: entry.requireFile,
-                format: 'cjs' as const,
-                sourcemap: false
-            },
-            plugins: basePlugins
-        }
-    ];
-});
+        plugins: basePlugins
+    };
+}
+
+const jsConfigs: RolldownOptions[] = runtimeEntries.flatMap((entry) => [
+    createRuntimeConfig(entry, entry.importFile, 'es'),
+    createRuntimeConfig(entry, entry.requireFile, 'cjs')
+]);
 
 const dtsConfig: RolldownOptions = {
     input: dtsEntries,
