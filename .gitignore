@@ -1,5 +1,25 @@
+# Dependencies
+node_modules
 
+# TypeScript cache
+*.tsbuildinfo
+
+# Production
+/dist
+
+# Generated files
+/build
+.docusaurus
+.cache-loader
+
+# Misc
 .DS_Store
-node_modules/
-package-lock.json
-dist/
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
