@@ -156,7 +156,7 @@ const config: Config = {
         },
         algolia: {
             appId: 'NADDTPATP0',
-            apiKey: 'beb08d65406935a1f0f958e9d7a06e2a',
+            apiKey: '9944616331c0b2fa80d6e9856be96797',
             indexName: 'Utils-JS Index',
             contextualSearch: true,
             externalUrlRegex: 'external\\.com|domain\\.com',
