@@ -21,7 +21,8 @@
   },
   "sideEffects": false,
   "scripts": {
-    "lint": "biome check --write .",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
     "build": "rolldown -c",
     "test": "vitest run",
     "test:cov": "vitest run --coverage",
