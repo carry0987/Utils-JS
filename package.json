@@ -49,16 +49,16 @@
   },
   "homepage": "https://github.com/carry0987/Utils-JS#readme",
   "devDependencies": {
-    "@biomejs/biome": "^2.5.8",
-    "@types/node": "^26.2.0",
-    "@vitest/coverage-v8": "4.1.10",
-    "happy-dom": "^20.11.2",
+    "@biomejs/biome": "^2.5.12",
+    "@types/node": "^26.5.0",
+    "@vitest/coverage-v8": "5.0.0",
+    "happy-dom": "^20.14.0",
     "msw": "^2.15.0",
-    "rolldown": "^1.2.4",
-    "rolldown-plugin-dts": "^0.28.2",
+    "rolldown": "^1.2.7",
+    "rolldown-plugin-dts": "^0.28.5",
     "tslib": "^2.8.1",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.0"
   },
   "engines": {
     "node": ">=22"
