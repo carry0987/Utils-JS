@@ -1,4 +1,5 @@
 import { createRequire } from 'node:module';
+import { dirname } from 'node:path';
 import { defineConfig, type RolldownOptions, type RolldownPluginOption } from 'rolldown';
 import { replacePlugin } from 'rolldown/plugins';
 import { dts } from 'rolldown-plugin-dts';
@@ -65,14 +66,15 @@ const jsConfigs: RolldownOptions[] = runtimeEntries.flatMap((entry) => [
     createRuntimeConfig(entry, entry.requireFile, 'cjs')
 ]);
 
-const dtsConfig: RolldownOptions = {
-    input: dtsEntries,
+const dtsConfigs: RolldownOptions[] = Object.entries(dtsEntries).map(([name, input]) => ({
+    input,
     tsconfig,
     output: {
-        dir: 'dist',
+        codeSplitting: false,
+        dir: dirname(`dist/${name}`),
         format: 'es' as const
     },
     plugins: [dts({ emitDtsOnly: true })]
-};
+}));
 
-export default defineConfig([...jsConfigs, dtsConfig]);
+export default defineConfig([...jsConfigs, ...dtsConfigs]);
