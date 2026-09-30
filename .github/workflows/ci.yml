@@ -23,7 +23,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/setup@v2
         with:
-          version: 11
+          version: 12
           cache: true
           install: false
           runtime: node@24
@@ -49,7 +49,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/setup@v2
         with:
-          version: 11
+          version: 12
           cache: true
           install: false
           runtime: node@${{ matrix.node }}
@@ -71,7 +71,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/setup@v2
         with:
-          version: 11
+          version: 12
           cache: true
           install: false
           runtime: node@24
