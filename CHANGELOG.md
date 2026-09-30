@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.0](https://github.com/carry0987/Utils-JS/compare/v4.1.0...v4.2.0) (2026-09-30)
+
+
+### Features
+
+* **build:** improve declaration generation and type checks ([229b841](https://github.com/carry0987/Utils-JS/commit/229b84189a897e1f6b093a1975bd3861790a7620))
+
 ## [4.1.0](https://github.com/carry0987/Utils-JS/compare/v4.0.1...v4.1.0) (2026-08-17)
 
 
